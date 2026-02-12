@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="css/user-profile.css">
+    </head>
+
+    <body>
+        <header id="head">
+        <div class="left">
+            <img class="logo" src="../../images/dlsu.png">
+            <span class="title">Save.My.Lab</span>
+        </div>
+
+        <div class="right">
+            <a href="see-reservations.html" class="header-button">RESERVATIONS</a>
+            <a href="edit-computer-status.html" class="header-button active">ROOM STATUS</a>
+            <a href="index.html" class="header-button">LOGOUT</a>
+        </div>
+        </header>
+        
+        <div class="page">
+            <!-- Left Side -->
+            <div>
+                <!-- User Image -->
+                <div>
+                    <img class="user_image" src="../../images/profile-image.jpg">
+                </div>
+
+                <!-- User Name -->
+                <div class="user_name">
+                    <p class="name">Username</p>
+                    <button class="edit_button">
+                        <img class="edit_button_img" src="../../images/edit.jpg" alt="Edit">
+                    </button>
+                </div>
+
+                <!-- User Biography -->
+                <div class="user_biography">
+                    <p class="biography">No biography has been added.</p>
+                    <button class="edit_button">
+                        <img class="edit_button_img" src="../../images/edit.jpg" alt="Edit">
+                    </button>
+                </div>
+
+                <!-- Delete Button -->
+                <button class="delete_button">
+                        Delete Account
+                </button>
+            </div>
+
+            <!-- Right Side -->
+            <div>
+                <div class="hello_user">
+                    <p class="hello_user_text">Hello, Username!</p>
+                </div>
+
+                <div class="here_are_your_reservation">
+                    <p>Here are you reservations:</p>
+                </div>
+
+                <form action="https://www.google.com/search" method="get" role="search" class="search_bar">
+                    <input type="search" id="site-search" name="q" placeholder="Search a user">
+                    <button type="submit">Search</button>
+                </form>
+
+                <div class="table-container">
+                    <table class="table">
+                    <thead>
+                        <tr>
+                        <th>Bldg.</th>
+                        <th>Room</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Date of Reservation</th>
+                        <th>Time of Reservation</th>
+                        <th>Reserved By</th>
+                        <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                        <td>Gokongwei Bldg.</td>
+                        <td>G205</td>
+                        <td>June 9, 2005</td>
+                        <td>6:00 AM - 6:30 AM</td>
+                        <td>June 6, 2005</td>
+                        <td>6:20 AM</td>
+                        <td class="reserved-by">merry_ong@dlsu.edu.ph</td>
+                        <td class="actions last_column">
+                            <button class="button icon-button seat-button" data-seats="G205-6, G205-7, G205-8, G205-9, G205-10, G205-11">
+                            <img src="../../images/seat.png" alt="Seats">
+                            </button>
+                            <a class="button icon-button" href="edit-reservation.html">
+                            <img src="../../images/edit.jpg" alt="Edit">
+                            </a>
+                        </td>
+                        </tr>
+
+                        <tr>
+                        <td>Gokongwei Bldg.</td>
+                        <td>G205</td>
+                        <td>June 9, 2005</td>
+                        <td>7:00 AM - 7:30 AM</td>
+                        <td>June 6, 2005</td>
+                        <td>6:30 AM</td>
+                        <td class="reserved-by">admin@dlsu.edu.ph</td>
+                        <td class="actions last_column">
+                            <button class="button icon-button seat-button" data-seats="G205-6, G205-7, G205-8, G205-9, G205-10, G205-11">
+                            <img src="../../images/seat.png" alt="Seats">
+                            </button>
+                            <a class="button icon-button" href="edit-reservation.html">
+                            <img src="../../images/edit.jpg" alt="Edit">
+                            </a>
+                            <button class="button icon-button button-red delete-button">
+                            <img src="../../images/trash.jpg" alt="Delete">
+                            </button>
+                        </td>
+                        </tr>
+
+                        <tr>
+                        <td>Andrew Bldg.</td>
+                        <td>A1902</td>
+                        <td>June 9, 2005</td>
+                        <td>8:30 AM - 9:00 AM</td>
+                        <td>June 6, 2025</td>
+                        <td>12:51 AM</td>
+                        <td class="reserved-by">nigel_so@dlsu.edu.ph</td>
+                        <td class="actions last_column">
+                            <button class="button icon-button seat-button" data-seats="A1902-6, A1902-7">
+                            <img src="../../images/seat.png" alt="Seats">
+                            </button>
+                            <a class="button icon-button" href="edit-reservation.html">
+                            <img src="../../images/edit.jpg" alt="Edit">
+                            </a>
+                        </td>
+                        </tr>
+
+                        <tr>
+                        <td>Lasalle Hall</td>
+                        <td>LS228</td>
+                        <td>October 13, 2023</td>
+                        <td>1:30 PM - 2:00 PM</td>
+                        <td>January 2, 2025</td>
+                        <td>7:21 PM</td>
+                        <td class="reserved-by">yuan_miguel_panlilio@dlsu.edu.ph</td>
+                        <td class="actions last_column">
+                            <button class="button icon-button seat-button" data-seats="LS229-1, LS229-2">
+                            <img src="../../images/seat.png" alt="Seats">
+                            </button>
+                            <a class="button icon-button" href="edit-reservation.html">
+                            <img src="../../images/edit.jpg" alt="Edit">
+                            </a>
+                        </td>
+                        </tr>
+
+                        <tr>
+                        <td>Yuchengco Building</td>
+                        <td>Y604</td>
+                        <td>December 7, 2026</td>
+                        <td>8:30 PM - 9:00 PM</td>
+                        <td>February 8, 2026</td>
+                        <td>10:40 PM</td>
+                        <td class="reserved-by">admin@dlsu.edu.ph</td>
+                        <td class="actions last_column">
+                            <button class="button icon-button seat-button" data-seats="Y604-13, Y604-14, Y604-15">
+                            <img src="../../images/seat.png" alt="Seats">
+                            </button>
+                            <a class="button icon-button" href="edit-reservation.html">
+                            <img src="../../images/edit.jpg" alt="Edit">
+                            </a>
+                            <button class="button icon-button button-red delete-button">
+                            <img src="../../images/trash.jpg" alt="Delete">
+                            </button>
+                        </td>
+                        </tr>
+
+                        <tr>
+                        <td>Yuchengco Building</td>
+                        <td>Y606</td>
+                        <td>December 7, 2026</td>
+                        <td>8:00 PM - 8:30 PM</td>
+                        <td>February 8, 2026</td>
+                        <td>10:40 PM</td>
+                        <td class="reserved-by">princess_tullao@dlsu.edu.ph</td>
+                        <td class="actions last_column">
+                            <button class="button icon-button seat-button" data-seats="Y604-2">
+                            <img src="../../images/seat.png" alt="Seats">
+                            </button>
+                            <a class="button icon-button" href="edit-reservation.html">
+                            <img src="../../images/edit.jpg" alt="Edit">
+                            </a>
+                        </td>
+                        </tr>
+                    </tbody>
+                    </table>
+
+                    <div class="table-last-row">
+                     <a href="add-reservation.html">
+                        <button class="add-button">+</button>
+                    </a>
+                    </div>
+                </div>
+            </div>
+
+            
+        </div>
+        
+    </body>
+</html>
