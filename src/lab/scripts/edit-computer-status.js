@@ -242,8 +242,7 @@ function populateRoomsForVenue(venue) {
 
 function applyRoomToVisibleLayout(roomId) {
   const visibleLayout = document.querySelector(".venue-layout:not(.hidden)");
-  if (!visibleLayout) 
-    return;
+  if (!visibleLayout) return;
 
   const map = roomSeatMap[roomId] || {};
   const seats = visibleLayout.querySelectorAll(".seat");
