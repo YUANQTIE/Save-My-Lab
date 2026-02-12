@@ -14,6 +14,8 @@ body {
   flex-direction: column;
 }
 
+/* HEADER */
+
 #head {
   background: #3b7f13;
   padding: 15px 40px;
@@ -38,6 +40,23 @@ body {
   font-weight: bold;
 }
 
+.right .header-button {
+  margin-left: 15px;
+  padding: 10px 18px;
+  background: #d9d9d9;
+  font-weight: bold;
+  text-decoration: none;
+  color: black;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+.right .header-button.active {
+  background: #bfbfbf;
+}
+
+/* PAGE */
+
 .page {
   background: white;
   margin: 25px;
@@ -45,54 +64,57 @@ body {
   flex: 1;
 }
 
+/* TABLE */
+
 .subtitle { 
   margin-bottom: 14px; 
-}
-
-.table-container {
-  max-width: 1400px;
-  margin: 0 auto;
-  background: #f7f7f7;
-  border: 2px solid #bdbdbd;
-  border-radius: 8px;
-  overflow: hidden;
 }
 
 .table {
   width: 100%;
   border-collapse: collapse;
   table-layout: fixed;
+  border: 2px solid #bdbdbd;
+
 }
 
-.table th {
+.table th,
+.table td {
   padding: 16px 12px;
-  background: #d9d9d9;
-  font-weight: 800;
-  border-bottom: 2px solid #bdbdbd;
-  border-right: 2px solid #bdbdbd;
   text-align: center;
   vertical-align: middle;
   word-break: break-word;
-}
-
-.table td {
-  padding: 16px 12px;
-  border-bottom: 2px solid #bdbdbd;
   border-right: 2px solid #bdbdbd;
-  text-align: center;
-  vertical-align: middle;      
-  word-break: break-word;           
+  border-bottom: 2px solid #bdbdbd;
 }
 
+.table th:last-child,
+.table td:last-child {
+  border-right: none;
+}
+
+.table tr:last-child td:last-child {
+  border-bottom: none;
+}
+
+.table th {
+  background: #d9d9d9;
+  font-weight: 800;
+}
+
+.table-last-row {
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+/* LAST CHILD ACTIONS */
 .actions {
   display: flex;
   gap: 10px;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  white-space: normal;
-  overflow: visible;
-  text-overflow: clip;
 }
 
 .button {
@@ -123,12 +145,6 @@ body {
   border-color: #c0392b;
 }
 
-.table-last-row {
-  padding: 20px;
-  display: flex;
-  justify-content: center;
-}
-
 .add-button {
   width: 48px;
   height: 48px;
@@ -138,6 +154,8 @@ body {
   background: white;
   cursor: pointer;
 }
+
+/* FOOTER */
 
 footer {
   text-align: right;
@@ -149,6 +167,8 @@ footer {
 .hidden { 
   display: none; 
 }
+
+/* MODAL DISPLAY */
 
 .modal {
   position: fixed;
@@ -195,17 +215,13 @@ footer {
   border-radius: 999px;
 }
 
-.right .header-button {
-  margin-left: 15px;
-  padding: 10px 18px;
-  background: #d9d9d9;
-  font-weight: bold;
-  text-decoration: none;
-  color: black;
-  border-radius: 4px;
-  display: inline-block;
+.confirm-actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:10px;
+  margin-top:14px;
 }
 
-.right .header-button.active {
-  background: #bfbfbf;
+.confirm-text{
+  margin: 0;
 }

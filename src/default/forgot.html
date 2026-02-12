@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reset Password - Save.My.Lab</title>
+    <link rel="stylesheet" href="css/forgot.css">
+</head>
+<body>
+
+    <header id="head">
+        <div class="left">
+            <img class="logo" src="../../images/logo.jpg" alt="DLSU Logo">
+            <span class="title">Save.My.Lab</span>
+        </div>
+    </header>
+
+    <main class="background">
+
+        <div class="login-card">
+
+            <div class="card-header">
+                <img src="../../images/logo.jpg" alt="DLSU Logo" class="dlsu-logo">
+                <h2 class="card-title">Save.My.Lab</h2>
+            </div>
+
+            <p class="forgot-text">Create New Password</p>
+
+            <form id="resetForm">
+                <input id="Email" type="email" placeholder="Email Address" required pattern="^[a-z]+_[a-z]+(_[a-z]+)?@dlsu.edu.ph">
+                <input id="resetPass1" type="password" placeholder="New Password" required autocomplete="new-password"
+                       pattern="^(?=.*[A-Z])(?=.*[!@#$%^&*()]).{8,}$"
+                       title="At least 8 characters, with 1 uppercase letter and 1 special character (!@#$%^&*()).">
+                <input id="resetPass2" type="password" placeholder="Re-enter New Password" required autocomplete="new-password"
+                       pattern="^(?=.*[A-Z])(?=.*[!@#$%^&*()]).{8,}$"
+                       title="At least 8 characters, with 1 uppercase letter and 1 special character (!@#$%^&*()).">
+
+                <button type="submit">CONFIRM</button>
+                <p id="resetMsg" class="form-msg"></p>
+            </form>
+
+            <div class="card-links">
+                <a href="index.html">Back to Login</a>
+            </div>
+
+        </div>
+    </main>
+
+    <footer>
+        Lab Reservation System by Labron James Group
+    </footer>
+
+<script>
+
+</script>
+
+</body>
+</html>

@@ -8,23 +8,12 @@ const endMinute   = document.getElementById("endMinute");
 const roomBox = document.getElementById("roomBox");
 const dateBox = document.getElementById("dateBox");
 const timeBox = document.getElementById("timeBox");
-const confirmBtn = document.getElementById("confirmBtn");
+const confirmButton = document.getElementById("confirmButton");
 const brokenContainer = document.getElementById("brokenContainer");
 const brokenText = document.getElementById("brokenText");
 const brokenSeatIds = new Set();
 
-const confirmModal    = document.getElementById("confirmModal");
-const closeConfirmBtn = document.querySelector(".close-confirm");
-const confirmOkayBtn  = document.getElementById("confirmOkay");
-
-const resVenue = document.getElementById("resVenue");
-const resRoom  = document.getElementById("resRoom");
-const resDate  = document.getElementById("resDate");
-const resTime  = document.getElementById("resTime");
-const resSeats = document.getElementById("resSeats");
-
-const modalBackdrop = document.querySelector("#confirmModal .modal-backdrop");
-
+// dummy data
 const venueRooms = {
   "Gokongwei Building": ["G201", "G202", "G203"],
   "LS Building": ["LS226", "LS227", "LS228"],
@@ -110,7 +99,7 @@ const roomSeatMap = {
 function timeToMinutes(hhEl, mmEl) {
   const h = parseInt(hhEl.value, 10);
   const m = parseInt(mmEl.value, 10);
-  if (!Number.isFinite(h) || !Number.isFinite(m)) return NaN;
+
   return h * 60 + m;
 }
 
@@ -131,6 +120,7 @@ function getTimeRangeValue() {
   const sm = startMinute.value.trim();
   const eh = endHour.value.trim();
   const em = endMinute.value.trim();
+
   if (!sh || !sm || !eh || !em) return "";
   return `${sh}:${sm} - ${eh}:${em}`;
 }
@@ -138,11 +128,6 @@ function getTimeRangeValue() {
 function isTimeRangeValid() {
   const start = timeToMinutes(startHour, startMinute);
   const end   = timeToMinutes(endHour, endMinute);
-
-  if (!Number.isFinite(start) || !Number.isFinite(end)) {
-    timeBox.classList.add("invalid");
-    return false;
-  }
 
   const startH = startHour.value.trim();
   const startM = startMinute.value.trim();
@@ -189,8 +174,9 @@ function updateConfirmButton() {
     getTimeRangeValue() &&
     isTimeRangeValid();
 
-  confirmBtn.disabled = !(ready && brokenSeatIds.size > 0);
+  confirmButton.disabled = !(ready && brokenSeatIds.size > 0);
 }
+
 
 function setListBox(boxEl, textEl, setObj) {
   const list = Array.from(setObj);
@@ -242,8 +228,7 @@ function populateRoomsForVenue(venue) {
 
 function applyRoomToVisibleLayout(roomId) {
   const visibleLayout = document.querySelector(".venue-layout:not(.hidden)");
-  if (!visibleLayout) 
-    return;
+  if (!visibleLayout) return;
 
   const map = roomSeatMap[roomId] || {};
   const seats = visibleLayout.querySelectorAll(".seat");
@@ -262,43 +247,6 @@ function applyRoomToVisibleLayout(roomId) {
   });
 }
 
-function openConfirmModal() {
-  if (!confirmModal) 
-    return;
-  confirmModal.classList.remove("hidden");
-}
-
-function closeConfirmModal() {
-  if (!confirmModal) 
-    return;
-  confirmModal.classList.add("hidden");
-}
-
-function fillConfirmModal() {
-  if (!confirmModal) 
-    return;
-
-  if (resVenue) 
-    resVenue.textContent = venueSelect.value || "—";
-  if (resRoom)  
-    resRoom.textContent  = roomSelect.value || "—";
-  if (resDate)  
-    resDate.textContent  = dateInput.value || "—";
-  if (resTime)  
-    resTime.textContent  = getTimeRangeValue() || "—";
-
-  const list = Array.from(brokenSeatIds);
-  list.sort((a,b) => {
-    const an = parseInt(a.split("-").pop(), 10);
-    const bn = parseInt(b.split("-").pop(), 10);
-    if (Number.isFinite(an) && Number.isFinite(bn)) return an - bn;
-    return a.localeCompare(b);
-  });
-
-  if (resSeats) 
-    resSeats.textContent = list.length ? list.join(", ") : "None";
-}
-
 venueSelect.addEventListener("change", () => {
   const venue = venueSelect.value;
 
@@ -311,6 +259,7 @@ venueSelect.addEventListener("change", () => {
 
   roomSelect.selectedIndex = 0;
   dateInput.value = "";
+
   startHour.value = "";
   startMinute.value = "";
   endHour.value = "";
@@ -328,12 +277,14 @@ roomSelect.addEventListener("change", () => {
   timeBox.classList.add("hidden");
 
   dateInput.value = "";
+
   startHour.value = "";
   startMinute.value = "";
   endHour.value = "";
   endMinute.value = "";
 
   applyRoomToVisibleLayout(roomSelect.value);
+
   setSeatsEnabled(false);
   updateConfirmButton();
 });
@@ -352,6 +303,7 @@ dateInput.addEventListener("change", () => {
 
 [startHour, startMinute, endHour, endMinute].forEach(el => {
   el.addEventListener("change", () => {
+
     const valid = isTimeRangeValid();
 
     setSeatsEnabled(valid && getTimeRangeValue() !== "");
@@ -369,55 +321,46 @@ document.addEventListener("click", (e) => {
   const seatId = seat.dataset.seatId;
   if (!seatId) return;
 
-  const base = seat.dataset.base || "black";
-  const isBlue = seat.classList.contains("blue");
+  const isGreen = seat.classList.contains("green");
 
-  if (!isBlue) {
-    seat.classList.remove("red");
-    seat.classList.add("blue");
+  if (!isGreen) {
+    seat.classList.add("green");
     brokenSeatIds.add(seatId);
-  } else {
-    seat.classList.remove("blue");
+  } 
+  
+  else {
+    seat.classList.remove("green");
     brokenSeatIds.delete(seatId);
 
-    if (base === "red") seat.classList.add("red");
-    else seat.classList.remove("red");
   }
 
   updateStatusUI();
   updateConfirmButton();
 });
 
-confirmBtn.addEventListener("click", () => {
-  if (confirmBtn.disabled) return;
+confirmButton.addEventListener("click", () => {
+  if (confirmButton.disabled) return;
 
-  fillConfirmModal();
-  openConfirmModal();
+  alert(
+    `CONFIRMED!\n\n
+    
+    Venue: ${venueSelect.value}\n
+    Room: ${roomSelect.value}\n
+    Date: ${dateInput.value}\n
+    Time: ${getTimeRangeValue()}\n\n
+    Chosen Computers: ${Array.from(brokenSeatIds).join(", ") 
+      || "None"}`
+  );
+
+  const visibleLayout = document.querySelector(".venue-layout:not(.hidden)");
+  if (visibleLayout) {
+    visibleLayout.querySelectorAll(".seat.green").forEach(s => s.classList.remove("green"));
+  }
+
+  brokenSeatIds.clear();
+  updateStatusUI();
+  updateConfirmButton();
 });
-
-if (closeConfirmBtn) {
-  closeConfirmBtn.addEventListener("click", closeConfirmModal);
-}
-
-if (modalBackdrop) {
-  modalBackdrop.addEventListener("click", closeConfirmModal);
-}
-
-if (confirmOkayBtn) {
-  confirmOkayBtn.addEventListener("click", () => {
-    closeConfirmModal();
-
-    const visibleLayout = document.querySelector(".venue-layout:not(.hidden)");
-    if (visibleLayout) {
-      visibleLayout.querySelectorAll(".seat.blue").forEach(s => s.classList.remove("blue"));
-    }
-
-    brokenSeatIds.clear();
-    updateStatusUI();
-    updateConfirmButton();
-    window.location.href = "see-reservations.html";
-  });
-}
 
 tagSeatSlots();
 tagSeatBaseColors();

@@ -1,21 +1,19 @@
 const venueSelect = document.getElementById("venueSelect");
 const roomSelect  = document.getElementById("roomSelect");
 const dateInput   = document.getElementById("dateInput");
-const startHour = document.getElementById("startHour");
+const startHour   = document.getElementById("startHour");
 const startMinute = document.getElementById("startMinute");
-const endHour   = document.getElementById("endHour");
+const endHour     = document.getElementById("endHour");
 const endMinute   = document.getElementById("endMinute");
-const roomBox = document.getElementById("roomBox");
-const dateBox = document.getElementById("dateBox");
-const timeBox = document.getElementById("timeBox");
+const roomBox   = document.getElementById("roomBox");
+const dateBox   = document.getElementById("dateBox");
+const timeBox   = document.getElementById("timeBox");
 const confirmBtn = document.getElementById("confirmBtn");
 const brokenContainer = document.getElementById("brokenContainer");
-const brokenText = document.getElementById("brokenText");
-const brokenSeatIds = new Set();
-
-const confirmModal    = document.getElementById("confirmModal");
-const closeConfirmBtn = document.querySelector(".close-confirm");
-const confirmOkayBtn  = document.getElementById("confirmOkay");
+const brokenText      = document.getElementById("brokenText");
+const confirmModal     = document.getElementById("confirmModal");
+const closeConfirmBtn  = document.querySelector(".close-confirm");
+const confirmOkay      = document.getElementById("confirmOkay");
 
 const resVenue = document.getElementById("resVenue");
 const resRoom  = document.getElementById("resRoom");
@@ -23,7 +21,8 @@ const resDate  = document.getElementById("resDate");
 const resTime  = document.getElementById("resTime");
 const resSeats = document.getElementById("resSeats");
 
-const modalBackdrop = document.querySelector("#confirmModal .modal-backdrop");
+const brokenSeatIds = new Set();
+
 
 const venueRooms = {
   "Gokongwei Building": ["G201", "G202", "G203"],
@@ -107,66 +106,53 @@ const roomSeatMap = {
   }
 };
 
-function timeToMinutes(hhEl, mmEl) {
-  const h = parseInt(hhEl.value, 10);
-  const m = parseInt(mmEl.value, 10);
-  if (!Number.isFinite(h) || !Number.isFinite(m)) return NaN;
+function timeToMinutes(hourEl, minuteEl) {
+  const h = parseInt(hourEl.value, 10);
+  const m = parseInt(minuteEl.value, 10);
   return h * 60 + m;
 }
 
 function minutesToTime(mins) {
   const h = Math.floor(mins / 60);
   const m = mins % 60;
-  return { hh: String(h).padStart(2, "0"), mm: String(m).padStart(2, "0") };
+  return {
+    hour: String(h).padStart(2, "0"),
+    minute: String(m).padStart(2, "0")
+  };
 }
 
 function setTimeSelect(hhEl, mmEl, mins) {
   const t = minutesToTime(mins);
-  hhEl.value = t.hh;
-  mmEl.value = t.mm;
+  hhEl.value = t.hour;
+  mmEl.value = t.minute;
 }
 
 function getTimeRangeValue() {
-  const sh = startHour.value.trim();
-  const sm = startMinute.value.trim();
-  const eh = endHour.value.trim();
-  const em = endMinute.value.trim();
-  if (!sh || !sm || !eh || !em) return "";
-  return `${sh}:${sm} - ${eh}:${em}`;
+  const starth = startHour.value.trim();
+  const startm = startMinute.value.trim();
+  const endh   = endHour.value.trim();
+  const endm   = endMinute.value.trim();
+
+  if (!starth || !startm || !endh || !endm) return "";
+  return `${starth}:${startm} - ${endh}:${endm}`;
 }
 
 function isTimeRangeValid() {
   const start = timeToMinutes(startHour, startMinute);
   const end   = timeToMinutes(endHour, endMinute);
-
-  if (!Number.isFinite(start) || !Number.isFinite(end)) {
-    timeBox.classList.add("invalid");
-    return false;
-  }
-
   const startH = startHour.value.trim();
   const startM = startMinute.value.trim();
-  const endH = endHour.value.trim();
-  const endM = endMinute.value.trim();
-
-  const valid = end > start && !(endH === "21" && endM === "30") && !(endH === startH && endM === startM);
+  const endH   = endHour.value.trim();
+  const endM   = endMinute.value.trim();
+  const valid =
+    end > start &&
+    !(endH === "21" && endM === "30") &&
+    !(endH === startH && endM === startM);
 
   if (!valid) timeBox.classList.add("invalid");
   else timeBox.classList.remove("invalid");
 
   return valid;
-}
-
-function enforceValidTimeRange() {
-  const start = timeToMinutes(startHour, startMinute);
-  if (!Number.isFinite(start)) return;
-
-  const minEnd = start + 30;
-
-  const end = timeToMinutes(endHour, endMinute);
-  if (!Number.isFinite(end) || end < minEnd) {
-    setTimeSelect(endHour, endMinute, minEnd);
-  }
 }
 
 function showVenueLayout(venue) {
@@ -199,14 +185,12 @@ function setListBox(boxEl, textEl, setObj) {
     textEl.textContent = "None";
     return;
   }
-
-  list.sort((a,b) => {
+  list.sort((a, b) => {
     const an = parseInt(a.split("-").pop(), 10);
     const bn = parseInt(b.split("-").pop(), 10);
     if (Number.isFinite(an) && Number.isFinite(bn)) return an - bn;
     return a.localeCompare(b);
   });
-
   boxEl.classList.remove("hidden");
   textEl.textContent = list.join(", ");
 }
@@ -244,12 +228,11 @@ function applyRoomToVisibleLayout(roomId) {
   const visibleLayout = document.querySelector(".venue-layout:not(.hidden)");
   if (!visibleLayout) 
     return;
-
   const map = roomSeatMap[roomId] || {};
   const seats = visibleLayout.querySelectorAll(".seat");
-
   seats.forEach(seat => {
     delete seat.dataset.seatId;
+
     const slot = seat.dataset.slot;
     const seatId = map[slot];
 
@@ -263,41 +246,15 @@ function applyRoomToVisibleLayout(roomId) {
 }
 
 function openConfirmModal() {
-  if (!confirmModal) 
-    return;
+  if (!confirmModal) return;
   confirmModal.classList.remove("hidden");
 }
 
 function closeConfirmModal() {
-  if (!confirmModal) 
-    return;
+  if (!confirmModal) return;
   confirmModal.classList.add("hidden");
 }
 
-function fillConfirmModal() {
-  if (!confirmModal) 
-    return;
-
-  if (resVenue) 
-    resVenue.textContent = venueSelect.value || "—";
-  if (resRoom)  
-    resRoom.textContent  = roomSelect.value || "—";
-  if (resDate)  
-    resDate.textContent  = dateInput.value || "—";
-  if (resTime)  
-    resTime.textContent  = getTimeRangeValue() || "—";
-
-  const list = Array.from(brokenSeatIds);
-  list.sort((a,b) => {
-    const an = parseInt(a.split("-").pop(), 10);
-    const bn = parseInt(b.split("-").pop(), 10);
-    if (Number.isFinite(an) && Number.isFinite(bn)) return an - bn;
-    return a.localeCompare(b);
-  });
-
-  if (resSeats) 
-    resSeats.textContent = list.length ? list.join(", ") : "None";
-}
 
 venueSelect.addEventListener("change", () => {
   const venue = venueSelect.value;
@@ -318,7 +275,6 @@ venueSelect.addEventListener("change", () => {
 
   brokenSeatIds.clear();
   updateStatusUI();
-
   setSeatsEnabled(false);
   updateConfirmButton();
 });
@@ -353,7 +309,6 @@ dateInput.addEventListener("change", () => {
 [startHour, startMinute, endHour, endMinute].forEach(el => {
   el.addEventListener("change", () => {
     const valid = isTimeRangeValid();
-
     setSeatsEnabled(valid && getTimeRangeValue() !== "");
     updateConfirmButton();
   });
@@ -369,19 +324,14 @@ document.addEventListener("click", (e) => {
   const seatId = seat.dataset.seatId;
   if (!seatId) return;
 
-  const base = seat.dataset.base || "black";
-  const isBlue = seat.classList.contains("blue");
+  const isGreen = seat.classList.contains("green");
 
-  if (!isBlue) {
-    seat.classList.remove("red");
-    seat.classList.add("blue");
+  if (!isGreen) {
+    seat.classList.add("green");
     brokenSeatIds.add(seatId);
   } else {
-    seat.classList.remove("blue");
+    seat.classList.remove("green");
     brokenSeatIds.delete(seatId);
-
-    if (base === "red") seat.classList.add("red");
-    else seat.classList.remove("red");
   }
 
   updateStatusUI();
@@ -391,33 +341,32 @@ document.addEventListener("click", (e) => {
 confirmBtn.addEventListener("click", () => {
   if (confirmBtn.disabled) return;
 
-  fillConfirmModal();
+  resVenue.textContent = venueSelect.value || "—";
+  resRoom.textContent  = roomSelect.value || "—";
+  resDate.textContent  = dateInput.value || "—";
+  resTime.textContent  = getTimeRangeValue() || "—";
+
+  const seatsList = Array.from(brokenSeatIds);
+  resSeats.textContent = seatsList.length ? seatsList.join(", ") : "None";
+
   openConfirmModal();
 });
 
-if (closeConfirmBtn) {
-  closeConfirmBtn.addEventListener("click", closeConfirmModal);
-}
+closeConfirmBtn.addEventListener("click", closeConfirmModal);
 
-if (modalBackdrop) {
-  modalBackdrop.addEventListener("click", closeConfirmModal);
-}
+confirmOkay.addEventListener("click", () => {
+  window.location.href = "see-reservations.html";
+  closeConfirmModal();
 
-if (confirmOkayBtn) {
-  confirmOkayBtn.addEventListener("click", () => {
-    closeConfirmModal();
+  const visibleLayout = document.querySelector(".venue-layout:not(.hidden)");
+  if (visibleLayout) {
+    visibleLayout.querySelectorAll(".seat.green").forEach(s => s.classList.remove("green"));
+  }
 
-    const visibleLayout = document.querySelector(".venue-layout:not(.hidden)");
-    if (visibleLayout) {
-      visibleLayout.querySelectorAll(".seat.blue").forEach(s => s.classList.remove("blue"));
-    }
-
-    brokenSeatIds.clear();
-    updateStatusUI();
-    updateConfirmButton();
-    window.location.href = "see-reservations.html";
-  });
-}
+  brokenSeatIds.clear();
+  updateStatusUI();
+  updateConfirmButton();
+});
 
 tagSeatSlots();
 tagSeatBaseColors();

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register - Save.My.Lab</title>
+    <link rel="stylesheet" href="css/register.css">
+</head>
+<body>
+
+    <header id="head">
+        <div class="left">
+            <img class="logo" src="../../images/logo.jpg" alt="DLSU Logo">
+            <span class="title">Save.My.Lab</span>
+        </div>
+    </header>
+
+    <main class="background">
+        <div class="login-card">
+            <div class="card-header">
+                <img src="../../images/logo.jpg" alt="DLSU Logo" class="dlsu-logo">
+                <h2 class="card-title">Save.My.Lab</h2>
+            </div>
+
+            <p class="forgot-text">Register</p>
+
+            <form id="registerForm">
+                <input id="Email" type="email" placeholder="Email Address" required pattern="^[a-z]+_[a-z]+(_[a-z]+)?@dlsu.edu.ph">
+                <input id="Pass1" type="password" placeholder="Password" required autocomplete="new-password">
+                <input id="Pass2" type="password" placeholder="Re-enter password" required autocomplete="new-password">
+
+                <button type="submit">CONFIRM</button>
+                <p id="regMsg" class="form-msg"></p>
+            </form>
+
+            <div class="card-links">
+                <a href="index.html">Back to Login</a>
+            </div>
+        </div>
+    </main>
+
+    <footer>Lab Reservation System by Labron James Group</footer>
+
+<script src ="scripts/register.js"></script>
+
+</body>
+</html>

@@ -9,7 +9,6 @@ body {
 }
 
 /* HEADER */
-
 #head {
   background: #3b7f13;
   padding: 15px 40px;
@@ -48,8 +47,7 @@ body {
   background: #bfbfbf;
 }
 
-/* PAGE */
-
+/* MAIN PAGE */
 .page {
   background: white;
   margin: 25px;
@@ -67,8 +65,7 @@ h2 {
   gap: 40px;
 }
 
-/* INTERACTIVE PANEL */
-
+/* LEFT PANEL */
 .layout-panel {
   border: 2px solid black;
   padding: 15px;
@@ -84,36 +81,47 @@ h2 {
   display: block;
 }
 
-/* SEAT */
-
 .seat {
-  position: absolute;      
+  position: absolute;
+
   width: 5.3%;
   aspect-ratio: 1 / 1;
-  cursor: pointer;
-  background-image: url("../../../images/computer.svg");
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  opacity: 0.55;                      
-  pointer-events: none;               
-}
+  height: auto;
 
-.seats-enabled .seat {
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+
+  background: #000;
+  border: 2px solid #333;
+
+  transition: background-color 0.2s ease, transform 0.1s ease;
+
   pointer-events: auto;
   opacity: 1;
 }
 
+/* fixed “status” seats */
 .seat.blue {
-  background-image: url("../../../images/computer-blue.svg");
+  background: blue;
+  pointer-events: none;
+  cursor: default;
 }
 
 .seat.red {
-  background-image: url("../../../images/computer-red.svg");
+  background: red;
+  pointer-events: none;
+  cursor: default;
 }
 
-/* LEFT INPUT */
+/* selected seats */
+.seat.green {
+  background: green;
+  pointer-events: auto;
+  cursor: pointer;
+}
 
+/* RIGHT PANEL */
 .controls {
   display: flex;
   flex-direction: column;
@@ -156,8 +164,6 @@ h2 {
   background-size: 18px;
   pointer-events: none;
 }
-
-/* TIME INPUT */
 
 .time-block {
   display: flex;
@@ -204,6 +210,7 @@ h2 {
   border-color: #ff4d4d;
 }
 
+/* CONFIRM BUTTON */
 .confirm-button {
   padding: 14px;
   border-radius: 12px;
@@ -219,8 +226,6 @@ h2 {
   cursor: not-allowed;
 }
 
-/* AUXILIARY */
-
 .hidden {
   display: none;
 }
@@ -229,73 +234,15 @@ select option {
   color: black;
 }
 
+/* grey text only when placeholder (value="") is selected */
 select:invalid {
   color: grey;
 }
 
 /* FOOTER */
-
 footer {
   text-align: right;
   padding: 10px 30px;
   color: #307c17;
   font-size: 14px;
-}
-
-/* MODAL DISPLAY */
-
-.modal {
-  position: fixed;
-  inset: 0;
-}
-
-.modal-backdrop {
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.2);
-  z-index: 1;
-}
-
-.modal-card {
-  position: relative;
-  z-index: 2;
-  background: white;
-  width: 480px;
-  margin: 15vh auto;
-  border-radius: 12px;
-  border: 2px solid #bdbdbd;
-}
-
-.modal-head {
-  background: #d9d9d9;
-  padding: 12px;
-  display: flex;
-  justify-content: space-between;
-}
-
-.modal-body { 
-  padding: 16px; 
-}
-
-.seat-grid {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.seat-display {
-  border: 2px solid #7f7f7f;
-  padding: 8px 12px;
-  border-radius: 999px;
-}
-
-.confirm-actions{
-  display:flex;
-  justify-content:flex-end;
-  gap:10px;
-  margin-top:14px;
-}
-
-.confirm-text{
-  margin: 0;
 }

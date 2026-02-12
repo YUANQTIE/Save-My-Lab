@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Save.My.Lab</title>
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+
+    <header id="head">
+        <div class="left">
+            <img class="logo" src="../../images/logo.jpg" alt="DLSU Logo">
+            <span class="title">Save.My.Lab</span>
+        </div>
+    </header>
+
+    <main class="background">
+        <div class="login-card">
+            <div class="card-header">
+                <img src="../../images/logo.jpg" alt="DLSU Logo" class="dlsu-logo">
+                <h2 class="card-title">Save.My.Lab</h2>
+            </div>
+
+            <form id="loginForm" class="login-form">
+                <input id="loginEmail" type="email" placeholder="Email Address" required pattern="^[a-z]+_[a-z]+(_[a-z]+)?@dlsu.edu.ph">
+
+                <div class="password-wrapper">
+                  <input id="loginPass" type="password" placeholder="Password" required>
+                  <img id="eye" src="../../images/eye-bukas.png" class="toggle-eye" alt="Toggle Password">
+                </div>
+
+                <div class="form-actions">
+                    <label class="remember-me">
+                        <input type="checkbox" name="remember">
+                        Remember Me
+                    </label>
+
+                    <button type="submit">LOGIN</button>
+                </div>
+
+            </form>
+
+            <div class="card-links">
+                <a href="forgot.html">Forgot Password?</a>
+                <a href="register.html">Register</a>
+                <a href="view-slot-availability.html">View Slot Availability</a>
+            </div>
+
+        </div>
+    </main>
+
+    <footer>
+        Lab Reservation System by Labron James Group
+    </footer>
+
+<script src ="scripts/index.js"></script>
+
+</body>
+</html>

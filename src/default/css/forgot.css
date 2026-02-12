@@ -1,0 +1,165 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    background: #f2f2f2;
+}
+
+/* HEADER */
+
+#head { 
+  background: #307c17;
+  padding: 15px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.left { 
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo { 
+  width: 45px;
+}
+
+.title { 
+  color: white;
+  font-size: 26px;
+  font-weight: bold;
+}
+
+/* FOOTER */
+
+footer {
+  text-align: right;
+  padding: 10px 30px;
+  color: #307c17;
+  font-size: 14px;
+}
+
+/* MAIN */
+
+.background {
+    position: relative;
+    background-image: url("../../../images/dlsubg.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100%;
+    flex: 1;          
+    min-height: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* FORM */
+
+.login-card {
+    background-color: rgba(230, 230, 230, 0.95);
+    border-radius: 22px;
+    width: 440px;
+    padding: 35px;
+    text-align: center;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.dlsu-logo {
+    width: 55px;
+}
+
+.card-title {
+    color: #2f7d1e;
+    font-weight: normal;
+    font-size: 26px;
+}
+
+.login-card form input {
+    width: 100%;
+    padding: 15px;
+    margin: 12px 0;
+    border: none;
+    border-radius: 30px;
+    font-size: 16px;
+    outline: none;
+}
+
+.login-card form input::placeholder {
+    color: #a9a9a9;
+}
+
+.login-card form button {
+    align-self: center;
+    padding: 10px 40px;
+    border: none;
+    background-color: white;
+    color: #2f7d1e;
+    font-weight: bold;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    box-shadow: 0 2px 0 rgba(0,0,0,0.25);
+}
+
+.login-card form button:hover {
+    background-color: #f7f7f7;
+}
+
+.form-actions {
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+
+.login-form button {
+    margin: 0 auto;
+    display: block;
+}
+
+.forgot-text {
+    margin-bottom: 10px;
+    color: #2f7d1e;
+    font-size: 18px;
+}
+
+.card-links {
+    margin-top: 18px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.card-links a {
+    font-size: 14px;
+    color: #2f7d1e;
+    text-decoration: none;
+}
+
+.card-links a:hover {
+    text-decoration: underline;
+}
+
+.card-links a.disabled-link {
+    pointer-events: none;
+    opacity: 0.5;
+    cursor: not-allowed;
+}

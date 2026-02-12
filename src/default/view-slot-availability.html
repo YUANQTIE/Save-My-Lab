@@ -2,7 +2,7 @@
 <html>
 <head>
   <title>Save.My.Lab</title>
-  <link rel="stylesheet" href="css/add-reservation.css">
+  <link rel="stylesheet" href="css/view-slot-availability.css">
 </head>
 <body>
 
@@ -13,14 +13,12 @@
   </div>
 
   <div class="right">
-    <a href="see-reservations.html" class="header-button">RESERVATIONS</a>
-    <a href="edit-computer-status.html" class="header-button">ROOM STATUS</a>
-    <a href="../default/index.html" class="header-button">LOGOUT</a>
+    <a href="../default/index.html" class="header-button">RETURN</a>
   </div>
 </header>
 
 <div class="page">
-  <h2>Add Reservations</h2>
+  <h2>View Slot Availability</h2>
 
   <div class="content">
 
@@ -369,37 +367,7 @@
           </select>
         </div>
       </div>
-
-      <button id="confirmBtn" class="confirm-button" disabled>CONFIRM</button>
-
-      <div id="brokenContainer" class="hidden">
-        <p><b>Chosen Computers:</b> <span id="brokenText">None</span></p>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="modal hidden" id="confirmModal">
-  <div class="modal-backdrop"></div>
-  
-  <div class="modal-card">
-    <div class="modal-head">
-      <div class="modal-title">Confirmation of Reservation</div>
-      <button class="button close-confirm" type="button">X</button>
-    </div>
-
-    <div class="modal-body">
-      <p class="confirm-text"><b>Venue:</b> <span id="resVenue">—</span></p>
-      <p class="confirm-text"><b>Room:</b> <span id="resRoom">—</span></p>
-      <p class="confirm-text"><b>Date:</b> <span id="resDate">—</span></p>
-      <p class="confirm-text"><b>Time:</b> <span id="resTime">—</span></p>
-      <p class="confirm-text"><b>Chosen Computers:</b> <span id="resSeats">None</span></p>
-
-      <div class="confirm-actions">
-        <button class="button button-red" id="confirmOkay" type="button">
-          OK
-        </button>
-      </div>
+      <button id="confirmButton" class="confirm-button hidden" disabled>CONFIRM</button>
     </div>
   </div>
 </div>
@@ -408,6 +376,6 @@
   Lab Reservation System by Labron James Group
 </footer>
 
-<script src="scripts/add-reservation.js"></script>
+<script src="scripts/view-slot-availability.js"></script>
 </body>
 </html>

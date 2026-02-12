@@ -1,21 +1,23 @@
 <!DOCTYPE html>
-<html>
-  <head>
-      <title>Save.My.Lab — Reservations</title>
-      <link rel="stylesheet" href="css/see-reservations.css" />
-  </head>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Save.My.Lab</title>
+  <link rel="stylesheet" href="css/see-reservations.css" />
+</head>
 <body>
 
 <header id="head">
   <div class="left">
-    <img src="../../images/dlsu.png" class="logo" alt="logo">
+    <img src="../../images/logo.jpg" class="logo" alt="logo">
     <span class="title">Save.My.Lab</span>
   </div>
 
   <div class="right">
     <a href="see-reservations.html" class="header-button active">RESERVATIONS</a>
     <a href="edit-computer-status.html" class="header-button">ROOM STATUS</a>
-    <a href="index.html" class="header-button">LOGOUT</a>
+    <a href="../default/index.html" class="header-button">LOGOUT</a>
   </div>
 </header>
 
@@ -37,128 +39,14 @@
         </tr>
       </thead>
 
-      <tbody>
-        <tr>
-          <td>Gokongwei Bldg.</td>
-          <td>G205</td>
-          <td>June 9, 2005</td>
-          <td>6:00 AM - 6:30 AM</td>
-          <td>June 6, 2005</td>
-          <td>6:20 AM</td>
-          <td class="reserved-by">merry_ong@dlsu.edu.ph</td>
-          <td class="actions">
-            <button class="button icon-button seat-button" data-seats="G205-6, G205-7, G205-8, G205-9, G205-10, G205-11">
-              <img src="../../images/seat.png" alt="Seats">
-            </button>
-            <a class="button icon-button" href="edit-reservation.html">
-              <img src="../../images/edit.jpg" alt="Edit">
-            </a>
-          </td>
-        </tr>
-
-        <tr>
-          <td>Gokongwei Bldg.</td>
-          <td>G205</td>
-          <td>June 9, 2005</td>
-          <td>7:00 AM - 7:30 AM</td>
-          <td>June 6, 2005</td>
-          <td>6:30 AM</td>
-          <td class="reserved-by">admin@dlsu.edu.ph</td>
-          <td class="actions">
-            <button class="button icon-button seat-button" data-seats="G205-6, G205-7, G205-8, G205-9, G205-10, G205-11">
-              <img src="../../images/seat.png" alt="Seats">
-            </button>
-            <a class="button icon-button" href="edit-reservation.html">
-              <img src="../../images/edit.jpg" alt="Edit">
-            </a>
-            <button class="button icon-button button-red delete-button">
-              <img src="../../images/trash.jpg" alt="Delete">
-            </button>
-          </td>
-        </tr>
-
-        <tr>
-          <td>Andrew Bldg.</td>
-          <td>A1902</td>
-          <td>June 9, 2005</td>
-          <td>8:30 AM - 9:00 AM</td>
-          <td>June 6, 2025</td>
-          <td>12:51 AM</td>
-          <td class="reserved-by">nigel_so@dlsu.edu.ph</td>
-          <td class="actions">
-            <button class="button icon-button seat-button" data-seats="A1902-6, A1902-7">
-              <img src="../../images/seat.png" alt="Seats">
-            </button>
-            <a class="button icon-button" href="edit-reservation.html">
-              <img src="../../images/edit.jpg" alt="Edit">
-            </a>
-          </td>
-        </tr>
-
-        <tr>
-          <td>Lasalle Hall</td>
-          <td>LS228</td>
-          <td>October 13, 2023</td>
-          <td>1:30 PM - 2:00 PM</td>
-          <td>January 2, 2025</td>
-          <td>7:21 PM</td>
-          <td class="reserved-by">yuan_miguel_panlilio@dlsu.edu.ph</td>
-          <td class="actions">
-            <button class="button icon-button seat-button" data-seats="LS229-1, LS229-2">
-              <img src="../../images/seat.png" alt="Seats">
-            </button>
-            <a class="button icon-button" href="edit-reservation.html">
-              <img src="../../images/edit.jpg" alt="Edit">
-            </a>
-          </td>
-        </tr>
-
-        <tr>
-          <td>Yuchengco Building</td>
-          <td>Y604</td>
-          <td>December 7, 2026</td>
-          <td>8:30 PM - 9:00 PM</td>
-          <td>February 8, 2026</td>
-          <td>10:40 PM</td>
-          <td class="reserved-by">admin@dlsu.edu.ph</td>
-          <td class="actions">
-            <button class="button icon-button seat-button" data-seats="Y604-13, Y604-14, Y604-15">
-              <img src="../../images/seat.png" alt="Seats">
-            </button>
-            <a class="button icon-button" href="edit-reservation.html">
-              <img src="../../images/edit.jpg" alt="Edit">
-            </a>
-            <button class="button icon-button button-red delete-button">
-              <img src="../../images/trash.jpg" alt="Delete">
-            </button>
-          </td>
-        </tr>
-
-        <tr>
-          <td>Yuchengco Building</td>
-          <td>Y606</td>
-          <td>December 7, 2026</td>
-          <td>8:00 PM - 8:30 PM</td>
-          <td>February 8, 2026</td>
-          <td>10:40 PM</td>
-          <td class="reserved-by">princess_tullao@dlsu.edu.ph</td>
-          <td class="actions">
-            <button class="button icon-button seat-button" data-seats="Y604-2">
-              <img src="../../images/seat.png" alt="Seats">
-            </button>
-            <a class="button icon-button" href="edit-reservation.html">
-              <img src="../../images/edit.jpg" alt="Edit">
-            </a>
-          </td>
-        </tr>
-      </tbody>
+      <tbody id="reservationBody"></tbody>
     </table>
+  </div>
 
-    <div class="table-last-row">
-      <a href="add-reservation.html">
-        <button class="add-button">+</button>
-      </a>
-    </div>
+  <div class="table-last-row">
+    <a href="add-reservation.html">
+      <button class="add-button" type="button">+</button>
+    </a>
   </div>
 </div>
 
@@ -167,20 +55,42 @@
 </footer>
 
 <div class="modal hidden" id="LynnFromLasVegasModals">
-  <div class="modal-backdrop">
-    <div class="modal-card">
-      <div class="modal-head">
-        <div class="modal-title">Seat Numbers</div>
-        <button class="button close-button">X</button>
-      </div>
-      <div class="modal-body">
-        <div class="seat-grid" id="chosen-seats"></div>
+  <div class="modal-backdrop"></div>
+
+  <div class="modal-card">
+    <div class="modal-head">
+      <div class="modal-title">Seat Numbers</div>
+      <button class="button close-button" type="button">X</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="seat-grid" id="chosen-seats"></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal hidden" id="confirmDeleteModal">
+  <div class="modal-backdrop"></div>
+
+  <div class="modal-card">
+    <div class="modal-head">
+      <div class="modal-title">Delete reservation?</div>
+      <button class="button close-confirm" type="button">X</button>
+    </div>
+
+    <div class="modal-body">
+      <p class="confirm-text">Are you sure you want to delete this reservation?</p>
+
+      <div class="confirm-actions">
+        <button class="button button-red" id="confirmDeleteYes" type="button">
+          Yes, delete
+        </button>
       </div>
     </div>
   </div>
 </div>
 
-<script src="scripts/see-reservations.js"></script>
 
+<script src="scripts/see-reservations.js"></script>
 </body>
 </html>

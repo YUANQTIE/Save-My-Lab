@@ -84,7 +84,7 @@ h2 {
   display: block;
 }
 
-/* SEAT */
+/* SEATS */
 
 .seat {
   position: absolute;      
@@ -106,13 +106,23 @@ h2 {
 
 .seat.blue {
   background-image: url("../../../images/computer-blue.svg");
+  pointer-events: none;
+  cursor: default;
 }
 
 .seat.red {
   background-image: url("../../../images/computer-red.svg");
+  pointer-events: none;
+  cursor: default;
 }
 
-/* LEFT INPUT */
+.seat.green {
+  background-image: url("../../../images/computer-green.svg");
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+/* LEFT PANEL */
 
 .controls {
   display: flex;
@@ -241,6 +251,7 @@ footer {
   color: #307c17;
   font-size: 14px;
 }
+
 
 /* MODAL DISPLAY */
 
