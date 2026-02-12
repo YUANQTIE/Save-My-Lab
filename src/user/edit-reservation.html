@@ -3,7 +3,7 @@
 <head>
   <title>Save.My.Lab</title>
   <link rel="icon" type="image/x-icon" href="../../images/favicon.ico">
-  <link rel="stylesheet" href="css/edit-computer-status.css">
+  <link rel="stylesheet" href="css/edit-reservation.css">
 </head>
 <body>
 
@@ -14,18 +14,15 @@
   </div>
 
   <div class="right">
-    <a href="see-reservations.html" class="header-button">RESERVATIONS</a>
-    <a href="edit-computer-status.html" class="header-button active">ROOM STATUS</a>
-    <a href="../default/index.html" class="header-button">LOGOUT</a>
+    <a href="user-profile.html" class="header-button">RETURN</a>
   </div>
 </header>
 
 <div class="page">
-  <h2>Room Status</h2>
+  <h2>Edit Reservation</h2>
 
   <div class="content">
 
-    <!-- left panel -->
     <div class="layout-panel">
 
       <!-- default dlsu pic -->
@@ -38,9 +35,9 @@
         <img src="../../images/ANDREW.png" class="room-image">
 
         <!-- 1st column -->
-        <div class="seat blue" style="top:32.4%; left:18.2%;"></div>
+        <div class="seat" style="top:32.4%; left:18.2%;"></div>
         <div class="seat" style="top:48.9%; left:18.2%;"></div>
-        <div class="seat red" style="top:65.35%; left:18.2%;"></div>
+        <div class="seat" style="top:65.35%; left:18.2%;"></div>
 
         <!-- 2nd column -->
         <div class="seat" style="top:27.65%; left:24.65%;"></div>
@@ -75,11 +72,11 @@
         <!-- 8th column -->
         <div class="seat" style="top:24.25%; left:68.92%;"></div>
         <div class="seat" style="top:40.7%; left:68.92%;"></div>
-        <div class="seat red" style="top:57.25%; left:68.92%;"></div>
+        <div class="seat" style="top:57.25%; left:68.92%;"></div>
 
         <!-- 9th column -->
         <div class="seat" style="top:10%; left:75.3%;"></div>
-        <div class="seat blue" style="top:27.65%; left:75.3%;"></div>
+        <div class="seat" style="top:27.65%; left:75.3%;"></div>
         <div class="seat" style="top:44.15%; left:75.3%;"></div>
         <div class="seat" style="top:60.85%; left:75.3%;"></div>
 
@@ -119,7 +116,7 @@
         <div class="seat" style="top:85.1%; left:41.78%;"></div>
 
         <!-- 5th column -->
-        <div class="seat blue" style="top:38.9%; left:48.28%;"></div>
+        <div class="seat" style="top:38.9%; left:48.28%;"></div>
         <div class="seat" style="top:54.3%; left:48.28%;"></div>
         <div class="seat" style="top:69.7%; left:48.28%;"></div>
         <div class="seat" style="top:85.1%; left:48.28%;"></div>
@@ -146,7 +143,7 @@
         <div class="seat" style="top:38.9%; left:78.83%;"></div>
         <div class="seat" style="top:54.3%; left:78.83%;"></div>
         <div class="seat" style="top:69.7%; left:78.83%;"></div>
-        <div class="seat red" style="top:85.1%; left:78.83%;"></div>
+        <div class="seat" style="top:85.1%; left:78.83%;"></div>
 
         <!-- 10th column -->
         <div class="seat" style="top:38.9%; left:85.28%;"></div>
@@ -195,8 +192,8 @@
         <div class="seat" style="top:89.2%; left:50.85%;"></div>
 
         <!-- 6th column -->
-        <div class="seat blue" style="top:35.8%; left:57.35%;"></div>
-        <div class="seat red" style="top:49.2%; left:57.35%;"></div>
+        <div class="seat" style="top:35.8%; left:57.35%;"></div>
+        <div class="seat" style="top:49.2%; left:57.35%;"></div>
         <div class="seat" style="top:62.6%; left:57.35%;"></div>
         <div class="seat" style="top:75.8%; left:57.35%;"></div>
         <div class="seat" style="top:89.2%; left:57.35%;"></div>
@@ -305,20 +302,20 @@
         </select>
       </div>
 
-      <div class="input-box hidden" id="roomBox">
-        <select id="roomSelect">
+      <div class="input-box" id="roomBox">
+        <select id="roomSelect" required>
           <option value="" disabled selected>Input Room...</option>
         </select>
       </div>
 
-      <div class="input-box hidden" id="dateBox">
-        <input id="dateInput" type="date">
+      <div class="input-box" id="dateBox">
+        <input id="dateInput" type="date" required>
       </div>
 
-      <div class="time-block hidden" id="timeBox">
+      <div class="time-block" id="timeBox">
         <div class="time-row">
           <label class="time-label">Time Start</label>
-          <select id="startHour" class="time-input">
+          <select id="startHour" class="time-input" required>
             <option value="" disabled selected>--</option>
             <option value="07">07</option>
             <option value="08">08</option>
@@ -336,7 +333,7 @@
             <option value="20">20</option>
           </select>
           <span class="time-colon">:</span>
-          <select id="startMinute" class="time-input">
+          <select id="startMinute" class="time-input" required>
             <option value="" disabled selected>--</option>
             <option value="00">00</option>
             <option value="30">30</option>
@@ -345,7 +342,7 @@
 
         <div class="time-row">
           <label class="time-label">Time End</label>
-          <select id="endHour" class="time-input">
+          <select id="endHour" class="time-input" required>
             <option value="" disabled selected>--</option>
             <option value="07">07</option>
             <option value="08">08</option>
@@ -364,7 +361,7 @@
             <option value="21">21</option>
           </select>
           <span class="time-colon">:</span>
-          <select id="endMinute" class="time-input">
+          <select id="endMinute" class="time-input" required>
             <option value="" disabled selected>--</option>
             <option value="00">00</option>
             <option value="30">30</option>
@@ -372,11 +369,12 @@
         </div>
       </div>
 
-      <button id="confirmBtn" class="confirm-button" disabled>CONFIRM</button>
-
       <div id="brokenContainer" class="hidden">
-        <p><b>Broken Computers:</b> <span id="brokenText">None</span></p>
+        <p><b>Chosen Computers:</b> <span id="brokenText">None</span></p>
       </div>
+
+      <button id="confirmBtn" class="confirm-button">SAVE CHANGES</button>
+
     </div>
   </div>
 </div>
@@ -410,6 +408,6 @@
   Lab Reservation System by Labron James Group
 </footer>
 
-<script src="scripts/edit-computer-status.js"></script>
+<script src="scripts/edit-reservation.js"></script>
 </body>
 </html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="icon" type="image/x-icon" href="../../images/favicon.ico">
+        <link rel="stylesheet" href="css/user-profile.css">
+        <script src="../../src/lab/scripts/user-profile.js"></script>
+    </head>
+
+    <body>
+        <header id="head">
+        <div class="left">
+            <img class="logo" src="../../images/logo.jpg">
+            <span class="title">Save.My.Lab</span>
+        </div>
+
+        <div class="right">
+            <a href="../default/index.html" class="header-button">LOGOUT</a>
+        </div>
+        </header>
+        
+        <div class="page">
+            <!-- Left Side -->
+            <div>
+                <!-- User Image -->
+                <div>
+                    <img class="user_image" src="../../images/lozol.jpg">
+                </div>
+
+                <!-- User Name -->
+                <div class="user_name">
+                    <p class="name">kween_leng</p>
+                    <button class="edit_button">
+                        <img class="edit_button_img" src="../../images/edit.png" alt="Edit">
+                    </button>
+                </div>
+
+                <!-- User Biography -->
+                <div class="user_biography">
+                    <p class="biography">i love appdev</p>
+                    <button class="edit_button">
+                        <img class="edit_button_img" src="../../images/edit.png" alt="Edit">
+                    </button>         
+                </div>
+
+                <!-- Delete Button -->
+                <button class="delete_button">
+                        Delete Account
+                </button>
+            </div>
+
+            <!-- Right Side -->
+            <div>
+                <div class="hello_user">
+                    <p class="hello_user_text">Hello, Username!</p>
+                </div>
+
+                <div class="here-are-your-reservation">
+                    <p class="reservation-title">Here are your reservations:</p>
+                    <a href="add-reservation.html">
+                        <button class="add-button" id="addReservationBtn">+</button>
+                    </a>
+                    
+                </div>
+                
+                <!-- Search Bar -->
+                <form role="search" class="search_bar" onsubmit="return false;">
+                    <input type="search" id="site-search" placeholder="Search a user">
+                    <button type="submit" onclick="searchUser()">Search</button>
+                </form>
+
+                <div class="table-container">
+                    <table class="table">
+                    <thead>
+                        <tr>
+                        <th>Bldg.</th>
+                        <th>Room</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Date of Reservation</th>
+                        <th>Time of Reservation</th>
+                        <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="reservationBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+<div class="modal hidden" id="LynnFromLasVegasModals">
+  <div class="modal-backdrop"></div>
+
+  <div class="modal-card">
+    <div class="modal-head">
+      <div class="modal-title">Seat Numbers</div>
+      <button class="button close-button" type="button">X</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="seat-grid" id="chosen-seats"></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal hidden" id="confirmDeleteModal">
+  <div class="modal-backdrop"></div>
+
+  <div class="modal-card">
+    <div class="modal-head">
+      <div class="modal-title">Delete reservation?</div>
+      <button class="button close-confirm" type="button">X</button>
+    </div>
+
+    <div class="modal-body">
+      <p class="confirm-text">Are you sure you want to delete this reservation?</p>
+
+      <div class="confirm-actions">
+        <button class="button button-red" id="confirmDeleteYes" type="button">Yes, delete</button>
+        <button class="button hidden" id="confirmDeleteNo" type="button">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+        <script src="scripts/user-profile.js"></script>
+    </body>
+</html>

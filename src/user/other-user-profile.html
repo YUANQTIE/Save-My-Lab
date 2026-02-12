@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="icon" type="image/x-icon" href="../../images/favicon.ico">
+        <link rel="stylesheet" href="css/other-user-profile.css">
+    </head>
+
+    <body>
+        <header id="head">
+        <div class="left">
+            <img class="logo" src="../../images/logo.jpg">
+            <span class="title">Save.My.Lab</span>
+        </div>
+
+        <div class="right">
+            <a href="../default/index.html" class="header-button">LOGOUT</a>
+        </div>
+        </header>
+        
+        <div class="page">
+            <!-- Left Side -->
+            <div>
+                <!-- User Image -->
+                <div>
+                    <img class="user_image" src="../../images/airice.jpg">
+                </div>
+
+                <!-- User Name -->
+                <div class="user_name">
+                    <p class="name">yuan_panlilio</p>
+                </div>
+
+                <!-- User Biography -->
+                <div class="user_biography">
+                    <p class="biography">I am an ID 124 BS-ST Student.</p>
+                </div>
+
+            </div>
+
+            <!-- Right Side -->
+            <div>
+                <div class="here_are_your_reservation">
+                    <p>Recent reservations:</p>
+                </div>
+                
+                <!-- Search Bar -->
+                <form role="search" class="search_bar" onsubmit="return false;">
+                    <input type="search" id="site-search" placeholder="Search a user">
+                    <button type="submit" onclick="searchUser()">Search</button>
+                </form>
+
+                <div class="table-container">
+                    <table class="table">
+                    <thead>
+                        <tr>
+                        <th>Bldg.</th>
+                        <th>Room</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Date of Reservation</th>
+                        <th>Time of Reservation</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                        <td>Lasalle Hall</td>
+                        <td>LS228</td>
+                        <td>October 13, 2023</td>
+                        <td>1:30 PM - 2:00 PM</td>
+                        <td>January 2, 2025</td>
+                        <td>7:21 PM</td>
+                        </tr>
+                    </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

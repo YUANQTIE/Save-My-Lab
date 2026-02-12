@@ -29,7 +29,7 @@ loginForm.addEventListener("submit", function(e) {
       window.location.href = "../lab/see-reservations.html";
     }
     else{
-      window.location.href = "../user/see-reservations.html";
+      window.location.href = "../user/user-profile.html";
 
     }
       

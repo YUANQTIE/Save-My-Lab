@@ -347,13 +347,13 @@ confirmBtn.addEventListener("click", () => {
   resTime.textContent  = getTimeRangeValue() || "—";
 
   const seatsList = Array.from(brokenSeatIds);
-  
+
   seatsList.sort((a, b) => {
     const aNum = parseInt(a.split("-").pop(), 10);
     const bNum = parseInt(b.split("-").pop(), 10);
     return aNum - bNum;
   });
-
+  
   resSeats.textContent = seatsList.length ? seatsList.join(", ") : "None";
 
   openConfirmModal();
@@ -362,7 +362,7 @@ confirmBtn.addEventListener("click", () => {
 closeConfirmBtn.addEventListener("click", closeConfirmModal);
 
 confirmOkay.addEventListener("click", () => {
-  window.location.href = "see-reservations.html";
+  window.location.href = "user-profile.html";
   closeConfirmModal();
 
   const visibleLayout = document.querySelector(".venue-layout:not(.hidden)");
