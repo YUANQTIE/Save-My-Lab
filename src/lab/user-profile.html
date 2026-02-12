@@ -2,6 +2,7 @@
 <html>
     <head>
         <link rel="stylesheet" href="css/user-profile.css">
+        <script src="../../src/lab/scripts/user-profile.js"></script>
     </head>
 
     <body>
@@ -57,10 +58,11 @@
                 <div class="here_are_your_reservation">
                     <p>Here are you reservations:</p>
                 </div>
-
-                <form action="https://www.google.com/search" method="get" role="search" class="search_bar">
-                    <input type="search" id="site-search" name="q" placeholder="Search a user">
-                    <button type="submit">Search</button>
+                
+                <!-- Search Bar -->
+                <form role="search" class="search_bar" onsubmit="return false;">
+                    <input type="search" id="site-search" placeholder="Search a user">
+                    <button type="submit" onclick="searchUser()">Search</button>
                 </form>
 
                 <div class="table-container">

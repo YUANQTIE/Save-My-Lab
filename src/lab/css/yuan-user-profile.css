@@ -89,7 +89,7 @@ body {
     width: 250px;
     height: 30px;
     /* (Optional) Example height for visual demonstration */
-    margin-left: 175px;
+    margin-left: 155px;
     margin-top: 10px;
     gap: 5px;
 }
@@ -120,24 +120,26 @@ body {
 
 .edit_button_img {
     max-width: 100%;
-    height: auto; 
+    height: auto;
     display: block; 
 }
 
 .user_biography {
-    display: flex;
+    display: flex; 
     justify-content: left;
     width: 300px;
     height: 250px;
+    /* border: 1px solid black; */
     margin-top: 20px;
-    margin-left: 130px;   
+    margin-left: 150px;   
 }
 
 .hello_user {
-    display: flex;      
+    display: flex;
     justify-content: left;
     width: 450px;
     height: 70px;
+    /*border: 1px solid black; */
     margin-left: 100px;
     margin-top: 70px;
 }
@@ -148,7 +150,8 @@ body {
 }
 
 .here_are_your_reservation {
-    margin-left: 102px;
+    margin-left: 82px;
+    margin-top: 100px;
     font-family: Verdana, Geneva, Arial, sans-serif;
     font-size: 18px;
 }
@@ -188,7 +191,7 @@ body {
 .table-container {
   max-width: 880px;
   max-height: 473px;
-  margin-left: 100px;
+  margin-left: 80px;
   background: #f7f7f7;
   border-radius: 8px;
   overflow: hidden;
