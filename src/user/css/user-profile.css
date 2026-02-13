@@ -116,8 +116,12 @@ body {
     cursor: pointer;
 }
 
+.delete-text{
+  color: red
+}
+
 .edit_button_img {
-    max-width: 100%;
+    max-width: 50%;
     height: auto; 
     display: block; 
 }
