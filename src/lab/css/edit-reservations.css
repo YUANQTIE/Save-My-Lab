@@ -206,10 +206,6 @@ h2 {
   background: #ffeaea;
 }
 
-.time-block.invalid select {
-  border-color: #ff4d4d;
-}
-
 /* CONFIRM BUTTON */
 .confirm-button {
   padding: 14px;

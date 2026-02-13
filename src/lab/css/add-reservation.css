@@ -205,11 +205,6 @@ h2 {
   color: #222;
 }
 
-.time-block.invalid {
-  border: 2px solid #ff4d4d;
-  background: #ffeaea;
-}
-
 .time-block.invalid select {
   border-color: #ff4d4d;
 }
