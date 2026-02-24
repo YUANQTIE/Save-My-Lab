@@ -20,3 +20,10 @@ npm install express express-fileupload hbs mongodb mongoose
 node index.js
 ```
 
+## 4. Check the Website
+
+```bash
+Go to a browser and input localhost:3000. Enter.
+```
+
+
