@@ -11,7 +11,7 @@ cd Save-My-Lab
 ## 2. Install Dependencies
 
 ```bash
-npm install express express-fileupload hbs mongodb mongoose dotenv
+npm install express express-fileupload hbs mongodb mongoose
 ```
 
 ## 3. Run
