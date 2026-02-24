@@ -13,3 +13,10 @@ cd Save-My-Lab
 ```bash
 npm install express express-fileupload hbs mongodb mongoose
 ```
+
+## 3. Run
+
+```bash
+node index.js
+```
+
