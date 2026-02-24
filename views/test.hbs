@@ -1,0 +1,18 @@
+<html>
+  <head>
+    <title>Sample DB Page</title>
+  </head>
+
+  <body>
+    {{#each users}}
+      ID: {{this._id}} <br>
+      email: {{this.email}} <br>
+      username: {{this.username}} <br>
+      bio: {{this.bio}} <br>
+      date_created: {{this.date_created}} <br>
+      profile_picture:
+      <img src="{{this.profile_picture}}" width="120" height="120">
+      <br>
+    {{/each}}
+  </body>
+</html>

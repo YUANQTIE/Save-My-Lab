@@ -1,0 +1,18 @@
+[{
+  "_id": {
+    "$oid": "699dbe042b273d08e126b620"
+  },
+  "creation_timestamp": {
+    "$date": "2026-02-24T14:00:00.000Z"
+  },
+  "reservation_start_timestamp": {
+    "$date": "2026-02-25T08:00:00.000Z"
+  },
+  "reservation_end_timestamp": {
+    "$date": "2026-02-25T12:00:00.000Z"
+  },
+  "seats": [
+    "699d91decd0ff369208f612b",
+    "699d91decd0ff369208f612c"
+  ]
+}]

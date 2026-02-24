@@ -1,0 +1,70 @@
+[{
+  "_id": {
+    "$oid": "699d7c3d3232deb9582da6fd"
+  },
+  "email": "yuan_miguel_panlilio@dlsu.edu.ph",
+  "username": "bH0szcz yu4n",
+  "bio": "SHATTERING LIKE GLASS ITS BREAKING UP MY HEARTT",
+  "date_created": {
+    "$date": "2026-02-24T00:00:00.000Z"
+  },
+  "password": "PASSW0RD",
+  "profile_picture": "/images/blank_picture.png",
+  "last_login": 2
+},
+{
+  "_id": {
+    "$oid": "699d7c3d3232deb9582da6fe"
+  },
+  "email": "princess_ayesa_tullao@dlsu.edu.ph",
+  "username": "welcome2dtq",
+  "bio": "SHATTERING LIKE GLASS ITS BREAKING UP MY HEARTT",
+  "date_created": {
+    "$date": "2026-02-24T00:00:00.000Z"
+  },
+  "password": "PASSW0RD",
+  "profile_picture": "/images/blank_picture.png",
+  "last_login": 2
+},
+{
+  "_id": {
+    "$oid": "699d7cfc3232deb9582da700"
+  },
+  "email": "nigel_henry_so@dlsu.edu.ph",
+  "username": "nig3l<3k3@na",
+  "bio": "to live and to love",
+  "date_created": {
+    "$date": "2025-12-02T16:00:00.000Z"
+  },
+  "password": "passs",
+  "profile_picture": "/images/blank_picture.png",
+  "last_login": 2
+},
+{
+  "_id": {
+    "$oid": "699d7cfc3232deb9582da701"
+  },
+  "email": "merry_ann_ong@dlsu.edu.ph",
+  "username": "merry",
+  "bio": "to live and to love",
+  "date_created": {
+    "$date": "2025-12-04T16:00:00.000Z"
+  },
+  "password": "passs",
+  "profile_picture": "/images/blank_picture.png",
+  "last_login": 16
+},
+{
+  "_id": {
+    "$oid": "699d7cfc3232deb9582da702"
+  },
+  "email": "st_la_salle@dlsu.edu.ph",
+  "username": "anim0",
+  "bio": "live jesus in our hearts",
+  "date_created": {
+    "$date": "2025-12-30T00:00:00.000Z"
+  },
+  "password": "passs",
+  "profile_picture": "/images/blank_picture.png",
+  "last_login": 4
+}]

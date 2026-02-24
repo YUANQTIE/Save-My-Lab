@@ -1,0 +1,50 @@
+[{
+  "_id": {
+    "$oid": "699d767d3232deb9582da6e3"
+  },
+  "email": "admin_one@dlsu.edu.ph",
+  "date_created": {
+    "$date": "2026-02-24T00:00:00.000Z"
+  },
+  "password": "admin123"
+},
+{
+  "_id": {
+    "$oid": "699d786f3232deb9582da6e7"
+  },
+  "email": "admin_two@dlsu.edu.ph",
+  "date_created": {
+    "$date": "2026-06-07T00:00:00.000Z"
+  },
+  "password": "admin123"
+},
+{
+  "_id": {
+    "$oid": "699d78bd3232deb9582da6e9"
+  },
+  "email": "admin_three@dlsu.edu.ph",
+  "date_created": {
+    "$date": "2026-02-22T00:00:00.000Z"
+  },
+  "password": "admin123"
+},
+{
+  "_id": {
+    "$oid": "699d78ca3232deb9582da6eb"
+  },
+  "email": "admin_four@dlsu.edu.ph",
+  "date_created": {
+    "$date": "2026-02-20T00:00:00.000Z"
+  },
+  "password": "admin123"
+},
+{
+  "_id": {
+    "$oid": "699d78d83232deb9582da6ed"
+  },
+  "email": "admin_five@dlsu.edu.ph",
+  "date_created": {
+    "$date": "2026-01-24T00:00:00.000Z"
+  },
+  "password": "admin123"
+}]
