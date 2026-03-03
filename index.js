@@ -8,6 +8,13 @@ mongoose.connect('mongodb://localhost/Save-My-Lab')
 const express = require('express')
 const app = new express()
 
+const adminRoutes = require('./database/routes/admin');
+//const brokenRoutes = require('./database/routes/Aroken.js')
+//const reservationRoutes = require('./database/routes/reservation.js')
+//const roomRoutes = require('./database/routes/room.js')
+//const seatRoutes = require('./database/routes/seat.js')
+const userRoutes = require('./database/routes/user');
+
 /* For file uploads */
 const fileUpload = require('express-fileupload')
 
@@ -15,33 +22,20 @@ const fileUpload = require('express-fileupload')
 var hbs = require('hbs')
 app.set('view engine','hbs');
 
-/* Initialize our models */
-const Admin = require("./database/models/Admin")
-const Reservation = require("./database/models/Reservation")
-const Room = require("./database/models/Room")
-const Seat = require("./database/models/Seat")
-const User = require("./database/models/User")
-const Broken = require("./database/models/Broken")
-
 const path = require('path') // our path directory
 
 app.use(express.json()) // use json
+app.use(express.text()) // use json
 app.use(express.urlencoded( {extended: true})); // files consist of more than strings
 app.use(express.static('public')) // we'll add a static directory named "public"
 app.use(fileUpload()) // for fileuploads
 
-app.get('/test', async (req, res) => {
-  try {
-    const users = await User.find({})
-    console.log("Rooms fetched:", users);
-
-    res.render('test', { users });
-
-  } catch (err) {
-    console.error("Error in /test route:", err);
-    res.status(500).send("Something went wrong");
-  }
-});
+app.use('/admin', adminRoutes)
+//app.use('/broken', brokenRoutes)
+//app.use('/reservation', reservationRoutes)
+//app.use('/room', roomRoutes)
+//app.use('/seat', seatRoutes)
+app.use('/users', userRoutes)
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
