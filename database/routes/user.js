@@ -10,10 +10,35 @@ const User = require('../models/User.js'); // Import User model
   Input: Username
  */
 
+router.get('/search', async (req, res) => {
+  try {
+    const username = req.query.username;
+
+    const users = await User.find({
+      username: { $regex: username }
+    });
+
+    res.json(users);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Error');
+  }
+});
+
 /*
   Purpose: Search For Users:
   Description: Gets Username, Bio, Profile Picture, and list of reservations of a user given the clicked id sa search bar
  */
+
+router.get('/search/:id', async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    res.json(user);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Error');
+  }
+});
 
 /* Purpose: General use
   Description: Gets all of the users and their records (no particular arrangement)

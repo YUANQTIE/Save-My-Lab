@@ -4,6 +4,8 @@ const Admin = require('../models/Admin.js'); // Import Admin model
 
 // GET ROUTES 
 
+// pls use the user route for search also its applicable din naman
+
 /* Purpose: General use
   Description: Gets all of the admins and their records
   RETURNS ALL Fields*/
