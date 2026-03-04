@@ -4,6 +4,17 @@ const User = require('../models/User.js'); // Import User model
 
 // GET ROUTES 
 
+/*
+  Purpose: Search For Users
+  Description: Given inputs of characters, this will continuously update the search bar 
+  Input: Username
+ */
+
+/*
+  Purpose: Search For Users:
+  Description: Gets Username, Bio, Profile Picture, and list of reservations of a user given the clicked id sa search bar
+ */
+
 /* Purpose: General use
   Description: Gets all of the users and their records (no particular arrangement)
   RETURNS ALL Fields*/
@@ -121,11 +132,11 @@ router.get('/login-validity', async (req, res) => {
 });
 
 /* Purpose: Login Verification
-   Description: Checks if inputted email has this inputted password
+   Description: Checks if inputted email has this inputted password in User collection
    Accepts: emailInput (str), passwordInput (str)
    Returns Fields: true if yes, false if no
 */
-router.get('/emails/:emailInput/:passwordInput', async (req, res) => {
+router.get('/user/:emailInput/:passwordInput', async (req, res) => {
   try {
     const { emailInput, passwordInput } = req.params;
     const user = await User.findOne({
@@ -162,7 +173,8 @@ router.put('/bio/:id', async (req, res) => {
 
 /*Purpose: Profile Personalization
   Description: Updates the profile picture of the user to a given profile picture
-  Accepts: id (mongoDB id), profile_picture (req from fetch api)
+  Accepts: id (mongoDB id), profile_picture (req from fetch api)\
+  // SHOULD ALSO DELETE THE PROFILE PIC FROM THE DIRECTORY IF THERE IS ONE
 */
 
 router.put("/profile-picture/:id", async (req, res) => {
@@ -221,10 +233,35 @@ router.put('/username/:id', async (req, res) => {
   }
 });
 
+/*Purpose: Forgot Password
+  Description: Updates the password of the user
+  Accepts: id (mongoDB id), password (str: from fetch api (JSON))
+*/
+
+router.put('/forgot-password', async (req, res) => {
+  try {
+    const found = await User.findOne(
+      { email: req.body.email }
+    );
+
+    if (!found) {
+      return res.status(404).send("User not found");
+    }
+
+    const id = found._id
+
+    await User.findByIdAndUpdate(id,
+      { password: req.body.password });
+    res.send("User password updated successfully");
+  } catch (err) {
+    res.status(500).send("Error");
+  }
+});
+
 
 // POST ROUTES
 
-// Purpose: Register
+// Purpose: Register (User)
 // Description: Adds a user 
 // Accepts: email (str), username (str), bio (str), password(str), profile_picture (file)
 
@@ -263,6 +300,7 @@ router.post("/add-user", async (req, res) => {
 
 // Purpose: Account deletion
 // Description: Deletes the user account logged in from the users collection
+// SHOULD ALSO DELETE THE PROFILE PIC FROM THE DIRECTORY IF THERE IS ONE
 
 router.delete("/delete-user/:id", async (req, res) => {
   try {

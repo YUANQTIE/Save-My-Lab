@@ -2,8 +2,7 @@ const mongoose = require('mongoose');
 
 const BrokenSchema = new mongoose.Schema({
     creation_timestamp: { type: Date, required: true },
-    reservation_start_timestamp: { type: Date, required: true },
-    reservation_end_timestamp: { type: Date, required: true },
+    broken_start_timestamp: { type: Date, required: true },
 
     seats: [{
         type: mongoose.Schema.Types.ObjectId,
