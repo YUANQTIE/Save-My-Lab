@@ -7,10 +7,6 @@ const UserSchema = new mongoose.Schema({
     profile_picture: { type: String, required: true, default: "/images/blank_picture.png" },
     date_created: {type: Date, required: true},
     password: {type: String, required: true},
-    reservations: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Reservation"
-    }],
     last_login: {type: Number, required: true, default : 0}
 })
 

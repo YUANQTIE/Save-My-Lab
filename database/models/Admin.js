@@ -4,10 +4,6 @@ const AdminSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     date_created: { type: Date, required: true },
     password: { type: String, required: true },
-    reservations:  [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Reservation"
-    }],
 });
 
 const Admin = mongoose.model("Admin", AdminSchema);

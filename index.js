@@ -42,5 +42,5 @@ app.get('/', (req, res) => {
 });
 
 var server = app.listen(3000, function () {
-    console.log('Node server is running..');
+    console.log('server running');
 });

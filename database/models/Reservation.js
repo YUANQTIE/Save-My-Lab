@@ -5,15 +5,9 @@ const ReservationSchema = new mongoose.Schema({
     reservation_start_timestamp: { type: Date, required: true },
     reservation_end_timestamp: { type: Date, required: true },
 
-    user: {
+    reservedBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
-        required: true
-    },
-
-    room: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Room",
         required: true
     },
 

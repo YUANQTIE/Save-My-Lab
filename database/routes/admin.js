@@ -40,7 +40,7 @@ router.get('/details/:id', async (req, res) => {
    Returns Fields: true if yes, false if no
 */
 
-router.get('/admin/:emailInput/:passwordInput', async (req, res) => {
+router.get('/login/:emailInput/:passwordInput', async (req, res) => {
   try {
     const { emailInput, passwordInput } = req.params;
     const admin = await Admin.findOne({
@@ -62,7 +62,7 @@ router.get('/admin/:emailInput/:passwordInput', async (req, res) => {
 
 router.post("/add-admin", async (req, res) => {
   try {
-    const user = await User.create({
+    const user = await Admin.create({
       email: req.body.email,
       date_created: new Date(Date.now()),
       password: req.body.password,

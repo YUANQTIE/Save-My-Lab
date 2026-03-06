@@ -12,7 +12,7 @@ const Seat = require('../models/Seat.js'); // Import Seat model
 
 router.get('/seat-name/:id', async (req, res) => {
     try{
-        const seat_name = await Seat.findById(req.params.id).select("seat_nam0");
+        const seat_name = await Seat.findById(req.params.id).select("seat_name");
 
         res.send(seat_name);
     }
