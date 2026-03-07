@@ -10,6 +10,6 @@ const UserSchema = new mongoose.Schema({
     last_login: {type: Number, required: true, default : 0}
 })
 
-const User = mongoose.model('User', UserSchema);
+const User = mongoose.model("User", UserSchema);
 
 module.exports = User

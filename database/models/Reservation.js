@@ -7,8 +7,13 @@ const ReservationSchema = new mongoose.Schema({
 
     reservedBy: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        required: true
+        required: true,
+        refPath: "reservedByModel"
+    },
+    
+    reservedByModel: {
+        type: String,
+        enum: ["User", "Admin"]
     },
 
     seats: [{
@@ -16,7 +21,8 @@ const ReservationSchema = new mongoose.Schema({
         ref: "Seat"
     }],
 
-    checked_in: { type: Boolean, default: false }
+    anonymous: { type: Boolean, default: false },
+    checkedIn: { type: Boolean, default: false }
 });
 
 const Reservation = mongoose.model("Reservation", ReservationSchema);

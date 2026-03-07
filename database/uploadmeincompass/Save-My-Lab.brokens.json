@@ -1,18 +1,31 @@
 [{
   "_id": {
-    "$oid": "699dbe042b273d08e126b620"
-  },
-  "creation_timestamp": {
-    "$date": "2026-02-24T14:00:00.000Z"
-  },
-  "reservation_start_timestamp": {
-    "$date": "2026-02-25T08:00:00.000Z"
-  },
-  "reservation_end_timestamp": {
-    "$date": "2026-02-25T12:00:00.000Z"
+    "$oid": "69aa87024fff8cf6f341e7b4"
   },
   "seats": [
-    "699d91decd0ff369208f612b",
-    "699d91decd0ff369208f612c"
-  ]
+    {
+      "$oid": "69abd46aeac7f0a65c49ba57"
+    },
+    {
+      "$oid": "69abd46aeac7f0a65c49ba59"
+    },
+    {
+      "$oid": "69abd46aeac7f0a65c49ba5b"
+    },
+    {
+      "$oid": "69abd46aeac7f0a65c49ba5d"
+    },
+    {
+      "$oid": "69abd46aeac7f0a65c49ba5f"
+    },
+    {
+      "$oid": "69abd46aeac7f0a65c49ba61"
+    }
+  ],
+  "creation_timestamp": {
+    "$date": "2026-03-06T11:00:00.000Z"
+  },
+  "broken_start_timestamp": {
+    "$date": "2026-03-09T18:30:00.000Z"
+  }
 }]

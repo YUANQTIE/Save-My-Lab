@@ -1,12 +1,12 @@
 const mongoose = require('mongoose');
 
 const SeatSchema = new mongoose.Schema({
-    room: {
+    room_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Room",
         required: true
     },
-    seat_number: { type: String, required: true },
+    seat_name: { type: String, required: true },
 });
 
 const Seat = mongoose.model("Seat", SeatSchema);

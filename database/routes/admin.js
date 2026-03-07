@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Admin = require('../models/Admin.js'); // Import Admin model
+const User = require('../models/User.js'); // Import Admin model
 
 // GET ROUTES 
 
@@ -53,6 +54,26 @@ router.get('/login/:emailInput/:passwordInput', async (req, res) => {
     res.status(500).send('Error');
   }
 });
+
+/*
+  Gets all registered users, including students and admins.
+*/
+
+router.get('/all-users', async (req, res) => {
+  try{
+    const students = await User.find().select("email")
+    const admins = await Admin.find().select("email")
+
+    const allUsers = [...new Set([...students,...admins])]; //unionizes all of the seats
+
+    console.log(allUsers)
+
+    res.json(allUsers)
+  }
+  catch (err){
+    res.status(500).send('Error')
+  }
+})
 
 // POST
 

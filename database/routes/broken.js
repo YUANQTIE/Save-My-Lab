@@ -10,45 +10,11 @@ const Broken = require('../models/Broken.js'); // Import Broken model
 */
 
 /* 
-    Purpose: Information Display (For hovering over a blue computer)
-    Description: Get the seat_name, broken_date of a broken computer
-    Returns: seat_names (str in JSON format), room_name (str in JSON format)
+    Purpose: Filtering broken computers (admin view)
+    optional room, building, timestart & timeend)
 */
 
-/*    
-    Purpose: Information Display 
-    Description: Get all of the seat_ids within a room
-*/
 
-/* 
-    Purpose: Information Display 
-    Description: Get all of the seat_ids that are broken within a room given two timestamps
-*/
-
-/* 
-    Purpose: Information Display (Auxiliary)
-    Description: Get the count of broken seats within a room given two timestamps
-*/
-
-/* 
-    Purpose: Information Display 
-    Description: Get all of the seat_ids that are broken within a building given two timestamps
-*/
-
-/* 
-    Purpose: Information Display (Auxiliary)
-    Description: Get the count of broken seats within a building given two timestamps
-*/
-
-/* 
-    Purpose: Information Display 
-    Description: Get all of the seat_ids that are broken within the entire system given two timestamps
-*/
-
-/* 
-    Purpose: Information Display (Auxiliary)
-    Description: Get the count of broken seats within the entire system given two timestamps
-*/
 
 // POST ROUTES
 

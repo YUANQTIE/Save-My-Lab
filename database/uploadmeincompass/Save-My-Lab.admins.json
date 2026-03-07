@@ -47,4 +47,15 @@
     "$date": "2026-01-24T00:00:00.000Z"
   },
   "password": "admin123"
+},
+{
+  "_id": {
+    "$oid": "69aa60db1c7c99dd591e66b4"
+  },
+  "email": "admin_six@dlsu.edu.ph",
+  "date_created": {
+    "$date": "2026-03-06T05:06:35.532Z"
+  },
+  "password": "trlalfd",
+  "__v": 0
 }]
