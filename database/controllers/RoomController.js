@@ -1,5 +1,4 @@
 const express = require('express');
-const router = express.Router();
 const Room = require('../models/Room.js'); // Import Room model
 const Seat = require('../models/Seat.js'); // Import Seat model
 const Broken = require('../models/Broken.js'); // Import Broken model
@@ -12,7 +11,7 @@ const Reservation = require('../models/Reservation.js'); // Import Reservation m
     Description: Get all the fields in the collection
 */
 
-router.get('/all', async (req, res) => {
+exports.getAllRooms = async (req, res) => {
   try {
     const rooms = await Room.find();
     res.json(rooms);
@@ -20,12 +19,12 @@ router.get('/all', async (req, res) => {
     console.error(err.message);
     res.status(500).send('Error');
   }
-});
+};
 
 /* 
     Purpose: Filtering for building
 */
-router.get('/buildings', async (req, res) =>{
+exports.getAllBuildings = async (req, res) =>{
     try{
         const rooms = await Room.distinct("building");
         res.json(rooms);
@@ -33,14 +32,14 @@ router.get('/buildings', async (req, res) =>{
         console.error(err.message);
         res.status(500).send('Error');
     }
-});
+};
 
 
 /* 
     Purpose: Filtering for rooms (add reservation)
     Should require for building
 */
-router.get('/buildingRooms', async (req, res) =>{
+exports.getRoomInBuilding = async (req, res) =>{
     try{
         const rooms = await Room.find( { building : req.query.buildingName }).select("room_name");
         res.json(rooms);
@@ -48,49 +47,77 @@ router.get('/buildingRooms', async (req, res) =>{
         console.error(err.message);
         res.status(500).send('Error');
     }
-});
+};
 
 /* 
     Purpose: Filtering for available seats (add reservation)
     Should require for room name, time_start, and time_end to first appear
 */
 
-router.get('/add-availableSeats', async (req, res) =>{
+exports.getSeatStatus = async (req, res) => {
     try {
         const timeStart = new Date(req.query.timeStart + "Z");
-        const timeEnd = new Date(req.query.timeEnd + "Z"); //real-time querying
+        const timeEnd = new Date(req.query.timeEnd + "Z");
+
+        const room = await Room.findOne({ room_name: req.query.roomName });
+
+        const allSeats = await Seat.find({ room_id: room._id }).sort({ seat_number: 1 });
 
         const reservedSeats = await Reservation.find({
-        reservation_start_timestamp: { $lte: timeEnd }, //gets reservations within the ending time and starting time
-        reservation_end_timestamp: { $gte: timeStart }
+            reservation_start_timestamp: { $lte: timeEnd },
+            reservation_end_timestamp: { $gte: timeStart }
+        })
+        .populate("reservedBy").select("reservedBy reservedByModel seats reservation_start_timestamp reservation_end_timestamp");
+
+        const brokenSeats = await Broken.find({
+            broken_start_timestamp: { $lte: timeEnd }
         }).select("seats");
 
-        const brokenSeats = await Broken.find({ //gets reservations that are greater than or equal the time start
-        broken_start_timestamp: { $gte: timeStart }
-        }).select("seats");
+        const reservedSeatMap = {};  //maps the reserved seats to the owner's email
+        reservedSeats.forEach(resv => {
+            resv.seats.forEach(seatId => {
+                reservedSeatMap[seatId.toString()] = {
+                    email: resv.reservedBy?.email || "secret",
+                    reservationStart: resv.reservation_start_timestamp,
+                    reservationEnd: resv.reservation_end_timestamp
+                };
+            });
+        });
 
-        const reservedSeatIds = reservedSeats.flatMap(doc => doc.seats); //turns the object array of seats into a regular array of seats
-        const brokenSeatIds = brokenSeats.flatMap(doc => doc.seats);
+        const brokenSeatIds = brokenSeats.flatMap(doc => doc.seats.map(s => s.toString()));
 
-        const unavailableSeatIds = [...new Set([...reservedSeatIds,...brokenSeatIds])]; //unionizes all of the seats
-        
-        const room = await Room.findOne({room_name: req.query.roomName});
-        
-        const availableSeats = await Seat.find({room_id: room,_id: { $nin: unavailableSeatIds }});
+        const seatsWithStatus = allSeats.map(seat => {
+            const id = seat._id.toString();
+            let seatData = {
+                _id: seat._id,
+                seat_name: seat.seat_name,
+                status: 'available'
+            };
 
-        res.json(availableSeats);
+            if (brokenSeatIds.includes(id)) {
+                seatData.status = 'broken';
+            } else if (reservedSeatMap[id]) {
+                seatData.status = 'reserved';
+                seatData.reservedBy = reservedSeatMap[id].email; 
+                seatData.reservationStart = reservedSeatMap[id].reservationStart;
+                seatData.reservationEnd = reservedSeatMap[id].reservationEnd;
+            }
+
+            return seatData;
+        });
+
+        res.json(seatsWithStatus);
 
     } catch (err) {
-        console.error(err.message);
+        console.error(err);
         res.status(500).send('Error');
     }
-});
-
+};
 /* 
     Purpose: getting the counts and labels of seats
     Should require for the current room name, time-start, and time end to first appear
 */
-router.get('/add-seatcount', async (req, res) =>{
+exports.getSeatStatusCounts = async (req, res) =>{
     try {
         const timeStart = new Date(req.query.timeStart + "Z");
         const timeEnd = new Date(req.query.timeEnd + "Z"); //real-time querying
@@ -104,6 +131,7 @@ router.get('/add-seatcount', async (req, res) =>{
         broken_start_timestamp: { $gte: timeStart }
         }).select("seats");
 
+        
         const reservedSeatIds = reservedSeats.flatMap(doc => doc.seats); //turns the object array of seats into a regular array of seats
         const brokenSeatIds = brokenSeats.flatMap(doc => doc.seats);
 
@@ -126,7 +154,4 @@ router.get('/add-seatcount', async (req, res) =>{
         console.error(err.message);
         res.status(500).send('Error');
     }
-});
-
-
-module.exports = router;
+};

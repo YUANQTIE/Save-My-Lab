@@ -1,5 +1,4 @@
 const express = require('express');
-const router = express.Router();
 const User = require('../models/User.js'); // Import User model
 
 // GET ROUTES 
@@ -10,7 +9,7 @@ const User = require('../models/User.js'); // Import User model
   Input: Username
  */
 
-router.get('/search', async (req, res) => {
+exports.getRecommendedUsers = async (req, res) => {
   try {
     const username = req.query.username;
 
@@ -23,14 +22,14 @@ router.get('/search', async (req, res) => {
     console.error(err.message);
     res.status(500).send('Error');
   }
-});
+};
 
 /*
   Purpose: Search For Users:
   Description: Gets Username, Bio, Profile Picture, and list of reservations of a user given the clicked id sa search bar
  */
 
-router.get('/search/:id', async (req, res) => {
+exports.getUserById = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
     res.json(user);
@@ -38,13 +37,13 @@ router.get('/search/:id', async (req, res) => {
     console.error(err.message);
     res.status(500).send('Error');
   }
-});
+};
 
 /* Purpose: General use
   Description: Gets all of the users and their records (no particular arrangement)
   RETURNS ALL Fields*/
 
-router.get('/all', async (req, res) => {
+exports.getAllUsers = async (req, res) => {
   try {
     const users = await User.find();
     res.json(users);
@@ -52,14 +51,14 @@ router.get('/all', async (req, res) => {
     console.error(err.message);
     res.status(500).send('Error');
   }
-});
+};
 
 
 // Purpose: Login Verification
 // Description: Gets the users whose last login date was 21 days ago
 // Returns Fields: ID
 
-router.get('/login-validity', async (req, res) => {
+exports.get21DaysUsers = async (req, res) => {
   try {
     const Week3Users = await User.find(
       { last_login : { $gte : 21 }}
@@ -69,14 +68,14 @@ router.get('/login-validity', async (req, res) => {
     console.error(err.message);
     res.status(500).send('Error');
   }
-});
+};
 
 /* Purpose: Login Verification
    Description: Checks if inputted email has this inputted password in User collection
    Accepts: emailInput (str), passwordInput (str)
    Returns Fields: true if yes, false if no
 */
-router.get('/user/:emailInput/:passwordInput', async (req, res) => {
+exports.isUserValid = async (req, res) => {
   try {
     const { emailInput, passwordInput } = req.params;
     const user = await User.findOne({
@@ -88,7 +87,7 @@ router.get('/user/:emailInput/:passwordInput', async (req, res) => {
   } catch (err) {
     res.status(500).send('Error');
   }
-});
+};
 
 // PUT ROUTES 
 
@@ -97,7 +96,7 @@ router.get('/user/:emailInput/:passwordInput', async (req, res) => {
   Accepts: id (mongoDB id), bio (str: from fetch api)
 */
 
-router.put('/bio/:id', async (req, res) => {
+exports.editBiography = async (req, res) => {
   try {
     await User.findByIdAndUpdate(
       req.params.id,
@@ -108,7 +107,7 @@ router.put('/bio/:id', async (req, res) => {
   } catch (err) {
     res.status(500).send("Error");
   }
-});
+};
 
 
 /*Purpose: Profile Personalization
@@ -117,7 +116,7 @@ router.put('/bio/:id', async (req, res) => {
   // SHOULD ALSO DELETE THE PROFILE PIC FROM THE DIRECTORY IF THERE IS ONE
 */
 
-router.put("/profile-picture/:id", async (req, res) => {
+exports.editProfilePicture = async (req, res) => {
   try {
     const file = req.files.profile_picture;
 
@@ -135,14 +134,14 @@ router.put("/profile-picture/:id", async (req, res) => {
     console.error(err);
     res.status(500).send("Error");
   }
-});
+};
 
 /*Purpose: Profile Personalization
   Description: Updates the profile picture of the user to the default
   Accepts: id (mongoDB id)
 */
 
-router.put("/profile-picture-default/:id", async (req, res) => {
+exports.removeProfilePicture = async (req, res) => {
   try {
     await User.findByIdAndUpdate(
       req.params.id,
@@ -153,14 +152,14 @@ router.put("/profile-picture-default/:id", async (req, res) => {
   } catch (err) {
     res.status(500).send("Error");
   }
-});
+};
 
 /*Purpose: Profile Personalization
   Description: Updates the username of the user
   Accepts: id (mongoDB id), username (str: from fetch api (JSON))
 */
 
-router.put('/username/:id', async (req, res) => {
+exports.editUsername = async (req, res) => {
   try {
     await User.findByIdAndUpdate(
       req.params.id,
@@ -171,14 +170,14 @@ router.put('/username/:id', async (req, res) => {
   } catch (err) {
     res.status(500).send("Error");
   }
-});
+};
 
 /*Purpose: Forgot Password
   Description: Updates the password of the user
   Accepts: id (mongoDB id), password (str: from fetch api (JSON))
 */
 
-router.put('/forgot-password', async (req, res) => {
+exports.editPassword = async (req, res) => {
   try {
     const found = await User.findOne(
       { email: req.body.email }
@@ -196,7 +195,7 @@ router.put('/forgot-password', async (req, res) => {
   } catch (err) {
     res.status(500).send("Error");
   }
-});
+};
 
 
 // POST ROUTES
@@ -205,7 +204,7 @@ router.put('/forgot-password', async (req, res) => {
 // Description: Adds a user 
 // Accepts: email (str), username (str), bio (str), password(str), profile_picture (file)
 
-router.post("/add-user", async (req, res) => {
+exports.addUser = async (req, res) => {
   try {
     const file = req.files.profile_picture;
 
@@ -215,7 +214,8 @@ router.post("/add-user", async (req, res) => {
       bio: req.body.bio,
       date_created: new Date(Date.now()),
       password: req.body.password,
-      last_login: 0
+      last_login: 0,
+      id_number: req.body.id_number
     });
 
     const id = user._id
@@ -234,7 +234,7 @@ router.post("/add-user", async (req, res) => {
     console.error(err);
     res.status(500).send("Error");
   }
-});
+};
 
 // DELETE ROUTES
 
@@ -242,7 +242,7 @@ router.post("/add-user", async (req, res) => {
 // Description: Deletes the user account logged in from the users collection
 // SHOULD ALSO DELETE THE PROFILE PIC FROM THE DIRECTORY IF THERE IS ONE
 
-router.delete("/delete-user/:id", async (req, res) => {
+exports.deleteUser = async (req, res) => {
   try {
     await User.findByIdAndDelete(req.params.id);
 
@@ -251,7 +251,4 @@ router.delete("/delete-user/:id", async (req, res) => {
     console.error(err);
     res.status(500).send("Error");
   }
-});
-                         
-
-module.exports = router;
+};

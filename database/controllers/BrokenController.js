@@ -1,6 +1,7 @@
 const express = require('express');
-const router = express.Router();
-const Broken = require('../models/Broken.js'); // Import Broken model
+const Broken = require('../models/Broken.js'); 
+const Seat = require('../models/Seat.js'); 
+const Room = require('../models/Room.js'); 
 
 // GET ROUTES
 
@@ -9,7 +10,7 @@ const Broken = require('../models/Broken.js'); // Import Broken model
     Description: Get all the fields in the collection
 */
 
-router.get('/all', async (req, res) =>{
+exports.getAllBrokens = async (req, res) =>{
     try{
         const brokens = await Broken.find().populate({
             path: 'seats',
@@ -24,14 +25,14 @@ router.get('/all', async (req, res) =>{
         console.error(err);
         res.status(500).send("Error");
     }
-})
+};
 
 /* 
     Purpose: Filtering broken computers (admin view)
     optional room, building, creationTimeStart, creationTimeEnd, timestart & timeend
 */
 
-router.get('/brokenComputers', async (req, res) =>{
+exports.getFilteredBrokens = async (req, res) =>{
     try{
         const roomName = req.query.roomName
         const building = req.query.building
@@ -86,7 +87,7 @@ router.get('/brokenComputers', async (req, res) =>{
         console.error(err);
         res.status(500).send("Error");
     }
-})
+};
 
 
 
@@ -98,7 +99,7 @@ router.get('/brokenComputers', async (req, res) =>{
     Returns: seat_names (str in JSON format), room_name (str in JSON format)
 */
 
-router.post('/addBrokenComputers', async (req, res) =>{
+exports.addBroken = async (req, res) =>{
   try {
     await Broken.create({
       creation_timestamp: new Date(Date.now()),
@@ -111,7 +112,7 @@ router.post('/addBrokenComputers', async (req, res) =>{
     console.error(err);
     res.status(500).send("Error");
   }
-})
+};
 
 // PUT ROUTES
 
@@ -120,7 +121,7 @@ router.post('/addBrokenComputers', async (req, res) =>{
     Description: Edit details any of the details in the document (set creation to now)
 */
 
-router.put('/editBrokenComputers/:id', async (req, res) =>{
+exports.editBroken = async (req, res) =>{
   try {
     await Broken.findByIdAndUpdate( 
         req.params.id,
@@ -136,7 +137,7 @@ router.put('/editBrokenComputers/:id', async (req, res) =>{
     console.error(err);
     res.status(500).send("Error");
   }
-})
+}
 
 // DELETE ROUTES
 
@@ -145,7 +146,7 @@ router.put('/editBrokenComputers/:id', async (req, res) =>{
     Description: Remove a document from broken collection
 */
 
-router.put('/deleteBrokenComputers/:id', async (req, res) =>{
+exports.deleteBroken = async (req, res) =>{
   try {
     await Broken.findByIdAndDelete( req.params.id );
 
@@ -154,7 +155,4 @@ router.put('/deleteBrokenComputers/:id', async (req, res) =>{
     console.error(err);
     res.status(500).send("Error");
   }
-})
-
-
-module.exports = router;
+}

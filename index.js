@@ -8,12 +8,12 @@ mongoose.connect('mongodb://localhost/Save-My-Lab')
 const express = require('express')
 const app = new express()
 
-const adminRoutes = require('./database/routes/admin');
-const brokenRoutes = require('./database/routes/broken.js')
-const reservationRoutes = require('./database/routes/reservation.js')
-const roomRoutes = require('./database/routes/room.js')
-const seatRoutes = require('./database/routes/seat.js')
-const userRoutes = require('./database/routes/user');
+const adminRoutes = require('./database/routes/AdminRoutes');
+const brokenRoutes = require('./database/routes/BrokenRoutes.js');
+const reservationRoutes = require('./database/routes/ReservationRoutes.js')
+const roomRoutes = require('./database/routes/RoomRoutes.js')
+const seatRoutes = require('./database/routes/SeatRoutes.js')
+const userRoutes = require('./database/routes/UserRoutes.js');
 
 /* For file uploads */
 const fileUpload = require('express-fileupload')
@@ -35,12 +35,12 @@ app.use('/broken', brokenRoutes)
 app.use('/reservation', reservationRoutes)
 app.use('/room', roomRoutes)
 app.use('/seat', seatRoutes)
-app.use('/users', userRoutes)
+app.use('/user', userRoutes)
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-var server = app.listen(3000, function () {
+const server = app.listen(3000, function () {
     console.log('server running');
 });

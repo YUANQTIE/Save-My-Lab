@@ -7,7 +7,8 @@ const UserSchema = new mongoose.Schema({
     profile_picture: { type: String, required: true, default: "/images/blank_picture.png" },
     date_created: {type: Date, required: true},
     password: {type: String, required: true},
-    last_login: {type: Number, required: true, default : 0}
+    last_login: {type: Number, required: true, default : 0},
+    id_number: {type: Number, required: true, unique: true}
 })
 
 const User = mongoose.model("User", UserSchema);

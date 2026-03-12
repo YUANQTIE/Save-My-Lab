@@ -1,5 +1,4 @@
 const express = require('express');
-const router = express.Router();
 const Admin = require('../models/Admin.js'); // Import Admin model
 const User = require('../models/User.js'); // Import Admin model
 
@@ -11,7 +10,7 @@ const User = require('../models/User.js'); // Import Admin model
   Description: Gets all of the admins and their records
   RETURNS ALL Fields*/
 
-router.get('/all', async (req, res) => {
+exports.getAllAdmins = async (req, res) => {
   try {
     const admins = await Admin.find();
     res.json(admins);
@@ -19,13 +18,13 @@ router.get('/all', async (req, res) => {
     console.error(err.message);
     res.status(500).send('Error');
   }
-});
+};
 
 /* Purpose: Profile Use
   Description: Gets the field values of a specific value
   RETURNS ALL Fields*/
 
-router.get('/details/:id', async (req, res) => {
+exports.getAdminFields = async (req, res) => {
   try {
     const admins = await Admin.findById(req.params.id);
     res.json(admins);
@@ -33,7 +32,7 @@ router.get('/details/:id', async (req, res) => {
     console.error(err.message);
     res.status(500).send('Error');
   }
-});
+};
 
 /* Purpose: Login Verification
    Description: Checks if inputted email has this inputted password in Admin collection
@@ -41,7 +40,7 @@ router.get('/details/:id', async (req, res) => {
    Returns Fields: true if yes, false if no
 */
 
-router.get('/login/:emailInput/:passwordInput', async (req, res) => {
+exports.isAdminValid =  async (req, res) => {
   try {
     const { emailInput, passwordInput } = req.params;
     const admin = await Admin.findOne({
@@ -53,18 +52,18 @@ router.get('/login/:emailInput/:passwordInput', async (req, res) => {
   } catch (err) {
     res.status(500).send('Error');
   }
-});
+};
 
 /*
   Gets all registered users, including students and admins.
 */
 
-router.get('/all-users', async (req, res) => {
+exports.getAllAccounts = async (req, res) => {
   try{
     const students = await User.find().select("email")
     const admins = await Admin.find().select("email")
 
-    const allUsers = [...new Set([...students,...admins])]; //unionizes all of the seats
+    const allUsers = [...new Set([...students,...admins])]; //unionizes all of the accounts
 
     console.log(allUsers)
 
@@ -73,7 +72,7 @@ router.get('/all-users', async (req, res) => {
   catch (err){
     res.status(500).send('Error')
   }
-})
+};
 
 // POST
 
@@ -81,7 +80,7 @@ router.get('/all-users', async (req, res) => {
 // Description: Adds an admin account
 // Accepts: email (str), password(str)
 
-router.post("/add-admin", async (req, res) => {
+exports.addAdmin = async (req, res) => {
   try {
     const user = await Admin.create({
       email: req.body.email,
@@ -94,10 +93,4 @@ router.post("/add-admin", async (req, res) => {
     console.error(err);
     res.status(500).send("Error");
   }
-});
-
-// DELETE
-// no delete
-
-
-module.exports = router;
+};

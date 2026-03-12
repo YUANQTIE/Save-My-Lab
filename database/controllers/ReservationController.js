@@ -1,5 +1,4 @@
 const express = require('express');
-const router = express.Router();
 const Reservation = require('../models/Reservation.js'); // Import Reservation model
 const Seat = require('../models/Seat.js');
 const Room = require('../models/Room.js');
@@ -13,7 +12,7 @@ const Admin = require('../models/Admin.js');
     Description: Get all the fields in the collection (populate seats)
 */
 
-router.get('/all', async (req, res) =>{
+exports.getAllReservations = async (req, res) =>{
     try{
         const reservations = await Reservation.find() //joins everything
         .populate({
@@ -42,13 +41,13 @@ router.get('/all', async (req, res) =>{
         console.error(err.message);
         res.status(500).send('Error');
     }
-});
+};
 /* 
     Purpose: Filtering for showing profile and for user search 
     Should require user (optional filters creationTimeStart, creationTimeEnd, optional room, building, reservationTimeStart & reservationTimeEnd)
 */
 
-router.get('/userReservationView/:id', async (req, res) =>{
+exports.getUserReservations = async (req, res) =>{
     try{
         const creationTimeStart = req.query.creationTimeStart;
         const creationTimeEnd = req.query.creationTimeEnd;
@@ -104,7 +103,6 @@ router.get('/userReservationView/:id', async (req, res) =>{
             creation_timestamp: reserve.creation_timestamp,
             reservation_start_timestamp: reserve.reservation_start_timestamp,
             reservation_end_timestamp: reserve.reservation_end_timestamp,
-            reservedBy: reserve.reservedBy,
             checkedIn: reserve.checkedIn,
             room_name: reserve.seats[0].room_id.room_name,
             building: reserve.seats[0].room_id.building,
@@ -118,14 +116,14 @@ router.get('/userReservationView/:id', async (req, res) =>{
         console.error(err.message);
         res.status(500).send('Error');
     }
-})
+};
 
 /* 
     Purpose: Filtering for all reservations (admin view)
     optional filtering with user, room, building, timestart and timend, creation_date
 */
 
-router.get('/adminReservationView', async (req, res) =>{
+exports.getFilteredReservations = async (req, res) =>{
     try{
         const reservedBy = req.query.reservedBy; //this is an email
         const creationTimeStart = req.query.creationTimeStart;
@@ -135,8 +133,6 @@ router.get('/adminReservationView', async (req, res) =>{
         const reservationTimeStart = req.query.reservationTimeStart;
         const reservationTimeEnd = req.query.reservationTimeEnd;
         const seatCount = req.query.seatCount;
-
-        const test = await Reservation.find().select('reservedBy reservedByModel');
 
         let firstStage = {}; //filters by username
 
@@ -204,7 +200,32 @@ router.get('/adminReservationView', async (req, res) =>{
         console.error(err.message);
         res.status(500).send('Error');
     }
-})
+};
+
+exports.isReservationDeletable = async (req, res) => {
+    try {
+        const reservation = await Reservation.findById(req.params.id).select("checkedIn reservation_start_timestamp");
+
+        if (reservation.checkedIn) {
+            return res.json(false);
+        }
+        const now = new Date();
+        const reservationStart = new Date(reservation.reservation_start_timestamp);
+
+        const diffMinutes = now - reservationStart;
+        const tenMinutes = 10 * 60 * 1000; //ts in milliseconds
+
+        if (diffMinutes <= tenMinutes) {
+            return res.json(true );
+        } else {
+            return res.json(false);
+        }
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error");
+    }
+};
 
 // POST ROUTES
 
@@ -213,7 +234,7 @@ router.get('/adminReservationView', async (req, res) =>{
     Description: Adds a "Reservation" document to the collection
 */
 
-router.post('/admin-add-reservation/:adminId', async (req, res) =>{
+exports.addAdminReservation = async (req, res) =>{
   try {
     await Reservation.create({
       creation_timestamp: new Date(Date.now()),
@@ -229,13 +250,13 @@ router.post('/admin-add-reservation/:adminId', async (req, res) =>{
     console.error(err);
     res.status(500).send("Error");
   }
-})
+};
 /* 
     Purpose: Add Reservation (for student)
     Description: Adds a "Reservation" document to the collection
 */
 
-router.post('/user-add-reservation/:userId', async (req, res) =>{
+exports.addUserReservation = async (req, res) =>{
   try {
     await Reservation.create({
       creation_timestamp: new Date(Date.now()),
@@ -252,7 +273,7 @@ router.post('/user-add-reservation/:userId', async (req, res) =>{
     console.error(err);
     res.status(500).send("Error");
   }
-})
+};
 
 // PUT ROUTES
 /* 
@@ -260,7 +281,7 @@ router.post('/user-add-reservation/:userId', async (req, res) =>{
     Description: Edit any of the details in the document (set creation to now)
 */
 
-router.put('/user-edit-reservation/:reservationId', async (req, res) =>{
+exports.editUserReservation = async (req, res) =>{
   try {
 
     await Reservation.findByIdAndUpdate(
@@ -280,14 +301,14 @@ router.put('/user-edit-reservation/:reservationId', async (req, res) =>{
     console.error(err);
     res.status(500).send("Error");
   }
-});
+};
 
 /* 
     Purpose: Edit Computer Reservation (coerces creator to be the admin)
     Description: Edit any of the details in the document (set creation to now)
 */
 
-router.put('/:adminId/admin-edit-reservation/:reservationId', async (req, res) =>{
+exports.editAdminReservation = async (req, res) =>{
   try {
 
     await Reservation.findByIdAndUpdate(
@@ -308,7 +329,7 @@ router.put('/:adminId/admin-edit-reservation/:reservationId', async (req, res) =
     console.error(err);
     res.status(500).send("Error");
   }
-});
+};
 
 // DELETE ROUTES
 
@@ -318,7 +339,7 @@ router.put('/:adminId/admin-edit-reservation/:reservationId', async (req, res) =
     ADMIN ONLY!!
 */
 
-router.delete('/deleteReservation/:reservationId', async (req, res) =>{
+exports.deleteReservation = async (req, res) =>{
     try {
     await Reservation.findByIdAndDelete(req.params.reservationId);
 
@@ -328,6 +349,4 @@ router.delete('/deleteReservation/:reservationId', async (req, res) =>{
     console.error(err);
     res.status(500).send("Error");
   }
-})
-
-module.exports = router;
+};
