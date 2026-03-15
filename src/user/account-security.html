@@ -96,18 +96,18 @@
         </div>
 
         <!-- Profile Settings -->
-        <a href="profile-settings.html" class="flex relative mt-10 absolute inset-0 flex items-center justify-center space-x-1 border border border-solid w-[170px] h-[30px] rounded-xl bg-[#a2cbb7] ml-[280px]">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 ">
+        <a href="profile-settings.html" class="flex relative mt-10 absolute inset-0 flex items-center justify-center space-x-1">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
           </svg>
 
-          <span class="text-md font-bold">
+          <span class="text-md">
             Profile Settings
           </span>
         </a>
 
         <!-- Reservations -->
-        <a href="account-reservations.html" class="flex relative mt-4 absolute inset-0 flex items-center justify-center space-x-1 mr-4">
+        <a href="account-reservations.html" class="flex relative mt-5 absolute inset-0 flex items-center justify-center space-x-1 mr-4">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
             <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 2.994v2.25m10.5-2.25v2.25m-14.252 13.5V7.491a2.25 2.25 0 0 1 2.25-2.25h13.5a2.25 2.25 0 0 1 2.25 2.25v11.251m-18 0a2.25 2.25 0 0 0 2.25 2.25h13.5a2.25 2.25 0 0 0 2.25-2.25m-18 0v-7.5a2.25 2.25 0 0 1 2.25-2.25h13.5a2.25 2.25 0 0 1 2.25 2.25v7.5m-6.75-6h2.25m-9 2.25h4.5m.002-2.25h.005v.006H12v-.006Zm-.001 4.5h.006v.006h-.006v-.005Zm-2.25.001h.005v.006H9.75v-.006Zm-2.25 0h.005v.005h-.006v-.005Zm6.75-2.247h.005v.005h-.005v-.005Zm0 2.247h.006v.006h-.006v-.006Zm2.25-2.248h.006V15H16.5v-.005Z" />
           </svg>
@@ -118,13 +118,24 @@
         </a>
 
         <!-- Account Security -->
-        <a href="account-security.html" class="flex relative mt-5 absolute inset-0 flex items-center justify-center space-x-1 ml-3">
+        <a href="account-security.html" class="flex relative mt-4 absolute inset-0 flex items-center justify-center space-x-1 border border border-solid w-[180px] h-[30px] rounded-xl bg-[#a2cbb7] ml-[280px]">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
             <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
           </svg>
 
-          <span class="text-md">
+          <span class="text-md font-bold">
             Account Security
+          </span>
+        </a>
+
+        <!-- Delete Account -->
+        <a href="" class="flex relative mt-5 absolute inset-0 flex items-center justify-center space-x-1">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="fill-red-400 size-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+          </svg>
+
+          <span class="text-md text-red-400">
+            Delete Account
           </span>
         </a>
       </div>
@@ -132,37 +143,42 @@
       <!-- Right Side -->
       <div class="flex flex-col w-1/2">
         <span class="mt-10 text-2xl font-bold">
-          Personal Information
+          Account Security
         </span>
 
-        <!-- Username Input -->
+        <!-- Currrent Password -->
         <span class="mt-3 text-xl">
-          Username
+          Current Passoword
         </span>
 
         <div class="mt-2 w-[300px]">
           <div class="flex items-center rounded-md bg-white pl-1 outline outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-indigo-600">
-              <input id="username" type="text" name="username" placeholder="Username" class="rounded-md min-w-0 grow py-1.5 pr-3 pl-2 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6" />
+              <input id="cur_password" type="text" name="cur_password" placeholder="Current Password" class="rounded-md min-w-0 grow py-1.5 pr-3 pl-2 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6" />
           </div>
         </div>
 
-        <!-- Email Input -->
+        <!-- New Password -->
         <span class="mt-5 text-xl">
-          Email
+          New Password
         </span>
 
         <div class="mt-2 w-[300px]">
           <div class="flex items-center rounded-md bg-white pl-1 outline outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-indigo-600">
-              <input id="email" type="text" name="email" placeholder="you@dlsu.edu.ph" class="rounded-md min-w-0 grow py-1.5 pr-3 pl-2 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6" />
+              <input id="new_password" type="text" name="new_password" placeholder="New Password" class="rounded-md min-w-0 grow py-1.5 pr-3 pl-2 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6" />
           </div>
         </div>
 
+        <!-- Confirm Password -->
+        <span class="mt-5 text-xl">
+          Confirm Password
+        </span>
+
+        <div class="mt-2 w-[300px]">
+          <div class="flex items-center rounded-md bg-white pl-1 outline outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-indigo-600">
+              <input id="new_password" type="text" name="new_password" placeholder="New Password" class="rounded-md min-w-0 grow py-1.5 pr-3 pl-2 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6" />
+          </div>
+        </div>
       
-      <!-- Biography Input -->
-      <span class="mt-5 text-xl">
-        Biography
-      </span>
-      <textarea id="message" rows="4" class="mt-2 rounded-md w-[500px] h-[200px] bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block p-2 shadow-xs placeholder:text-body" placeholder="Biography"></textarea>
 
       <!-- Save Changes -->
       <button class="mt-6 w-[120px] h-[40px] rounded-md text-white bg-green-800 transition delay-150 duration-300 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-green-700 ...">
