@@ -1,99 +1,79 @@
-<!DOCTYPE html>
-<html lang="en">
+    <!DOCTYPE html>
+    <html lang="en">
 
-<head>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@latest/dist/full.css" rel="stylesheet">
-    <link rel="icon" type="image/x-icon" href="../../images/favicon.ico">
-    <title>Save.My.Lab</title>
-    <link rel="stylesheet" href="css/index.css">
-</head>
+    <head>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="icon" type="image/x-icon" href="../../images/favicon.ico">
+        <link href="https://cdn.jsdelivr.net/npm/daisyui@latest/dist/full.css" rel="stylesheet">
+        <title>Save.My.Lab</title>
+        <link rel="stylesheet" href="css/forgot.css">
+    </head>
 
-<body class="h-screen flex flex-col">
+    <body class="background h-screen flex flex-col">
+        <!-- HEADER -->
+        <header id="head" class="absolute top-0 left-0 w-full flex justify-between items-center p-6 z-10">
+            <a href="index.html">
+                <img class="w-40 cursor-pointer" src="../../images/white.png" alt="App Logo">
+            </a>
+        </header>
 
-    <!-- HEADER -->
-    <header id="head" class="absolute top-0 left-0 w-full flex justify-between items-center p-6 z-10">
-        <img class="w-40" src="../../images/white.png" alt="App Logo">
-    </header>
-
-    <!-- MAIN -->
-    <main class="background flex-1 flex items-center justify-center">
-
-        <div class="w-[987px] h-[641px] rounded-[90px]flex overflow-hidden shadow-2xl">
-
-            <!-- LEFT IMAGE -->
-            <div class="w-1/2 relative overflow-hidden">
-                <div class="absolute inset-0 bg-[rgba(35,74,21,0.77)]"></div>
-            </div>
-
+        <main class="flex items-center justify-center min-h-screen">
             <!-- LOGIN FORM -->
             <div
-                class="w-1/2 flex flex-col items-center pt-10 px-8 bg-gradient-to-b from-white via-white/70 to-[#265429]/40">
-
-                <img class="w-28 mb-2" src="../../images/dlsupng.png">
-
-                <h2 class="text-4xl font-bold text-[#016938] mb-6">
-                    Welcome
-                </h2>
-
-                <div class="w-full max-w-sm space-y-4">
-
+                class="flex flex-col items-center pt-12 px-12 bg-gradient-to-b from-white via-white/70 to-[#265429]/40 rounded-xl shadow-2xl w-full max-w-xl">
+                <img class="w-32 mb-4" src="../../images/dlsupng.png">
+                <h2 class="text-4xl font-bold text-[#016938] mb-6">Forgot Password?</h2>
+            
+                <div class="w-full space-y-4">
                     <!-- EMAIL -->
                     <div class="form-control">
                         <label class="label">
                             <span class="label-text text-[#016938] font-semibold">Email</span>
                         </label>
-
-                        <input type="email" placeholder="Enter your email" class="input input-bordered w-full bg-[#FAFAFA] placeholder:text-[#D9D9D9]
-focus:ring-2 focus:ring-[#265429]">
+                        <input type="email" placeholder="Enter your email"
+                            class="input input-bordered w-full bg-[#FAFAFA] placeholder:text-[#D9D9D9] focus:ring-2 focus:ring-[#265429]">
                     </div>
-                    <!-- PASSWORD -->
+            
+                    <!-- NEW PASSWORD -->
                     <div class="form-control">
                         <label class="label">
-                            <span class="label-text text-[#016938] font-semibold">Password</span>
+                            <span class="label-text text-[#016938] font-semibold">New Password</span>
                         </label>
-
-                        <input type="password" placeholder="Enter your password" class="input input-bordered w-full bg-[#FAFAFA] placeholder:text-[#D9D9D9]
-focus:ring-2 focus:ring-[#265429]">
+                        <input type="password" placeholder="Enter new password"
+                            class="input input-bordered w-full bg-[#FAFAFA] placeholder:text-[#D9D9D9] focus:ring-2 focus:ring-[#265429]">
                     </div>
-
+            
+                    <!-- RE-ENTER NEW PASSWORD -->
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text text-[#016938] font-semibold">Re-enter New Password</span>
+                        </label>
+                        <input type="password" placeholder="Re-enter new password"
+                            class="input input-bordered w-full bg-[#FAFAFA] placeholder:text-[#D9D9D9] focus:ring-2 focus:ring-[#265429]">
+                    </div>
+            
                     <!-- ACTIONS -->
-                    <div class="flex items-center justify-between pt-2">
-
-                        <label class="flex items-center gap-2 text-sm text-[#016938] cursor-pointer">
-                            <input type="checkbox" class="accent-[#265429]">
-                            Remember me
-                        </label>
-
-                        <button
-                            class="btn btn-sm bg-[#265429] text-white border-none hover:bg-[#1f4320] rounded-full px-6">
-                            Log In
+                    <div class="flex items-center justify-between pt-4">
+                        <button class="btn bg-[#265429] text-white border-none hover:bg-[#1f4320] rounded-full px-8">
+                            Confirm
                         </button>
-
                     </div>
-
-                    <!-- LINKS -->
-                    <div class="flex justify-center gap-6 pt-3 text-sm">
-
-                        <a href="forgot.html" class="text-[#265429] hover:underline">Forgot Password</a>
-                        <a href="register.html" class="text-[#265429] hover:underline">Register</a>
-                        <a href="view-slot-availability.html" class="text-[#265429] hover:underline">View
-                            Availability</a>
-
+            
+                    <!-- FORGOT PASSWORD -->
+                    <div class="text-center pt-4">
+                        <a href="forgot.html" class="text-[#265429] hover:underline text-sm">Forgot Password?</a>
                     </div>
-
                 </div>
             </div>
-        </div>
-    </main>
+        </main>
 
-    <!-- FOOTER -->
-    <footer class="absolute bottom-0 w-full text-center text-white p-4 z-10">
-        Lab Reservation System by Labron James Group
-    </footer>
+        <!-- FOOTER -->
+        <footer class="absolute bottom-0 w-full text-center text-white p-4 z-10">
+            Lab Reservation System by Labron James Group
+        </footer>
 
-    <script src="scripts/index.js"></script>
+        <script src="scripts/index.js"></script>
 
-</body>
+    </body>
 
-</html>
+    </html>
