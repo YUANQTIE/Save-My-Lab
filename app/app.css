@@ -6,8 +6,8 @@
 }
 
 html,
-body {
-  @media (prefers-color-scheme: dark) {
-    color-scheme: dark;
+  body {
+    @media (prefers-color-scheme:light) {
+      color-scheme:light;
+    }
   }
-}

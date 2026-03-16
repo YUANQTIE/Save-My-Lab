@@ -11,7 +11,9 @@ body {
 /* HEADER */
 
 #head {
-  background: #3b7f13;
+  background-image:
+    linear-gradient(rgba(56, 171, 17, 0.256), rgba(56, 171, 17, 0.2)),
+    url("../../../images/dlsubg1.jpg");
   padding: 15px 40px;
   display: flex;
   justify-content: space-between;
@@ -25,7 +27,7 @@ body {
 }
 
 .logo {
-  width: 45px;
+  width: 150px;
 }
 
 .title {

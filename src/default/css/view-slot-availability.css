@@ -5,13 +5,16 @@
 
 body {
   margin: 0;
-  background: #f2f2f2;
+  background:
+    linear-gradient(#f2f2f2,#f2f2f2);
 }
 
 /* HEADER */
 
 #head {
-  background: #3b7f13;
+  background-image:
+      linear-gradient(rgba(56, 171, 17, 0.256), rgba(56, 171, 17, 0.2)),
+      url("../../../images/dlsubg1.jpg");
   padding: 15px 40px;
   display: flex;
   justify-content: space-between;
@@ -25,7 +28,8 @@ body {
 }
 
 .logo {
-  width: 45px;
+  width: 150px;
+  height: auto;
 }
 
 .title {
@@ -85,9 +89,8 @@ h2 {
 
 /* SEATS */
 
-
 .seat {
-  position: absolute;      
+  position: absolute;
   width: 5.3%;
   aspect-ratio: 1 / 1;
   cursor: pointer;
@@ -95,8 +98,8 @@ h2 {
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  opacity: 0.55;                      
-  pointer-events: none;               
+  opacity: 0.55;
+  pointer-events: none;
 }
 
 .seats-enabled .seat {
@@ -242,9 +245,9 @@ select:invalid {
 /* FOOTER */
 
 footer {
-  text-align: right;
-  padding: 10px 30px;
+  background-image:
+  linear-gradient(rgba(56, 171, 17, 0.256), rgba(56, 171, 17, 0.2)),
+  url("../../../images/dlsubg1.jpg");
   color: #307c17;
   font-size: 14px;
-}
-
+}   
