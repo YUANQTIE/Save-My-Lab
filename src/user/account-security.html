@@ -71,15 +71,19 @@
           </div>
         </form>
 
-        <!-- User Profile -->
+        <!-- User Profile Image -->
         <div class="relative">
-          <img class="w-80 h-48 mt-10 ml-52" src="../../images/user.png" alt="User Image">
-          <button class="absolute left-[26rem] top-[13rem]">
+          <img id="profile_image" class="w-[220px] h-48 mt-10 ml-[255px] rounded-[50%]" src="../../images/user.png" alt="User Image">
+        </div>
+
+        <!-- File Input -->
+         <div class="flex flex-col w-[200px] mt-[10px] ml-[270px] absolute top-[351px] left-[146px]">
+          <label for="input_file" class="cursor-pointer">
             <svg class="w-[30px] h-[30px]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
               <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-            </svg>
-          </button>
-        </div>
+            </svg></label> 
+          <input id="input_file" class="hidden cursor-pointer bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full shadow-xs placeholder:text-body" id="file_input" type="file" accept = "image/jpeg, image/jpg, image/png">
+         </div>
 
         <!-- Username -->
         <div class="ml-2 mt-10 relative h-auto w-auto bg-gray-200">
@@ -153,7 +157,7 @@
         </span>
 
         <div class="mt-2 w-[300px]">
-          <div class="flex items-center rounded-md bg-white pl-1 outline outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-indigo-600">
+          <div id="cur_password_border" class="flex items-center rounded-md bg-white pl-1 outline outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-green-600">
               <input id="cur_password" type="text" name="cur_password" placeholder="Current Password" class="rounded-md min-w-0 grow py-1.5 pr-3 pl-2 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6" />
           </div>
         </div>
@@ -164,7 +168,7 @@
         </span>
 
         <div class="mt-2 w-[300px]">
-          <div class="flex items-center rounded-md bg-white pl-1 outline outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-indigo-600">
+          <div id ="new_password_border" class="flex items-center rounded-md bg-white pl-1 outline outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-green-600">
               <input id="new_password" type="text" name="new_password" placeholder="New Password" class="rounded-md min-w-0 grow py-1.5 pr-3 pl-2 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6" />
           </div>
         </div>
@@ -175,20 +179,30 @@
         </span>
 
         <div class="mt-2 w-[300px]">
-          <div class="flex items-center rounded-md bg-white pl-1 outline outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-indigo-600">
-              <input id="new_password" type="text" name="new_password" placeholder="New Password" class="rounded-md min-w-0 grow py-1.5 pr-3 pl-2 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6" />
+          <div id="confirm_password_border" class="flex items-center rounded-md bg-white pl-1 outline outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-green-600">
+              <input id="confirm_password" type="text" name="new_password" placeholder="New Password" class="rounded-md min-w-0 grow py-1.5 pr-3 pl-2 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6" />
           </div>
         </div>
       
+      <!-- Error -->
+      <div id ="error" class="hidden mt-3 w-[370px] h-[40px] bg-red-100 border border-red-400 text-red-700 px-[10px] py-[5px] rounded relative">
+        <strong id="error_header" class="text-xs font-bold">Error!</strong>
+        <span id="error_text" class="text-xs block sm:inline"></span>
+        <span id="error_button" class="absolute px-[10px] py-[4px]">
+          <svg class="fill-current h-[20px] w-[20px] text-red-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/></svg>
+        </span>
+      </div>
 
       <!-- Save Changes -->
-      <button class="mt-6 w-[120px] h-[40px] rounded-md text-white bg-green-800 transition delay-150 duration-300 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-green-700 ...">
+      <button id="save_changes" class="mt-4 w-[120px] h-[40px] rounded-md text-white bg-green-800 transition delay-150 duration-300 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-green-700 ...">
         Save Changes
       </button>
 
       </div>
 
     </div>
+
+    <script src="./scripts/account-security.js"></script>
 
   </body>
 </html>
