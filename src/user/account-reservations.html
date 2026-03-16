@@ -3,54 +3,55 @@
   <head>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@latest/dist/full.css" rel="stylesheet">
+    <link href="../default/css/index.css" rel="stylesheet">
     <title>save-my-lab</title>
   </head>
   <body class="">
     <!-- Navbar -->
-    <nav class="bg-gray-100">
-      <div class="max-w-8xl mx-auto">
+    <nav class="navbar h-[70px]">
+      <div class="max-w-8xl">
         <div class="flex justify-between">
-          <div class="flex space-x-4">
+          <div class="flex space-x-4 h-[80px]">
             <!-- logo -->
-            <div>
-              <img class="w-20 ml-2" src="../../images/green.png" alt="App Logo">
+            <div class="flex items-center">
+              <img class="w-[90px] h-[60px] ml-4" src="../../images/white.png" alt="App Logo">
             </div>
             <!-- primary nav -->
             <div class="flex items-center space-x-5 text-gray-700">
               <a href="" class="flex py-4 px-4">
-                <svg class="w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                <svg class="w-5 dark:text-gray-100" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                   <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
                 </svg>
 
-                <span class="ml-1 font-bold">Home</span>
+                <span class="ml-1 font-bold text-white">Home</span>
               </a>
 
               <a href="" class="flex py-4 px-4">
-                <svg class="w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                <svg class="w-5 dark:text-gray-100" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
                 </svg>
 
-                <span class="ml-1 font-bold">Profile</span>
+                <span class="ml-1 font-bold text-white">Profile</span>
               </a>
 
               <a href="" class="flex py-4 px-4">
-                <svg class="w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                <svg class="w-5 dark:text-gray-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
                   <path d="M12.75 12.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM7.5 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM8.25 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM9.75 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM10.5 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM12.75 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM14.25 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM15 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM16.5 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM15 12.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM16.5 13.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" />
                   <path fill-rule="evenodd" d="M6.75 2.25A.75.75 0 0 1 7.5 3v1.5h9V3A.75.75 0 0 1 18 3v1.5h.75a3 3 0 0 1 3 3v11.25a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3V7.5a3 3 0 0 1 3-3H6V3a.75.75 0 0 1 .75-.75Zm13.5 9a1.5 1.5 0 0 0-1.5-1.5H5.25a1.5 1.5 0 0 0-1.5 1.5v7.5a1.5 1.5 0 0 0 1.5 1.5h13.5a1.5 1.5 0 0 0 1.5-1.5v-7.5Z" clip-rule="evenodd" />
                 </svg>
   
-                <span class="ml-1 font-bold">Reserve</span>
+                <span class="ml-1 font-bold text-white">Reserve</span>
               </a>
             </div>
           </div>
           <!-- secondary nav -->
-          <div class="flex items-center space-x-5 text-gray-700">
-            <a href="" class="flex mr-6">
-              <svg class="w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+          <div class="flex items-center space-x-5 text-gray-700 absolute top-[25px] right-[10px]">
+            <a href="../default/index.html" class="flex mr-6">
+              <svg class="w-5 dark:text-gray-100" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15" />
               </svg>
 
-              <span class="font-bold">Logout</span>
+              <span class="font-bold text-white">Logout</span>
             </a>
           </div>
         </div>
@@ -71,32 +72,36 @@
           </div>
         </form>
 
-        <!-- User Profile -->
+        <!-- User Profile Image -->
         <div class="relative">
-          <img class="w-80 h-48 mt-10 ml-52" src="../../images/user.png" alt="User Image">
-          <button class="absolute left-[26rem] top-[13rem]">
-            <svg class="w-[30px] h-[30px]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-              <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-            </svg>
-          </button>
+          <img id="profile_image" class="w-[220px] h-48 mt-10 ml-[255px] rounded-[50%]" src="../../images/user.png" alt="User Image">
         </div>
 
+        <!-- File Input -->
+         <div class="flex flex-col w-[200px] mt-[10px] ml-[270px] absolute top-[351px] left-[146px]">
+          <label for="input_file" class="cursor-pointer">
+            <svg class="w-[30px] h-[30px]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+            </svg></label> 
+          <input id="input_file" class="hidden cursor-pointer bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full shadow-xs placeholder:text-body" id="file_input" type="file" accept = "image/jpeg, image/jpg, image/png">
+         </div>
+
         <!-- Username -->
-        <div class="ml-[200px] mt-10 relative h-auto w-auto bg-gray-200">
+        <div class="ml-[253px] mt-10 relative h-auto w-auto bg-gray-200">
           <span class="font-bold absolute inset-0 flex items-center justify-center text-2xl">
             Username
           </span>
         </div>
 
         <!-- Title -->
-        <div class="ml-[200px] mt-8 relative h-auto w-auto bg-gray-200">
+        <div class="ml-[253px] mt-8 relative h-auto w-auto bg-gray-200">
           <span class="absolute inset-0 flex items-center justify-center text-md">
             Student
           </span>
         </div>
 
         <!-- Profile Settings -->
-        <a href="profile-settings.html" class="flex relative mt-10 ml-[190px] absolute inset-0 flex items-center justify-center space-x-1">
+        <a href="profile-settings.html" class="flex relative mt-10 ml-[243px] absolute inset-0 flex items-center justify-center space-x-1">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 ">
             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
           </svg>
@@ -107,10 +112,12 @@
         </a>
 
         <!-- Reservations -->
-        <a href="account-reservations.html" class="flex relative mt-5 absolute inset-0 flex items-center justify-center space-x-1 mr-4 border border border-solid w-[160px] h-[30px] rounded-xl bg-[#a2cbb7] ml-[274px]">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 2.994v2.25m10.5-2.25v2.25m-14.252 13.5V7.491a2.25 2.25 0 0 1 2.25-2.25h13.5a2.25 2.25 0 0 1 2.25 2.25v11.251m-18 0a2.25 2.25 0 0 0 2.25 2.25h13.5a2.25 2.25 0 0 0 2.25-2.25m-18 0v-7.5a2.25 2.25 0 0 1 2.25-2.25h13.5a2.25 2.25 0 0 1 2.25 2.25v7.5m-6.75-6h2.25m-9 2.25h4.5m.002-2.25h.005v.006H12v-.006Zm-.001 4.5h.006v.006h-.006v-.005Zm-2.25.001h.005v.006H9.75v-.006Zm-2.25 0h.005v.005h-.006v-.005Zm6.75-2.247h.005v.005h-.005v-.005Zm0 2.247h.006v.006h-.006v-.006Zm2.25-2.248h.006V15H16.5v-.005Z" />
+        <a href="account-reservations.html" class="flex relative mt-5 absolute inset-0 flex items-center justify-center space-x-1 mr-4 border border border-solid w-[150px] h-[30px] rounded-xl bg-[#a2cbb7] ml-[279px]">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+            <path d="M12 11.993a.75.75 0 0 0-.75.75v.006c0 .414.336.75.75.75h.006a.75.75 0 0 0 .75-.75v-.006a.75.75 0 0 0-.75-.75H12ZM12 16.494a.75.75 0 0 0-.75.75v.005c0 .414.335.75.75.75h.005a.75.75 0 0 0 .75-.75v-.005a.75.75 0 0 0-.75-.75H12ZM8.999 17.244a.75.75 0 0 1 .75-.75h.006a.75.75 0 0 1 .75.75v.006a.75.75 0 0 1-.75.75h-.006a.75.75 0 0 1-.75-.75v-.006ZM7.499 16.494a.75.75 0 0 0-.75.75v.005c0 .414.336.75.75.75h.005a.75.75 0 0 0 .75-.75v-.005a.75.75 0 0 0-.75-.75H7.5ZM13.499 14.997a.75.75 0 0 1 .75-.75h.006a.75.75 0 0 1 .75.75v.005a.75.75 0 0 1-.75.75h-.006a.75.75 0 0 1-.75-.75v-.005ZM14.25 16.494a.75.75 0 0 0-.75.75v.006c0 .414.335.75.75.75h.005a.75.75 0 0 0 .75-.75v-.006a.75.75 0 0 0-.75-.75h-.005ZM15.75 14.995a.75.75 0 0 1 .75-.75h.005a.75.75 0 0 1 .75.75v.006a.75.75 0 0 1-.75.75H16.5a.75.75 0 0 1-.75-.75v-.006ZM13.498 12.743a.75.75 0 0 1 .75-.75h2.25a.75.75 0 1 1 0 1.5h-2.25a.75.75 0 0 1-.75-.75ZM6.748 14.993a.75.75 0 0 1 .75-.75h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1-.75-.75Z" />
+            <path fill-rule="evenodd" d="M18 2.993a.75.75 0 0 0-1.5 0v1.5h-9V2.994a.75.75 0 1 0-1.5 0v1.497h-.752a3 3 0 0 0-3 3v11.252a3 3 0 0 0 3 3h13.5a3 3 0 0 0 3-3V7.492a3 3 0 0 0-3-3H18V2.993ZM3.748 18.743v-7.5a1.5 1.5 0 0 1 1.5-1.5h13.5a1.5 1.5 0 0 1 1.5 1.5v7.5a1.5 1.5 0 0 1-1.5 1.5h-13.5a1.5 1.5 0 0 1-1.5-1.5Z" clip-rule="evenodd" />
           </svg>
+
 
           <span class="text-md font-bold">
             Reservations
@@ -118,7 +125,7 @@
         </a>
 
         <!-- Account Security -->
-        <a href="account-security.html" class="flex relative mt-4 absolute inset-0 flex items-center justify-center space-x-1 ml-[200px]">
+        <a href="account-security.html" class="flex relative mt-4 absolute inset-0 flex items-center justify-center space-x-1 ml-[253px]">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
             <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
           </svg>
@@ -184,6 +191,7 @@
       </div>
 
     </div>
+    <script src="./scripts/account-reservations.js"></script>
 
   </body>
 </html>
