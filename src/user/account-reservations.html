@@ -139,7 +139,7 @@
       <!-- Right Side -->
       <div class="flex ml-[80px] mt-[50px] w-auto">
         <div class="w-full relative overflow-x-auto bg-neutral-primary-soft shadow-xs rounded-base border border-default rounded-lg">
-            <table class="text-sm text-left rtl:text-right text-body w-auto">
+            <table id="table" class="text-sm text-left rtl:text-right text-body w-auto">
                 <thead class="bg-neutral-secondary-soft border-b border-default">
                     <tr>
                         <th scope="col" class="px-6 py-3 font-medium">
@@ -162,7 +162,7 @@
                         </th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="tbody">
                     <tr class="odd:bg-neutral-primary even:bg-neutral-secondary-soft border-b border-default">
                         <th scope="row" class="px-6 py-4 font-medium text-heading whitespace-nowrap">
                             Gokongwei Building
@@ -180,9 +180,32 @@
                             10:30 AM
                         </td>
                         <td class="px-6 py-4 space-x-1.5">
-                            <a href="#" class="font-medium text-fg-brand hover:underline">View</a>
-                            <a href="#" class="font-medium text-fg-brand hover:underline">Edit</a>
-                            <a href="#" class="font-medium text-fg-brand hover:underline">Delete</a>
+                            <a href="#" id="view_button" class="font-medium text-fg-brand hover:underline">View</a>
+                            <a href="#" id="edit_button" class="font-medium text-fg-brand hover:underline">Edit</a>
+                            <a href="#" id="delete_button" class="delete_button text-fg-brand hover:underline">Delete</a>
+                        </td>
+                    </tr>
+
+                    <tr class="odd:bg-neutral-primary even:bg-neutral-secondary-soft border-b border-default">
+                        <th scope="row" class="px-6 py-4 font-medium text-heading whitespace-nowrap">
+                            LS Building
+                        </th>
+                        <td class="px-6 py-4">
+                            LS302
+                        </td>
+                        <td class="px-6 py-4">
+                            March 12, 2026
+                        </td>
+                        <td class="px-6 py-4">
+                            5:00 PM
+                        </td>
+                        <td class="w-[120px] px-6 py-4">
+                            10:30 PM
+                        </td>
+                        <td class="px-6 py-4 space-x-1.5">
+                            <a href="#" id="view_button" class="font-medium text-fg-brand hover:underline">View</a>
+                            <a href="#" id="edit_button" class="font-medium text-fg-brand hover:underline">Edit</a>
+                            <a href="#" id="delete_button" class="delete_button font-medium text-fg-brand hover:underline">Delete</a>
                         </td>
                     </tr>
                 </tbody>
