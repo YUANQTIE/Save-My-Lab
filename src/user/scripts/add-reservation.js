@@ -14,6 +14,7 @@ const brokenText      = document.getElementById("brokenText");
 const confirmModal     = document.getElementById("confirmModal");
 const closeConfirmBtn  = document.querySelector(".close-confirm");
 const confirmOkay      = document.getElementById("confirmOkay");
+const input_fields = document.getElementById("input_fields");
 
 const resVenue = document.getElementById("resVenue");
 const resRoom  = document.getElementById("resRoom");
@@ -259,12 +260,11 @@ function closeConfirmModal() {
 venueSelect.addEventListener("change", () => {
   const venue = venueSelect.value;
 
-  showVenueLayout(venue);
-  populateRoomsForVenue(venue);
-
   roomBox.classList.remove("hidden");
   dateBox.classList.add("hidden");
   timeBox.classList.add("hidden");
+
+  populateRoomsForVenue(venue);
 
   roomSelect.selectedIndex = 0;
   dateInput.value = "";
@@ -288,8 +288,6 @@ roomSelect.addEventListener("change", () => {
   startMinute.value = "";
   endHour.value = "";
   endMinute.value = "";
-
-  applyRoomToVisibleLayout(roomSelect.value);
   setSeatsEnabled(false);
   updateConfirmButton();
 });
@@ -306,13 +304,23 @@ dateInput.addEventListener("change", () => {
   updateConfirmButton();
 });
 
-[startHour, startMinute, endHour, endMinute].forEach(el => {
+[startHour, startMinute, endHour].forEach(el => {
   el.addEventListener("change", () => {
-    const valid = isTimeRangeValid();
-    setSeatsEnabled(valid && getTimeRangeValue() !== "");
     updateConfirmButton();
   });
 });
+
+endMinute.addEventListener("change", () => {
+  const valid = isTimeRangeValid();
+  const venue = venueSelect.value;
+  // Get data from backend regarding seats status
+  showVenueLayout(venue);
+  applyRoomToVisibleLayout(roomSelect.value);
+  setSeatsEnabled(valid && getTimeRangeValue() !== "");
+  updateStatusUI();
+  updateConfirmButton();
+});
+
 
 document.addEventListener("click", (e) => {
   const seat = e.target.closest(".seat");
@@ -361,6 +369,7 @@ confirmBtn.addEventListener("click", () => {
 
 closeConfirmBtn.addEventListener("click", closeConfirmModal);
 
+// Need to send data to backend
 confirmOkay.addEventListener("click", () => {
   window.location.href = "user-profile.html";
   closeConfirmModal();
