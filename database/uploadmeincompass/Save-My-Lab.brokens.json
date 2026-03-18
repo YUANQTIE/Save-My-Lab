@@ -1,0 +1,31 @@
+[{
+  "_id": {
+    "$oid": "69aa87024fff8cf6f341e7b4"
+  },
+  "seats": [
+    {
+      "$oid": "69abd46aeac7f0a65c49ba57"
+    },
+    {
+      "$oid": "69abd46aeac7f0a65c49ba59"
+    },
+    {
+      "$oid": "69abd46aeac7f0a65c49ba5b"
+    },
+    {
+      "$oid": "69abd46aeac7f0a65c49ba5d"
+    },
+    {
+      "$oid": "69abd46aeac7f0a65c49ba5f"
+    },
+    {
+      "$oid": "69abd46aeac7f0a65c49ba61"
+    }
+  ],
+  "creation_timestamp": {
+    "$date": "2026-03-06T11:00:00.000Z"
+  },
+  "broken_start_timestamp": {
+    "$date": "2026-03-09T18:30:00.000Z"
+  }
+}]
