@@ -107,6 +107,23 @@ const roomSeatMap = {
   }
 };
 
+function weekView() {
+  let today = new Date();
+  let nextWk = new Date();
+  nextWk.setDate(today.getDate() + 7);
+  today = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
+  nextWk = `${nextWk.getFullYear()}-${(nextWk.getMonth() + 1).toString().padStart(2, '0')}-${nextWk.getDate().toString().padStart(2, '0')}`;
+
+  console.log(today);
+  console.log(nextWk);
+
+  dateInput.setAttribute('min', today);
+  dateInput.setAttribute('max', nextWk);
+  //dateInput.setAttribute('max', nextWk);
+
+}
+
+
 function timeToMinutes(hourEl, minuteEl) {
   const h = parseInt(hourEl.value, 10);
   const m = parseInt(minuteEl.value, 10);
@@ -282,6 +299,8 @@ venueSelect.addEventListener("change", () => {
 roomSelect.addEventListener("change", () => {
   dateBox.classList.remove("hidden");
   timeBox.classList.add("hidden");
+
+  weekView();
 
   dateInput.value = "";
   startHour.value = "";

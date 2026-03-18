@@ -65,6 +65,26 @@
   <h2>Add Reservations</h2>
 
   <div class="content">
+  <!-- Legend -->
+    <div class="absolute left-[50px] bottom-[90px]">
+      <div class="inline-flex items-center border border-solid px-4 py-2 rounded-2xl border-black">
+        <!-- Reserved -->
+        <img src="../../images/computer-red.svg" class="w-[20px] h-[20px] mr-[5px]">
+        <span class="text-foreground text-red-500">Reserved</span>
+
+        <!-- Broken -->
+        <img src="../../images/computer-blue.svg" class="w-[20px] h-[20px] ml-[40px] mr-[5px]">
+        <span class="text-foreground text-blue-800">Broken</span>
+
+        <!-- Available -->
+        <img src="../../images/computer.svg" class="w-[20px] h-[20px] ml-[40px] mr-[5px]">
+        <span class="text-foreground">Available</span>
+
+        <!-- Selected -->
+        <img src="../../images/computer-green.svg" class="w-[20px] h-[20px] ml-[40px] mr-[5px]">
+        <span class="text-foreground text-green-700">Selected</span>
+      </div>
+    </div>
 
     <div class="layout-panel">
 
@@ -332,9 +352,12 @@
         <div class="seat" style="top:49.65%; left:89.55%;"></div>
       </div>
 
+
     </div>
+    
 
     <div class="controls">
+      <!-- Venue Input -->
       <div class="input-box">
         <select id="venueSelect" required>
           <option value="" disabled selected>Input Venue...</option>
@@ -345,16 +368,19 @@
         </select>
       </div>
 
+      <!-- Room Input -->
       <div class="input-box hidden" id="roomBox">
         <select id="roomSelect">
           <option value="" disabled selected>Input Room...</option>
         </select>
       </div>
 
+      <!-- Date Input -->
       <div class="input-box hidden" id="dateBox">
-        <input id="dateInput" type="date">
+        <input id="dateInput" type="date" min="" max="">
       </div>
 
+      <!-- Time Input -->
       <div class="time-block hidden" id="timeBox">
         <div class="time-row">
           <label class="time-label">Time Start</label>
@@ -412,6 +438,7 @@
         </div>
       </div>
 
+      <!-- Confirm Button -->
       <button id="confirmBtn" class="confirm-button" disabled>CONFIRM</button>
 
       <div id="brokenContainer" class="hidden">
