@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Save.My.Lab</title>
+  <link rel="icon" href="../../images/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="css/homepage2.css">
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@latest/dist/full.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Fade animation for slides */
+    .fade {
+      animation: fade 1s;
+    }
+
+    @keyframes fade {
+      from {
+        opacity: 0.4;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-gray-300">
+
+  <div class="drawer">
+    <input id="my-drawer-1" type="checkbox" class="drawer-toggle" />
+
+    <!-- Page Content -->
+    <div class="drawer-content">
+
+      <!-- Navbar -->
+      <header class="relative">
+        <nav class="flex items-center justify-between px-8 py-4 min-h-[100px] shadow-[0_15px_30px_rgba(0,0,0,0.3)]"
+          style="background-image: linear-gradient(#14532db3, #14532db3), url('../../images/dlsubg1.jpg'); background-size: cover; background-position: center;">
+
+          <!-- Left menu icon -->
+          <label for="my-drawer-1" class="btn btn-square btn-ghost">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+              class="inline-block h-6 w-6 stroke-current text-white">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </label>
+
+
+          <!-- Logo -->
+          <div class="flex-1 flex justify-center lg:justify-start">
+            <img src="../../images/white.png" alt="Save.My.Lab Logo" class="h-16">
+          </div>
+
+
+          <!--Logout-->
+          <a href="../default/index.html" class="flex mr-6">
+            <svg class="w-5 dark:text-gray-100" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+              stroke-width="1.5" stroke="currentColor" class="size-6">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15" />
+            </svg>
+            <span class="font-bold text-white">Logout</span>
+          </a>
+
+          <!-- Right menu icon -->
+          <button class="btn btn-square btn-ghost">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+              class="inline-block h-6 w-6 stroke-current text-white">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z" />
+            </svg>
+          </button>
+        </nav>
+      </header>
+
+      <main class="min-h-screen px-8 py-8 bg-green-900"
+        style="background-image:linear-gradient(rgba(20,83,45,0.8), rgba(20,83,45,0.8)),url('https://www.transparenttextures.com/patterns/cubes.png');">
+        <section class="flex flex-col items-center gap-6">
+
+
+
+          <!-- TOP: Infinite Carousel -->
+          <div class="carousel">
+            <div class="group">
+              <img class="card" src="/images/cplab1.jpg" alt="Lab 1">
+              <img class="card" src="/images/colab2.jpg" alt="Lab 1">
+              <img class="card" src="/images/colab2.jpg" alt="Lab 1">
+            </div>
+            <div class="group">
+              <img class="card" src="/images/cplab1.jpg" alt="Lab 1">
+              <img class="card" src="/images/colab2.jpg" alt="Lab 1">
+              <img class="card" src="/images/colab2.jpg" alt="Lab 1">
+            </div>
+          </div>
+
+          <!-- BOTTOM: Text Content -->
+          <div class="w-[70%] text-center">
+            <h1 class="text-7xl font-bold text-white mb-4">
+              About Save.My.Lab
+            </h1>
+            <p class="text-lg text-white text-justify mb-6">
+              Built by Group Labron James, Save.My.Lab is a dedicated platform designed to ease the reservation of DLSU
+              computer laboratories for both students and lab technicians. We know how stressful it can be to find an
+              available PC when deadlines are tight. By bringing a highly visual, interactive booking system to our labs, we
+              ensure students always have a seat waiting for them, while giving technicians the tools they need to manage room
+              capacities efficiently.
+            </p>
+            <h2 class="text-lg text-white mb-6">
+              Check available computer labs and reserve your seat quickly. Select a building, choose a time slot, and pick an
+              available computer.
+            </h2>
+          </div>
+        </section>
+      </main>
+
+    </div>
+
+    <!-- Sidebar -->
+    <div class="drawer-side">
+      <label for="my-drawer-1" class="drawer-overlay"></label>
+      <ul class="menu bg-base-200 min-h-full w-80 p-4">
+        <li><a>Sidebar Item 1</a></li>
+        <li><a>Sidebar Item 2</a></li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- External JS -->
+  <script src="./scripts/homepage.js"></script>
+  <footer class="absolute bottom-0 w-full text-center text-white p-4 z-10">
+    Lab Reservation System by Labron James Group
+  </footer>
+</body>
+
+</html>
