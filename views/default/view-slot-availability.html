@@ -5,20 +5,38 @@
   <link href="https://cdn.jsdelivr.net/npm/daisyui@latest/dist/full.css" rel="stylesheet">
   <link rel="icon" type="image/x-icon" href="../../images/favicon.ico">
   <title>Save.My.Lab</title>
-  <link rel="stylesheet" href="css/view-slot-availability.css">
+  <link rel="stylesheet" href="../../public/css/default/view-slot-availability.css">
+  <link href="../../public/css/default/index.css" rel="stylesheet">
 </head>
 <body>
 
-<header id="head">
-  <div class="left">
-    <img src="../../images/logo.jpg" class="logo" alt="logo">
-    <span class="title">Save.My.Lab</span>
-  </div>
+<!-- Navbar -->
+    <nav class="navbar h-[70px]">
+      <div class="max-w-8xl">
+        <div class="flex justify-between">
+          <div class="flex space-x-4 h-[80px]">
+            <!-- logo -->
+            <div class="flex items-center">
+              <img class="w-[90px] h-[60px] ml-4" src="../../public/images/white.png" alt="App Logo">
+            </div>
+            <!-- primary nav -->
+            <div class="flex items-center space-x-5 text-gray-700">
+              
+            </div>
+          </div>
+          <!-- secondary nav -->
+          <div class="flex items-center space-x-5 text-gray-700 absolute top-[25px] right-[10px]">
+            <a href="../default/index.html" class="flex mr-6">
+              <svg class="w-5 dark:text-gray-100" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15" />
+              </svg>
 
-  <div class="right">
-    <a href="../default/index.html" class="header-button">RETURN</a>
-  </div>
-</header>
+              <span class="font-bold text-white">Back</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
 
 <div class="page">
   <h2>View Slot Availability</h2>
@@ -29,12 +47,12 @@
 
       <!-- default dlsu pic -->
       <div class="room-wrapper venue-layout" data-venue="">
-        <img src="../../images/dlsu.png" class="room-image">
+        <img src="../../public/images/dlsu.png" class="room-image">
       </div>
 
       <!-- andrew circles-->
       <div class="room-wrapper venue-layout hidden" data-venue="Andrew Building">
-        <img src="../../images/ANDREW.png" class="room-image">
+        <img src="../../public/images/ANDREW.png" class="room-image">
 
         <!-- 1st column -->
         <div class="seat" style="top:32.4%; left:18.2%;"></div>
@@ -91,7 +109,7 @@
 
       <!-- LS CIRCLES-->
       <div class="room-wrapper venue-layout hidden" data-venue="LS Building">
-        <img src="../../images/LS.png" class="room-image">
+        <img src="../../public/images/LS.png" class="room-image">
 
         <!-- 1st column -->
         <div class="seat" style="top:38.9%; left:17.74%;"></div>
@@ -156,7 +174,7 @@
 
       <!-- goks-->
       <div class="room-wrapper venue-layout hidden" data-venue="Gokongwei Building">
-        <img src="../../images/GOKS.png" class="room-image">
+        <img src="../../public/images/GOKS.png" class="room-image">
 
         <!-- 1st column -->
         <div class="seat" style="top:35.8%; left:21.27%;"></div>
@@ -224,7 +242,7 @@
 
       <!-- yuch -->
       <div class="room-wrapper venue-layout hidden" data-venue="Yuchengco Building">
-        <img src="../../images/YUCH.png" class="room-image">
+        <img src="../../public/images/YUCH.png" class="room-image">
 
         <!-- 1st column -->
         <div class="seat" style="top:18.9%; left:19.47%;"></div>
@@ -379,6 +397,6 @@
   Lab Reservation System by Labron James Group
 </footer>
 
-<script src="scripts/view-slot-availability.js"></script>
+<script src="../../public/scripts/default/view-slot-availability.js"></script>
 </body>
 </html>

@@ -91,7 +91,7 @@ h2 {
   width: 5.3%;
   aspect-ratio: 1 / 1;
   cursor: pointer;
-  background-image: url("../../../images/computer.svg");
+  background-image: url("../../images/computer.svg");
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
@@ -105,19 +105,19 @@ h2 {
 }
 
 .seat.blue {
-  background-image: url("../../../images/computer-blue.svg");
+  background-image: url("../../images/computer-blue.svg");
   pointer-events: none;
   cursor: default;
 }
 
 .seat.red {
-  background-image: url("../../../images/computer-red.svg");
+  background-image: url("../../images/computer-red.svg");
   pointer-events: none;
   cursor: default;
 }
 
 .seat.green {
-  background-image: url("../../../images/computer-green.svg");
+  background-image: url("../../images/computer-green.svg");
   pointer-events: auto;
   cursor: pointer;
 }

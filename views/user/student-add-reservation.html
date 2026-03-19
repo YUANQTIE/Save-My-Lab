@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <link rel="icon" type="image/x-icon" href="../../images/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="../../public/images/favicon.ico">
   <title>Save.My.Lab</title>
-  <link rel="stylesheet" href="css/add-reservation.css">
-  <link href="../default/css/index.css" rel="stylesheet">
+  <link rel="stylesheet" href="../../public/css/user/add-reservation.css">
+  <link href="../../public/css/default/index.css" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
@@ -16,7 +16,7 @@
           <div class="flex space-x-4 h-[80px]">
             <!-- logo -->
             <div class="flex items-center">
-              <img class="w-[90px] h-[60px] ml-4" src="../../images/white.png" alt="App Logo">
+              <img class="w-[90px] h-[60px] ml-4" src="../../public/images/white.png" alt="App Logo">
             </div>
             <!-- primary nav -->
             <div class="flex items-center space-x-5 text-gray-700">
@@ -69,19 +69,19 @@
     <div class="absolute left-[50px] bottom-[90px]">
       <div class="inline-flex items-center border border-solid px-4 py-2 rounded-2xl border-black">
         <!-- Reserved -->
-        <img src="../../images/computer-red.svg" class="w-[20px] h-[20px] mr-[5px]">
+        <img src="../../public/images/computer-red.svg" class="w-[20px] h-[20px] mr-[5px]">
         <span class="text-foreground text-red-500">Reserved</span>
 
         <!-- Broken -->
-        <img src="../../images/computer-blue.svg" class="w-[20px] h-[20px] ml-[40px] mr-[5px]">
+        <img src="../../public/images/computer-blue.svg" class="w-[20px] h-[20px] ml-[40px] mr-[5px]">
         <span class="text-foreground text-blue-800">Broken</span>
 
         <!-- Available -->
-        <img src="../../images/computer.svg" class="w-[20px] h-[20px] ml-[40px] mr-[5px]">
+        <img src="../../public/images/computer.svg" class="w-[20px] h-[20px] ml-[40px] mr-[5px]">
         <span class="text-foreground">Available</span>
 
         <!-- Selected -->
-        <img src="../../images/computer-green.svg" class="w-[20px] h-[20px] ml-[40px] mr-[5px]">
+        <img src="../../public/images/computer-green.svg" class="w-[20px] h-[20px] ml-[40px] mr-[5px]">
         <span class="text-foreground text-green-700">Selected</span>
       </div>
     </div>
@@ -90,12 +90,12 @@
 
       <!-- default dlsu pic -->
       <div class="room-wrapper venue-layout" data-venue="">
-        <img src="../../images/dlsu.png" class="room-image">
+        <img src="../../public/images/dlsu.png" class="room-image">
       </div>
 
       <!-- andrew circles-->
       <div class="room-wrapper venue-layout hidden" data-venue="Andrew Building">
-        <img src="../../images/ANDREW.png" class="room-image">
+        <img src="../../public/images/ANDREW.png" class="room-image">
 
         <!-- 1st column -->
         <div class="seat" style="top:32.4%; left:18.2%;"></div>
@@ -152,7 +152,7 @@
 
       <!-- LS CIRCLES-->
       <div class="room-wrapper venue-layout hidden" data-venue="LS Building">
-        <img src="../../images/LS.png" class="room-image">
+        <img src="../../public/images/LS.png" class="room-image">
 
         <!-- 1st column -->
         <div class="seat" style="top:38.9%; left:17.74%;"></div>
@@ -217,7 +217,7 @@
 
       <!-- goks-->
       <div class="room-wrapper venue-layout hidden" data-venue="Gokongwei Building">
-        <img src="../../images/GOKS.png" class="room-image">
+        <img src="../../public/images/GOKS.png" class="room-image">
 
         <!-- 1st column -->
         <div class="seat red" style="top:35.8%; left:21.27%;"></div>
@@ -285,7 +285,7 @@
 
       <!-- yuch -->
       <div class="room-wrapper venue-layout hidden" data-venue="Yuchengco Building">
-        <img src="../../images/YUCH.png" class="room-image">
+        <img src="../../public/images/YUCH.png" class="room-image">
 
         <!-- 1st column -->
         <div class="seat" style="top:18.9%; left:19.47%;"></div>
@@ -483,6 +483,6 @@
   Lab Reservation System by Labron James Group
 </footer>
 
-<script src="./scripts/add-reservation.js"></script>
+<script src="../../public/scripts/user/add-reservation.js"></script>
 </body>
 </html>
