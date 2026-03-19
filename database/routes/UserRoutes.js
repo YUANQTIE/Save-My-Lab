@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require("path");
 const router = express.Router();
 
 const UserController = require('../controllers/UserController');
@@ -56,5 +57,11 @@ router.put('/edit/password', UserController.editPassword);
 //DELETE ROUTES
 //req.params: id
 router.delete("/:id/delete", UserController.deleteUser);
+
+router.get("/landing", (req, res) => {
+    const id = req.query.id;
+
+    res.sendFile(path.join(__dirname, "..", "..", "views", "user", "account-reservations.html"));
+});
 
 module.exports = router

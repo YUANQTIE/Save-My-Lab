@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require("path");
 const router = express.Router();
 
 const AdminController = require("../controllers/AdminController");
@@ -28,5 +29,11 @@ router.get('/:emailInput/:passwordInput', AdminController.isAdminValid);
 //checks if the admin logging in is valid
 //req.body: "email", "password"
 router.post('/add', AdminController.addAdmin);
+
+router.get("/landing", (req, res) => {
+    const id = req.query.id;
+
+    res.sendFile(path.join(__dirname, "..", "..", "views", "lab", "see-reservations.html"));
+});
 
 module.exports = router
