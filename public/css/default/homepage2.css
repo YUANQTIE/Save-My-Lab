@@ -1,0 +1,72 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+.background {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+}
+
+.custom-navbar {
+    background-image:
+        linear-gradient(rgba(5, 77, 26, 0.3), rgba(5, 77, 26, 0.3)),
+        url("../../images/dlsubg1.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 15px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 100px;
+}
+
+.carousel{
+    margin: 40px auto 20px;
+    width:70%;
+    height:30em;
+    display: flex;
+    overflow-x:auto;
+    border-radius: 1em; /* optional: slightly round the carousel itself */
+}
+
+.carousel::-webkit-scrollbar{
+    display:none;
+}
+
+.group{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:1em;
+    animation:scrolling 10s infinite linear;
+    padding-right:1em;
+}
+
+.card{
+    flex: 0 0 40em;
+        height: 30em;
+        border-radius: 1em;
+        overflow: hidden;
+
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        margin: 0 0.5em;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes scrolling {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-100%);
+    }
+}
