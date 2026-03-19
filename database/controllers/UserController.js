@@ -3,6 +3,22 @@ const User = require('../models/User.js'); // Import User model
 
 // GET ROUTES 
 
+exports.getIdGivenEmail = async (req, res) => {
+  try {
+    const email = req.query.email;
+    const user = await User.findOne({ email }).select("_id");
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json(user);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Error');
+  }
+};
+
 /*
   Purpose: Search For Users
   Description: Given inputs of characters, this will continuously update the search bar 
@@ -179,19 +195,29 @@ exports.editUsername = async (req, res) => {
 
 exports.editPassword = async (req, res) => {
   try {
-    const found = await User.findOne(
-      { email: req.body.email }
-    );
+    console.log("im here")
+    const id = req.query.id
+    const containsWhitespace = str => /\s/.test(str);
 
-    if (!found) {
-      return res.status(404).send("User not found");
+    const user = await User.findById(id);
+
+    const pw = req.body.password;
+    if (pw.length < 8){
+      return res.send("Password must have minimum 8 characters")
     }
-
-    const id = found._id
-
+    if (containsWhitespace(pw)){
+      return res.send("Password must not have whitespaces")
+    }
+    if(pw === user.password){
+      return res.send("Password must not be the same from previous password.")
+    }
+    
     await User.findByIdAndUpdate(id,
-      { password: req.body.password });
+      { password: pw });
     res.send("User password updated successfully");
+    
+
+    
   } catch (err) {
     res.status(500).send("Error");
   }

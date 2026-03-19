@@ -29,6 +29,11 @@ router.get('/login-validity', UserController.get21DaysUsers);
 //res.json: true/false
 router.get('/:emailInput/:passwordInput', UserController.isUserValid);
 
+//checks if user can log in
+//req.params: emailInput, passwordInput
+//res.json: true/false
+router.get('/forgot', UserController.getIdGivenEmail);
+
 //POST ROUTES
 //req.files: profile_picture
 //req.body: email, username, bio, password, id_number
@@ -51,7 +56,7 @@ router.put("/:id/edit/profile-picture-default", UserController.removeProfilePict
 //req.body: username
 router.put('/:id/edit/username', UserController.editUsername);
 
-//req.body: email, password
+//req.body: password
 router.put('/edit/password', UserController.editPassword);
 
 //DELETE ROUTES
@@ -61,7 +66,9 @@ router.delete("/:id/delete", UserController.deleteUser);
 router.get("/landing", (req, res) => {
     const id = req.query.id;
 
-    res.sendFile(path.join(__dirname, "..", "..", "views", "user", "account-reservations.html"));
+    res.sendFile(path.join(__dirname, "..", "..", "views", "user", "homepage2.html"));
 });
+
+
 
 module.exports = router

@@ -46,4 +46,40 @@ $(document).ready(function() {
             alert("An error occurred. Check the F12 console.");
         }
     });
+
+    $("#registerBtn").on("click", async function(e) {
+        e.preventDefault();
+
+        try {
+            window.location.href = `/aux/register`
+
+        } catch (err) {
+            console.error("Login Error:", err);
+            alert("An error occurred. Check the F12 console.");
+        }
+    });
+
+    $("#forgotBtn").on("click", async function(e) {
+        e.preventDefault();
+
+        try {
+            window.location.href = `/aux/forgot`
+
+        } catch (err) {
+            console.error("Login Error:", err);
+            alert("An error occurred. Check the F12 console.");
+        }
+    });
+
+    $("#vsaBtn").on("click", async function(e) {
+        e.preventDefault();
+
+        try {
+            window.location.href = `/aux/vsa`
+
+        } catch (err) {
+            console.error("Login Error:", err);
+            alert("An error occurred. Check the F12 console.");
+        }
+    });
 });

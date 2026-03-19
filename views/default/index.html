@@ -7,13 +7,13 @@
     <link href="https://cdn.jsdelivr.net/npm/daisyui@latest/dist/full.css" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
     <title>Save.My.Lab</title>
-    <link rel="stylesheet" href="../../public/css/default/index.css">
+    <link rel="stylesheet" href="css/default/index.css">
 </head>
 
 <body class="h-screen flex flex-col">
 
     <header id="head" class="absolute top-0 left-0 w-full flex justify-between items-center p-6 z-10">
-        <img class="w-40" src="../../public/images/white.png" alt="App Logo">
+        <img class="w-40" src="/images/white.png" alt="App Logo">
     </header>
 
     <main class="background flex-1 flex items-center justify-center">
@@ -27,7 +27,7 @@
 
             <div class="w-1/2 flex flex-col items-center pt-10 px-8 bg-gradient-to-b from-white via-white/70 to-[#265429]/40">
 
-                <img class="w-28 mb-2" src="../../public/images/dlsupng.png">
+                <img class="w-28 mb-2" src="images/dlsupng.png">
 
                 <h2 class="text-4xl font-bold text-[#016938] mb-6">Welcome</h2>
 
@@ -59,9 +59,9 @@
                     </div>
 
                     <div class="flex justify-center gap-6 pt-3 text-sm">
-                        <a href="forgot.html" class="text-[#265429] hover:underline">Forgot Password</a>
-                        <a href="register.html" class="text-[#265429] hover:underline">Register</a>
-                        <a href="view-slot-availability.html" class="text-[#265429] hover:underline">View Availability</a>
+                        <button id ="forgotBtn" class="text-[#265429] hover:underline">Forgot Password</a>
+                        <button id ="registerBtn" class="text-[#265429] hover:underline">Register</a>
+                        <button id ="vsaBtn" class="text-[#265429] hover:underline">View Availability</a>
                     </div>
 
                 </div>
@@ -74,7 +74,7 @@
     </footer>
     
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="../../public/scripts/default/index.js"></script>
+    <script src="/scripts/default/index.js"></script>
 
 </body>
 </html>

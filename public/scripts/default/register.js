@@ -1,15 +1,15 @@
-const Email = document.getElementById("Email");
-const Pass1 = document.getElementById("Pass1");
-const Pass2 = document.getElementById("Pass2");
-const registerForm = document.getElementById("registerForm");
+$(document).ready(function() {
+    console.log("Script Loaded and Ready");
 
-registerForm.addEventListener("submit", function(e) {
-    e.preventDefault();
+    $("#backBtn").on("click", async function(e) {
+        e.preventDefault();
 
-    if (Pass1.value === Pass2.value) {
-        alert("Registration successful!");
-        window.location.href = "index.html";
-    } else {
-        alert("Passwords do not match. Please try again.");
-    }
+        try {
+            window.location.href = `/`
+
+        } catch (err) {
+            console.error("Login Error:", err);
+            alert("An error occurred. Check the F12 console.");
+        }
+    });
 });

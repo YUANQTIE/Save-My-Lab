@@ -14,6 +14,7 @@ const reservationRoutes = require('./database/routes/ReservationRoutes.js')
 const roomRoutes = require('./database/routes/RoomRoutes.js')
 const seatRoutes = require('./database/routes/SeatRoutes.js')
 const userRoutes = require('./database/routes/UserRoutes.js');
+const auxRoutes = require('./database/routes/AuxiliaryRoutes.js');
 
 /* For file uploads */
 const fileUpload = require('express-fileupload')
@@ -36,6 +37,7 @@ app.use('/reservation', reservationRoutes)
 app.use('/room', roomRoutes)
 app.use('/seat', seatRoutes)
 app.use('/user', userRoutes)
+app.use('/aux', auxRoutes)
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'views/default/index.html'));
