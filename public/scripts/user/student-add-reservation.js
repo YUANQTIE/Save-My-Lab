@@ -13,17 +13,31 @@ var anonymous;
 
 
 
-$(document).ready(function() {
+$(document).ready(function () {
+    function weekView() {
+        let today = new Date();
+        let nextWk = new Date();
+        nextWk.setDate(today.getDate() + 7);
+        today = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
+        nextWk = `${nextWk.getFullYear()}-${(nextWk.getMonth() + 1).toString().padStart(2, '0')}-${nextWk.getDate().toString().padStart(2, '0')}`;
+
+        console.log(today);
+        console.log(nextWk);
+
+        $("#dateInput").attr('min', today);
+        $("#dateInput").attr('max', nextWk);
+    }
+
     $(".seat").addClass("gray")
 
 
-    $("#venueInput").on("change", async function(e) {
+    $("#venueInput").on("change", async function (e) {
         try {
             $(".seat").removeClass("red blue gray cursor-pointer selected");
             building = $(this).val().trim();
 
             console.log("Selected venue:", building);
-            
+
             const roomSelect = $("#roomInput");
             roomSelect.empty();
 
@@ -36,22 +50,22 @@ $(document).ready(function() {
                 roomSelect.append(`<option value="${room.room_name}">${room.room_name}</option>`);
             });
 
-            if (building === "Gokongwei Building"){
+            if (building === "Gokongwei Building") {
                 $("#goks").removeClass("hidden")
                 $("#ls, #yuch, #andrew, #default").addClass("hidden")
             }
 
-            if (building === "St. La Salle Hall"){
+            if (building === "St. La Salle Hall") {
                 $("#ls").removeClass("hidden")
                 $("#goks, #yuch, #andrew, #default").addClass("hidden")
             }
 
-            if (building === "Don Enrique T. Yuchengco Hall"){
+            if (building === "Don Enrique T. Yuchengco Hall") {
                 $("#yuch").removeClass("hidden")
                 $("#goks, #ls, #andrew, #default").addClass("hidden")
             }
 
-            if (building === "Br. Andrew Gonzales Hall"){
+            if (building === "Br. Andrew Gonzales Hall") {
                 $("#andrew").removeClass("hidden")
                 $("#goks, #ls, #yuch, #default").addClass("hidden")
             }
@@ -66,8 +80,9 @@ $(document).ready(function() {
         }
     });
 
-    $("#roomInput").on("change", async function(e) {
+    $("#roomInput").on("change", async function (e) {
         $(".seat").removeClass("red blue gray cursor-pointer selected");
+        weekView()
         try {
             room = $(this).val().trim();
 
@@ -81,7 +96,7 @@ $(document).ready(function() {
         }
     });
 
-    $("#dateInput").on("change", async function(e) {
+    $("#dateInput").on("change", async function (e) {
         $(".seat").removeClass("red blue gray cursor-pointer selected");
         try {
             reservationDate = $(this).val().trim();
@@ -95,7 +110,7 @@ $(document).ready(function() {
             alert("An error occurred. Check the F12 console.");
         }
     });
-    
+
 
     function checkTimeInputs() {
         if ($("#startHourInput").val() && $("#startMinuteInput").val() && $("#endHourInput").val() && $("#endMinuteInput").val()) {
@@ -103,16 +118,16 @@ $(document).ready(function() {
             reservationStartMinute = $("#startMinuteInput").val().trim();
             reservationEndHour = $("#endHourInput").val().trim();
             reservationEndMinute = $("#endMinuteInput").val().trim();
-            
+
             console.log(reservationStartHour, ":", reservationStartMinute, reservationEndHour, ":", reservationEndMinute)
 
             $(".seat").removeClass("gray")
 
-            reservationStartTimeStamp = reservationDate + "T" + reservationStartHour +  ":" + reservationStartMinute + ":00.000";
-            reservationEndTimeStamp = reservationDate + "T" + reservationEndHour +  ":" + reservationEndMinute + ":00.000";
+            reservationStartTimeStamp = reservationDate + "T" + reservationStartHour + ":" + reservationStartMinute + ":00.000";
+            reservationEndTimeStamp = reservationDate + "T" + reservationEndHour + ":" + reservationEndMinute + ":00.000";
 
-        } 
-        
+        }
+
         else {
             $("#confirmBtn").prop("disabled", true);
         }
@@ -121,8 +136,8 @@ $(document).ready(function() {
     function assignSeatIds(seatArray) {
         $(".seat").removeClass("red blue gray cursor-pointer selected");
         $(".room-wrapper").addClass("seats-enabled");
-        if (building === "Gokongwei Building"){
-            $("#goks .seat").each(function(index) {
+        if (building === "Gokongwei Building") {
+            $("#goks .seat").each(function (index) {
                 const seatInfo = seatArray[index];
 
                 console.log(this, seatInfo)
@@ -130,20 +145,20 @@ $(document).ready(function() {
                 if (seatInfo) {
                     $(this).attr("id", seatInfo._id);
                     $(this).attr("data-name", seatInfo.seat_name);
-                    if (seatInfo.reservedBy){
+                    if (seatInfo.reservedBy) {
                         $(this).attr("title", `Seat ${seatInfo.seat_name}; reserved by ${seatInfo.reservedBy}`);
                     }
-                    else{
+                    else {
                         $(this).attr("title", `Seat ${seatInfo.seat_name}`);
                     }
 
-                    if (seatInfo.status === "reserved"){
+                    if (seatInfo.status === "reserved") {
                         $(this).addClass("red")
                     }
-                    else if (seatInfo.status === "broken"){
+                    else if (seatInfo.status === "broken") {
                         $(this).addClass("blue")
                     }
-                    else{
+                    else {
                         $(this).addClass("cursor-pointer")
                     }
 
@@ -151,8 +166,8 @@ $(document).ready(function() {
             });
         }
 
-        if (building === "St. La Salle Hall"){
-            $("#ls .seat").each(function(index) {
+        if (building === "St. La Salle Hall") {
+            $("#ls .seat").each(function (index) {
                 const seatInfo = seatArray[index];
 
                 console.log(this, seatInfo)
@@ -160,20 +175,20 @@ $(document).ready(function() {
                 if (seatInfo) {
                     $(this).attr("id", seatInfo._id);
                     $(this).attr("data-name", seatInfo.seat_name);
-                    if (seatInfo.reservedBy){
+                    if (seatInfo.reservedBy) {
                         $(this).attr("title", `Seat ${seatInfo.seat_name}; reserved by ${seatInfo.reservedBy}`);
                     }
-                    else{
+                    else {
                         $(this).attr("title", `Seat ${seatInfo.seat_name}`);
                     }
 
-                    if (seatInfo.status === "reserved"){
+                    if (seatInfo.status === "reserved") {
                         $(this).addClass("red")
                     }
-                    else if (seatInfo.status === "broken"){
+                    else if (seatInfo.status === "broken") {
                         $(this).addClass("blue")
                     }
-                    else{
+                    else {
                         $(this).addClass("cursor-pointer")
                     }
 
@@ -181,8 +196,8 @@ $(document).ready(function() {
             });
         }
 
-        if (building === "Don Enrique T. Yuchengco Hall"){
-            $("#yuch .seat").each(function(index) {
+        if (building === "Don Enrique T. Yuchengco Hall") {
+            $("#yuch .seat").each(function (index) {
                 const seatInfo = seatArray[index];
 
                 console.log(this, seatInfo)
@@ -190,20 +205,20 @@ $(document).ready(function() {
                 if (seatInfo) {
                     $(this).attr("id", seatInfo._id);
                     $(this).attr("data-name", seatInfo.seat_name);
-                    if (seatInfo.reservedBy){
+                    if (seatInfo.reservedBy) {
                         $(this).attr("title", `Seat ${seatInfo.seat_name}; reserved by ${seatInfo.reservedBy}`);
                     }
-                    else{
+                    else {
                         $(this).attr("title", `Seat ${seatInfo.seat_name}`);
                     }
 
-                    if (seatInfo.status === "reserved"){
+                    if (seatInfo.status === "reserved") {
                         $(this).addClass("red")
                     }
-                    else if (seatInfo.status === "broken"){
+                    else if (seatInfo.status === "broken") {
                         $(this).addClass("blue")
                     }
-                    else{
+                    else {
                         $(this).addClass("cursor-pointer")
                     }
 
@@ -211,8 +226,8 @@ $(document).ready(function() {
             });
         }
 
-        if (building === "Br. Andrew Gonzales Hall"){
-            $("#andrew .seat").each(function(index) {
+        if (building === "Br. Andrew Gonzales Hall") {
+            $("#andrew .seat").each(function (index) {
                 const seatInfo = seatArray[index];
 
                 console.log(this, seatInfo)
@@ -220,34 +235,34 @@ $(document).ready(function() {
                 if (seatInfo) {
                     $(this).attr("id", seatInfo._id);
                     $(this).attr("data-name", seatInfo.seat_name);
-                    if (seatInfo.reservedBy){
+                    if (seatInfo.reservedBy) {
                         $(this).attr("title", `Seat ${seatInfo.seat_name}; reserved by ${seatInfo.reservedBy}`);
                     }
-                    else{
+                    else {
                         $(this).attr("title", `Seat ${seatInfo.seat_name}`);
                     }
 
-                    if (seatInfo.status === "reserved"){
+                    if (seatInfo.status === "reserved") {
                         $(this).addClass("red")
                     }
-                    else if (seatInfo.status === "broken"){
+                    else if (seatInfo.status === "broken") {
                         $(this).addClass("blue")
                     }
-                    else{
+                    else {
                         $(this).addClass("cursor-pointer")
                     }
 
                 }
             });
         }
-        
+
     }
 
 
-    $("#Input, #roomInput, #dateInput, #startHourInput, #startMinuteInput, #endHourInput, #endMinuteInput").on("change", async function() {
+    $("#Input, #roomInput, #dateInput, #startHourInput, #startMinuteInput, #endHourInput, #endMinuteInput").on("change", async function () {
         checkTimeInputs();
 
-        if (reservationStartTimeStamp && reservationEndTimeStamp){
+        if (reservationStartTimeStamp && reservationEndTimeStamp) {
             const seatStatuses = await fetch(`/room/seat-status?timeStart=${reservationStartTimeStamp}&timeEnd=${reservationEndTimeStamp}&roomName=${room}`);
             const seatStatusesJson = await seatStatuses.json();
 
@@ -258,7 +273,18 @@ $(document).ready(function() {
 
     });
 
-    $(document).on("click", ".seat.cursor-pointer", function() {
+    function openConfirmModal() {
+        if (!confirmModal) return;
+        confirmModal.classList.remove("hidden");
+    }
+
+    function closeConfirmModal() {
+        if (!confirmModal) return;
+        confirmModal.classList.add("hidden");
+    }
+
+
+    $(document).on("click", ".seat.cursor-pointer", function () {
         $(this).toggleClass("green");
 
         const seatId = $(this).attr("id");
@@ -267,19 +293,19 @@ $(document).ready(function() {
         if ($(this).hasClass("green")) {
             seats.push({ id: seatId });
             console.log("Selected:", seatName);
-        } 
+        }
         else {
             seats = seats.filter(s => s.id !== seatId);
             console.log("Deselected:", seatName);
         }
 
-        if (seats.length > 0){
+        if (seats.length > 0) {
             $("#confirmBtn").prop("disabled", false);
         }
-        else{
+        else {
             $("#confirmBtn").prop("disabled", true);
         }
-         
+
 
 
         console.log(seats)
@@ -296,5 +322,5 @@ $(document).ready(function() {
     });
 
 
-    
+
 });
