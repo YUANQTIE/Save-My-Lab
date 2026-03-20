@@ -79,7 +79,6 @@ router.delete("/:id/delete", UserController.deleteUser);
 
 
 router.get("/landing", (req, res) => {
-    res.sendFile(path.join(__dirname, "..", "..", "views", "user", "homepage2.html"));
     res.render('user/homepage2', {id: req.query.id})
 });
 
@@ -87,15 +86,6 @@ router.get("/profile-settings", UserController.showProfile);
 router.get("/account-security", UserController.showProfileAccountSecurity);
 router.get("/reservations", UserController.showProfileReservations);
 router.get("/student-add-reservation", (req, res) => {
-    const id = req.query.id;
-    res.sendFile(path.join(__dirname, "..", "..", "views", "user", "student-add-reservation.html"));
-});
-
-router.get("/profile", (req, res) => {
-    res.sendFile(path.join(__dirname, "..", "..", "views", "user", "other-user-profile.html"));
-});
-
-router.get("/reserve", (req, res) => {
     res.sendFile(path.join(__dirname, "..", "..", "views", "user", "student-add-reservation.html"));
 });
 
