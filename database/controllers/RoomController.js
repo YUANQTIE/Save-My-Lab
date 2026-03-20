@@ -71,17 +71,21 @@ exports.getSeatStatus = async (req, res) => {
             reservation_start_timestamp: { $lte: timeEnd },
             reservation_end_timestamp: { $gte: timeStart }
         })
-        .populate("reservedBy").select("reservedBy reservedByModel seats reservation_start_timestamp reservation_end_timestamp");
+        .populate("reservedBy").select("reservedBy reservedByModel seats reservation_start_timestamp reservation_end_timestamp anonymous");
 
         const brokenSeats = await Broken.find({
             broken_start_timestamp: { $lte: timeEnd }
         }).select("seats");
 
-        const reservedSeatMap = {};  //maps the reserved seats to the owner's email
+        const reservedSeatMap = {}; 
         reservedSeats.forEach(resv => {
             resv.seats.forEach(seatId => {
+                let ownerDisplay = resv.reservedBy?.email || "sheeesh";
+                if (resv.anonymous) {
+                    ownerDisplay = "Anonymous";
+                }
                 reservedSeatMap[seatId.toString()] = {
-                    email: resv.reservedBy?.email || "secret",
+                    email: ownerDisplay, 
                     reservationStart: resv.reservation_start_timestamp,
                     reservationEnd: resv.reservation_end_timestamp
                 };

@@ -354,38 +354,34 @@
 
         <!-- Confirm Button -->
         <button id="confirmBtn" class="confirm-button" disabled>CONFIRM</button>
-
-        <div class="absolute bottom[420px] hidden" id="confirmModal">
-          <div class="modal-backdrop"></div>
-
-          <div class="modal-card">
-            <div class="modal-head">
-              <div class="modal-title">Confirmation of Reservation</div>
-              <button class="button close-confirm" type="button">X</button>
-            </div>
-
-            <div class="modal-body">
-              <p class="confirm-text"><b>Venue:</b> <span id="resVenue">—</span></p>
-              <p class="confirm-text"><b>Room:</b> <span id="resRoom">—</span></p>
-              <p class="confirm-text"><b>Date:</b> <span id="resDate">—</span></p>
-              <p class="confirm-text"><b>Time:</b> <span id="resTime">—</span></p>
-              <p class="confirm-text"><b>Chosen Computers:</b> <span id="resSeats">None</span></p>
-
-              <div class="confirm-actions">
-                <label class="anonymous">
-                  <input type="checkbox" name="anonymous">
-                  Reserve Anonymously
-                </label>
-                <button class="button button-red" id="confirmOkay" type="button">
-                  OK
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
-  </div>
+
+    <div id="confirmModal" class="fixed inset-0 z-[9999] flex items-center justify-center p-4 hidden">
+        <div class="absolute inset-0 bg-black/60 modal-backdrop"></div>
+        <div class="relative z-10 w-full max-w-md bg-white rounded-xl shadow-2xl overflow-hidden">
+            <div class="bg-[#016938] px-6 py-4 flex justify-between items-center border-b border-gray-300">
+                <h3 class="font-bold text-white">Confirmation of Reservation</h3>
+                <button class="close-confirm text-white hover:text-red-600 font-bold text-xl" type="button">X</button>
+            </div>
+
+            <div class="p-6 space-y-3">
+                <p class="text-gray-700"><strong>Venue:</strong> <span id="resVenue">{{venue}}</span></p>
+                <p class="text-gray-700"><strong>Room:</strong> <span id="resRoom">{{room}}</span></p>
+                <p class="text-gray-700"><strong>Date:</strong> <span id="resDate">{{date}}</span></p>
+                <p class="text-gray-700"><strong>Time:</strong> <span id="resTime">{{time}}</span></p>
+                <p class="text-gray-700"><strong>Chosen Computers:</strong> <span id="resSeats">{{selectedSeats}}</span></p>
+
+                <div class="mt-6 flex justify-between items-center pt-4">
+                    <label class="flex items-center gap-2 cursor-pointer select-none text-sm font-medium text-gray-700">
+                        <input id="anon" type="checkbox" name="anonymous" class="w-4 h-4 rounded border-gray-300 text-[#016938] focus:ring-[#016938]">Reserve Anonymously
+                    </label>
+                
+                    <button id="confirmOkay" type="button" class="bg-[#016938] hover:bg-[#014d29] text-white font-bold py-2 px-6 rounded-lg transition-colors">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
     
   <!-- External JS -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>

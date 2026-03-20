@@ -262,10 +262,13 @@ exports.addAdminReservation = async (req, res) =>{
 
 exports.addUserReservation = async (req, res) =>{
   try {
+    console.log("i got hereeeee")
+    console.log(req.body.timeStart, req.body.timeEnd)
+    console.log(req.body.timeStart, req.body.seats)
     await Reservation.create({
       creation_timestamp: new Date(Date.now()),
-      reservation_start_timestamp: new Date(req.body.timeStart),
-      reservation_end_timestamp: new Date(req.body.timeEnd),
+      reservation_start_timestamp: req.body.timeStart + "Z",
+      reservation_end_timestamp: req.body.timeEnd + "Z",
       reservedBy: req.params.userId,
       reservedByModel: "User",
       seats: req.body.seats,

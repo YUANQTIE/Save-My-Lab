@@ -290,33 +290,3 @@ footer {
   color: #307c17;
   font-size: 14px;
 }
-
-
-/* Parent modal fills the screen and centers the card */
-.modal {
-  position: fixed;
-  inset: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: rgba(0,0,0,0.3); /* dark transparent overlay */
-  z-index: 999999;
-}
-
-/* Optional: separate backdrop layer if needed */
-.modal-backdrop {
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.3);
-  z-index: 1;
-}
-
-/* Card always on top */
-.modal-card {
-  position: relative;
-  background: white;
-  width: 300px;
-  padding: 20px;
-  border-radius: 8px;
-  z-index: 2;
-}
