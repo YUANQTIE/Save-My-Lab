@@ -48,6 +48,8 @@ exports.getAllReservations = async (req, res) =>{
 */
 
 exports.getUserReservations = async (req, res) =>{
+    console.log("All Params:", req.params);
+    console.log("All Queries:", req.query);
     try{
         const creationTimeStart = req.query.creationTimeStart;
         const creationTimeEnd = req.query.creationTimeEnd;
@@ -108,6 +110,8 @@ exports.getUserReservations = async (req, res) =>{
             building: reserve.seats[0].room_id.building,
             seats: reserve.seats.map(seat => seat.seat_name)
         }));
+
+        console.log("Result: ", result)
 
         res.json(result);
 

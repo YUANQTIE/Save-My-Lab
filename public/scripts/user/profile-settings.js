@@ -46,7 +46,7 @@ $(document).ready(function () {
     $("#reservations").on("click", async function (e) {
         e.preventDefault();
         try {
-            window.location.href = `/user/reservations?id=${userId}`
+            window.location.href = `/user/account-reserve?id=${userId}`
         } catch (err) {
             console.error("Login Error:", err);
             alert("An error occurred. Check the F12 console.");
