@@ -12,14 +12,68 @@ const error_button = document.getElementById("error_button");
 const border_color = "outline-gray-300";
 const error_input_border_size = "w-[250px]";
 const error_password_match_size = "w-[370px]";
-const error_classList = "hidden mt-3 w-[370px] h-[40px] bg-red-100 border border-red-400 text-red-700 px-[10px] py-[5px] rounded relative";
-const success_classList = "mt-3 w-[325px] h-[40px] bg-green-100 border border-green-400 text-green-700 px-[10px] py-[5px] rounded relative";
+const wrong_password_classList = "hidden mt-3 w-[180px] h-[40px] bg-red-100 border border-red-400 text-red-700 px-[10px] py-[5px] rounded relative";
+const error_classList = "hidden mt-3 w-[380px] h-[40px] bg-red-100 border border-red-400 text-red-700 px-[10px] py-[5px] rounded relative";
+const success_classList = "mt-3 w-[335px] h-[40px] bg-green-100 border border-green-400 text-green-700 px-[10px] py-[5px] rounded relative";
 const profile_image = document.getElementById("profile_image");
 const input_file = document.getElementById("input_file");
-
-save_button.addEventListener("click", saveChanges);
+const url = new URLSearchParams(window.location.search);
+const userId = url.get('id');
+let password = "wrong"
+save_button.addEventListener("click", async () => {
+    await getCurPassword()
+    saveChanges()
+});
 input_file.addEventListener("click", changePicture);
 
+$(document).ready(function () {
+    console.log("Account-Security Script running");
+    $("#profile-settings").on("click", async function (e) {
+        e.preventDefault();
+        try {
+            window.location.href = `/user/profile-settings?id=${userId}`
+        } catch (err) {
+            console.error("Login Error:", err);
+            alert("An error occurred. Check the F12 console.");
+        }
+    });
+
+    $("#account-security").on("click", async function (e) {
+        e.preventDefault();
+        try {
+            window.location.href = `/user/account-security?id=${userId}`
+        } catch (err) {
+            console.error("Login Error:", err);
+            alert("An error occurred. Check the F12 console.");
+        }
+    });
+
+    $("#reservations").on("click", async function (e) {
+        e.preventDefault();
+        try {
+            window.location.href = `/user/reservations?id=${userId}`
+        } catch (err) {
+            console.error("Login Error:", err);
+            alert("An error occurred. Check the F12 console.");
+        }
+    });
+})
+
+async function getCurPassword() {
+    const response = await fetch(`/user/search/${userId}`)
+    const user = await response.json();
+    password = user.password;
+}
+
+async function updatePassword(userId) {
+    const response = await fetch(`/user/edit/password/${userId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ password: new_password_input.value })
+    });
+}
 
 function saveChanges() {
     cur_password_border.classList.replace("outline-red-300", border_color);
@@ -27,9 +81,10 @@ function saveChanges() {
     confirm_password_border.classList.replace("outline-red-300", border_color);
 
     let valid = true;
-    if(cur_password_input.value == "") {
+    if (cur_password_input.value == "") {
         valid = false;
         cur_password_border.classList.replace(border_color, "outline-red-300");
+        error_header.innerHTML = "ERROR!"
         error_text.innerHTML = "Please fill out all input fields."
         error.classList = error_classList;
         error_button.classList.remove("hidden");
@@ -45,9 +100,10 @@ function saveChanges() {
         });
     }
 
-    if(new_password_input.value == "") {
+    if (new_password_input.value == "") {
         valid = false;
         new_password_border.classList.replace(border_color, "outline-red-300");
+        error_header.innerHTML = "ERROR!"
         error_text.innerHTML = "Please fill out all input fields."
         error.classList = error_classList;
         error_button.classList.remove("hidden");
@@ -63,9 +119,10 @@ function saveChanges() {
         });
     }
 
-    if(confirm_password_input.value == "") {
+    if (confirm_password_input.value == "") {
         valid = false;
         confirm_password_border.classList.replace(border_color, "outline-red-300");
+        error_header.innerHTML = "ERROR!"
         error_text.innerHTML = "Please fill out all input fields."
         error.classList = error_classList;
         error_button.classList.remove("hidden");
@@ -82,22 +139,37 @@ function saveChanges() {
 
     }
 
-    if(cur_password_input.value != "" && new_password_input.value != "" && confirm_password_input.value != "") {
-        // Check if current password is valid
-        // code for that
-        // if(cur_password_input) {
-
-        // }
-        // Check if new and confirm password are the same
-        // Should be else if
-        if(new_password_input.value != confirm_password_input.value) {
+    if (cur_password_input.value != "" && new_password_input.value != "" && confirm_password_input.value != "") {
+        console.log(password)
+        if (password != cur_password_input.value) {
             valid = false;
+            console.log("Wrong password")
+            cur_password_border.classList.replace(border_color, "outline-red-300");
+            error_header.innerHTML = "ERROR!"
+            error_text.innerHTML = "Wrong Password";
+            error.classList = wrong_password_classList;
+            error_button.classList.remove("hidden");
+            error.classList.remove("hidden");
+            error.classList.replace(error_input_border_size, error_password_match_size);
+
+            cur_password_input.addEventListener("click", (event) => {
+                cur_password_border.classList.replace("outline-red-300", border_color);
+            });
+
+            error_button.addEventListener("click", (event) => {
+                error.classList.add("hidden");
+            });
+        }
+        // Check if new and confirm password are the same
+        if (new_password_input.value != confirm_password_input.value) {
+            valid = false;
+            error_header.innerHTML = "ERROR!"
             new_password_border.classList.replace(border_color, "outline-red-300");
             confirm_password_border.classList.replace(border_color, "outline-red-300");
             error_text.innerHTML = "New Password and Confirm Password should match.";
             error.classList = error_classList;
             error_button.classList.remove("hidden");
-            error.classList.remove("hidden"); 
+            error.classList.remove("hidden");
             error.classList.replace(error_input_border_size, error_password_match_size);
 
             new_password_input.addEventListener("click", (event) => {
@@ -113,9 +185,10 @@ function saveChanges() {
             });
         }
     }
-    
-    if(valid == true) {
+
+    if (valid == true) {
         // Send the data to backend
+        updatePassword(userId)
         cur_password_border.classList.replace("outline-red-300", border_color);
         new_password_border.classList.replace("outline-red-300", border_color);
         confirm_password_border.classList.replace("outline-red-300", border_color);
@@ -130,7 +203,7 @@ function saveChanges() {
 }
 
 function changePicture() {
-    input_file.onchange = function() {
+    input_file.onchange = function () {
         profile_image.src = URL.createObjectURL(input_file.files[0]);
     }
 }

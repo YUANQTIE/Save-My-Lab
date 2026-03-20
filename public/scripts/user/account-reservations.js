@@ -11,6 +11,41 @@ const room_option = document.getElementById("room_option");
 const date_option = document.getElementById("date_option");
 const start_time_option = document.getElementById("start_time_option");
 const end_time_option = document.getElementById("end_time_option");
+const url = new URLSearchParams(window.location.search);
+const userId = url.get('id');
+
+$(document).ready(function () {
+    console.log("Profile-Settings Script running");
+    $("#profile-settings").on("click", async function (e) {
+        e.preventDefault();
+        try {
+            window.location.href = `/user/profile-settings?id=${userId}`
+        } catch (err) {
+            console.error("Login Error:", err);
+            alert("An error occurred. Check the F12 console.");
+        }
+    });
+
+    $("#account-security").on("click", async function (e) {
+        e.preventDefault();
+        try {
+            window.location.href = `/user/account-security?id=${userId}`
+        } catch (err) {
+            console.error("Login Error:", err);
+            alert("An error occurred. Check the F12 console.");
+        }
+    });
+
+    $("#reservations").on("click", async function (e) {
+        e.preventDefault();
+        try {
+            window.location.href = `/user/reservations?id=${userId}`
+        } catch (err) {
+            console.error("Login Error:", err);
+            alert("An error occurred. Check the F12 console.");
+        }
+    });
+})
 
 input_file.addEventListener("click", changePicture);
 
