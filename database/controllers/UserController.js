@@ -55,6 +55,43 @@ exports.isUserIdNumberInDB= async (req, res) => {
   }
 };
 
+// Get and Render Profile of User for Profile Settings
+exports.showProfile = async(req, res) => {
+  try {
+    const userData = await User.findById(req.query.id).lean();
+    console.log(userData)
+    res.render('user/profile-settings', {user: userData});
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Error');
+  }
+}
+
+// Get and Render Profile of User for Account Security
+exports.showProfileAccountSecurity = async(req, res) => {
+  try {
+    const userData = await User.findById(req.query.id).lean();
+    console.log(userData)
+    res.render('user/account-security', {user: userData});
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Error');
+  }
+}
+
+// Get and Render Profile of User for Reservations
+exports.showProfileReservations = async(req, res) => {
+  try {
+    const userData = await User.findById(req.query.id).lean();
+    console.log(userData)
+    res.render('user/account-reservations', {user: userData});
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Error');
+  }
+}
+
+//Get Profile of User
 exports.getIdGivenEmail = async (req, res) => {
   try {
     const email = req.query.email;
@@ -129,7 +166,7 @@ exports.getAllUsers = async (req, res) => {
 exports.get21DaysUsers = async (req, res) => {
   try {
     const Week3Users = await User.find(
-      { last_login : { $gte : 21 }}
+      { last_login: { $gte: 21 } }
     ).select("_id");
     res.json(Week3Users);
   } catch (err) {
@@ -251,28 +288,29 @@ exports.editUsername = async (req, res) => {
 
 exports.editPassword = async (req, res) => {
   try {
+    console.log("im here")
     const id = req.query.id
     const containsWhitespace = str => /\s/.test(str);
 
     const user = await User.findById(id);
 
     const pw = req.body.password;
-    if (pw.length < 8){
-      return res.send("Password must have minimum 8 characters")
-    }
-    if (containsWhitespace(pw)){
-      return res.send("Password must not have whitespaces")
-    }
-    if(pw === user.password){
-      return res.send("Password must not be the same from previous password.")
-    }
-    
+    // if (pw.length < 8) {
+    //   return res.send("Password must have minimum 8 characters")
+    // }
+    // if (containsWhitespace(pw)) {
+    //   return res.send("Password must not have whitespaces")
+    // }
+    // if (pw === user.password) {
+    //   return res.send("Password must not be the same from previous password.")
+    // }
+
     await User.findByIdAndUpdate(id,
       { password: pw });
     res.send("User password updated successfully");
-    
 
-    
+
+
   } catch (err) {
     res.status(500).send("Error");
   }

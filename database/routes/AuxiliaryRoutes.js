@@ -14,4 +14,5 @@ router.get("/vsa", (req, res) => {
     res.sendFile(path.join(__dirname, "..", "..", "views", "default", "view-slot-availability.html"));
 });
 
+
 module.exports = router

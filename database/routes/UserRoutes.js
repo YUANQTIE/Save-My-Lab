@@ -1,8 +1,16 @@
 const express = require('express');
+const app = express();
 const path = require("path");
 const router = express.Router();
+const exphbs = require('express-handlebars')
+
 
 const UserController = require('../controllers/UserController');
+app.set('views', path.join(__dirname, 'views'));
+app.engine("hbs", exphbs.engine({extname: 'hbs'}))
+app.engine("hbs", exphbs.engine({defaultLayout: 'main', partialsDir: __dirname + 'views/partials/'}))
+app.set('view engine','hbs');
+app.set("views", "./views")
 
 //GET ROUTES
 
@@ -63,16 +71,24 @@ router.put("/:id/edit/profile-picture-default", UserController.removeProfilePict
 router.put('/:id/edit/username', UserController.editUsername);
 
 //req.body: password
-router.put('/edit/password', UserController.editPassword);
+router.put('/edit/password/:id', UserController.editPassword);
 
 //DELETE ROUTES
 //req.params: id
 router.delete("/:id/delete", UserController.deleteUser);
 
+
 router.get("/landing", (req, res) => {
+    res.render('user/homepage2', {id: req.query.id})
+});
+
+router.get("/profile-settings", UserController.showProfile);
+router.get("/account-security", UserController.showProfileAccountSecurity);
+router.get("/reservations", UserController.showProfileReservations);
+router.get("/student-add-reservation", (req, res) => {
     const id = req.query.id;
 
-    res.sendFile(path.join(__dirname, "..", "..", "views", "user", "homepage2.html"));
+    res.sendFile(path.join(__dirname, "..", "..", "views", "user", "student-add-reservation.html"));
 });
 
 
