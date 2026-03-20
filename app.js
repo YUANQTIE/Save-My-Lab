@@ -30,6 +30,7 @@ app.use(express.text()) // use json
 app.use(express.urlencoded( {extended: true})); // files consist of more than strings
 app.use(express.static('public')) // we'll add a static directory named "public"
 app.use(fileUpload()) // for fileuploads
+app.use(express.static(path.join(__dirname, ''))); // serve everything in project folder
 
 app.use('/admin', adminRoutes)
 app.use('/broken', brokenRoutes)

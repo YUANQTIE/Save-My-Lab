@@ -3,6 +3,58 @@ const User = require('../models/User.js'); // Import User model
 
 // GET ROUTES 
 
+exports.isUsernameInDB= async (req, res) => {
+  try {
+    const username = req.query.username;
+    const user = await User.findOne({ username });
+
+    if (!user) {
+      return res.json(false);
+    }
+
+    return res.json(true);
+
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Error');
+  }
+};
+
+exports.isUserEmailInDB= async (req, res) => {
+  try {
+    const email = req.query.email;
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.json(false);
+    }
+
+    return res.json(true);
+
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Error');
+  }
+};
+
+exports.isUserIdNumberInDB= async (req, res) => {
+  try {
+    const id_number = Number(req.query.idNumber);
+    const user = await User.findOne({ id_number });
+
+
+    if (!user) {
+      return res.json(false);
+    }
+
+    return res.json(true);
+
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Error');
+  }
+};
+
 exports.getIdGivenEmail = async (req, res) => {
   try {
     const email = req.query.email;
@@ -98,8 +150,12 @@ exports.isUserValid = async (req, res) => {
       email: emailInput,
       password: passwordInput
     });
-    const isValid = user ? true : false;
-    res.json(isValid);
+    if (user) {
+        user.last_login = new Date();
+        await user.save();
+        return res.json(true);
+    }
+    res.json(false);
   } catch (err) {
     res.status(500).send('Error');
   }
@@ -195,7 +251,6 @@ exports.editUsername = async (req, res) => {
 
 exports.editPassword = async (req, res) => {
   try {
-    console.log("im here")
     const id = req.query.id
     const containsWhitespace = str => /\s/.test(str);
 
@@ -232,33 +287,36 @@ exports.editPassword = async (req, res) => {
 
 exports.addUser = async (req, res) => {
   try {
-    const file = req.files.profile_picture;
+    const { email, username, bio, password, id_number } = req.body;
 
     const user = await User.create({
-      email: req.body.email,
-      username: req.body.username,
-      bio: req.body.bio,
-      date_created: new Date(Date.now()),
-      password: req.body.password,
-      last_login: 0,
-      id_number: req.body.id_number
+      email,
+      username,
+      bio,
+      date_created: new Date(),
+      password,
+      id_number
     });
 
-    const id = user._id
+    if (req.files && req.files.profile_picture) {
+      const file = req.files.profile_picture;
+      const fileName = `${user._id}.jpg`;
+      const savePath = `./public/images/${fileName}`;
 
-    const fileName = `${id}.jpg`;
-    const savePath = `public/profile_pictures/${fileName}`;
+      await file.mv(savePath);
 
-    await file.mv(savePath);
+      user.profile_picture = `/images/${fileName}`;
+      await user.save();
+    } 
 
-    await User.find(req.params.id, {
-      profile_picture: `public/profile_pictures/${fileName}`
-    });
+    res.status(201).send("User added successfully");
 
-    res.send("User added successfully");
   } catch (err) {
+    if (err.code === 11000) {
+        return res.status(400).send("Username or Email already exists.");
+    }
     console.error(err);
-    res.status(500).send("Error");
+    res.status(500).send("Error saving user");
   }
 };
 

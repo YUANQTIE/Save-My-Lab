@@ -17,57 +17,163 @@
             </button>
         </header>
 
-    <main class="flex items-center justify-center min-h-screen">
+    <main id = "first" class="flex items-center justify-center min-h-screen">
         <!-- LOGIN FORM -->
         <div
             class="flex flex-col items-center pt-12 px-12 bg-gradient-to-b from-white via-white/70 to-[#265429]/40 rounded-xl shadow-2xl w-full max-w-xl">
             <img class="w-32 mb-4" src="/images/dlsupng.png">
             <h2 class="text-4xl font-bold text-[#016938] mb-6">Register</h2>
-
+            <span id="errMes1" class=" text-red-600 font-semibold"></span>
             <div class="w-full space-y-4">
-                <!-- EMAIL -->
+
+                <!-- Email -->
                 <div class="form-control">
                     <label class="label">
                         <span class="label-text text-[#016938] font-semibold">Email</span>
                     </label>
-                    <input type="email" placeholder="Enter your email"
+                    <input id="emailInput" type="email" placeholder="Enter your email"
                         class="input input-bordered w-full bg-[#FAFAFA] placeholder:text-[#D9D9D9] focus:ring-2 focus:ring-[#265429]">
                 </div>
 
-                <!-- NEW PASSWORD -->
+                <!-- ID Number -->
                 <div class="form-control">
                     <label class="label">
-                        <span class="label-text text-[#016938] font-semibold">New Password</span>
+                        <span class="label-text text-[#016938] font-semibold">ID Number</span>
                     </label>
-                    <input type="password" placeholder="Enter new password"
+                    <input id="idNumberInput" type="email" placeholder="Enter your ID number"
                         class="input input-bordered w-full bg-[#FAFAFA] placeholder:text-[#D9D9D9] focus:ring-2 focus:ring-[#265429]">
                 </div>
-                <!-- RE-ENTER NEW PASSWORD -->
-                <div class="form-control">
-                    <label class="label">
-                        <span class="label-text text-[#016938] font-semibold">Re-enter New Password</span>
-                    </label>
-                    <input type="password" placeholder="Re-enter new password"
-                        class="input input-bordered w-full bg-[#FAFAFA] placeholder:text-[#D9D9D9] focus:ring-2 focus:ring-[#265429]">
-                </div>
+
                 <!-- ACTIONS -->
                 <div class="flex items-center justify-between pt-4">
-                    <button class="btn bg-[#265429] text-white border-none hover:bg-[#1f4320] rounded-full px-8">
+                    <button id = "firstBtn" class="btn bg-[#265429] text-white border-none hover:bg-[#1f4320] rounded-full px-8">
                         Confirm
                     </button>
                 </div>
 
                 <!-- FORGOT PASSWORD -->
                 <div class="text-center pt-4">
-                    <a href="forgot.html" class="text-[#265429] hover:underline text-sm">Forgot Password?</a>
+                    <a href="forgot.html" class="text-[#265429] hover:underline text-sm"></a>
                 </div>
             </div>
         </div>
     </main>
-    <!-- FOOTER -->
-    <footer class="absolute bottom-0 w-full text-center text-white p-4 z-10">
-        Lab Reservation System by Labron James Group
-    </footer>
+
+    <main id = "second" class="flex items-center justify-center min-h-screen hidden">
+        <!-- LOGIN FORM -->
+        <div
+            class="flex flex-col items-center pt-12 px-12 bg-gradient-to-b from-white via-white/70 to-[#265429]/40 rounded-xl shadow-2xl w-full max-w-xl">
+            <img class="w-32 mb-4" src="/images/dlsupng.png">
+            <h2 class="text-4xl font-bold text-[#016938] mb-6">Register</h2>
+            <span id="errMes2" class=" text-red-600 font-semibold"></span>
+            <div class="w-full space-y-4">
+
+
+                <!-- PASSWORD -->
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text text-[#016938] font-semibold">Password</span>
+                    </label>
+                    <input id="pw1Input" type="password" placeholder="Enter your password"
+                        class="input input-bordered w-full bg-[#FAFAFA] placeholder:text-[#D9D9D9] focus:ring-2 focus:ring-[#265429]">
+                </div>
+
+                <!-- RE-ENTER PASSWORD -->
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text text-[#016938] font-semibold">Re-enter Password</span>
+                    </label>
+                    <input id="pw2Input" type="password" placeholder="Re-enter your password"
+                        class="input input-bordered w-full bg-[#FAFAFA] placeholder:text-[#D9D9D9] focus:ring-2 focus:ring-[#265429]">
+                </div>
+
+                <!-- ACTIONS -->
+                <div class="flex items-center justify-between pt-4">
+                    <button id = "secondBtn" class="btn bg-[#265429] text-white border-none hover:bg-[#1f4320] rounded-full px-8">
+                        Confirm
+                    </button>
+                </div>
+
+                <!-- FORGOT PASSWORD -->
+                <div class="text-center pt-4">
+                    <a href="forgot.html" class="text-[#265429] hover:underline text-sm"></a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <main id = "third" class="flex items-center justify-center min-h-screen hidden">
+        <!-- LOGIN FORM -->
+        <div
+            class="flex flex-col items-center pt-12 px-12 bg-gradient-to-b from-white via-white/70 to-[#265429]/40 rounded-xl shadow-2xl w-full max-w-xl">
+            <img class="w-32 mb-4" src="/images/dlsupng.png">
+            <h2 class="text-4xl font-bold text-[#016938] mb-6">Register</h2>
+            <span id="errMes3" class=" text-red-600 font-semibold"></span>
+            <div class="w-full space-y-4">
+
+                <!-- PROFILE PICTURE -->
+                <div class="form-control flex flex-col items-center">
+                    <div class="relative inline-block">
+                        <img id="previewImg" src="/images/user.png" class="w-28 h-28 rounded-full object-cover border-2 border-[#265429] mb-2">
+                        
+                        <button id="removePicBtn" type="button" 
+                            class="hidden absolute top-0 right-0 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-700 shadow-md">
+                            ✕
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-control">
+                    <!-- Label -->
+                    <label class="label text-center">
+                        <span class="label-text text-[#016938] font-semibold">Profile Picture (Optional)</span>
+                    </label>
+
+                    <!-- Hidden file input -->
+                    <input id="profilePicInput" type="file" accept="image/*" class="hidden">
+
+                    <!-- Custom green button -->
+                    <button type="button" id="uploadBtn"
+                        class="bg-[#265429] hover:bg-[#1f4320] text-white font-semibold py-2 px-4 rounded-full">
+                        Choose File
+                    </button>
+                </div>
+
+                <!-- USERNAME -->
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text text-[#016938] font-semibold">Username</span>
+                        <span id="unCharCount" class="label-text text-[#f7f7f7] font-semibold">0/20</span>
+                    </label>
+                    <input id="usernameInput" type="email" placeholder="Enter your username"
+                        class="input input-bordered w-full bg-[#FAFAFA] placeholder:text-[#D9D9D9] focus:ring-2 focus:ring-[#265429]">
+                </div>
+
+                <!-- BIO -->
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text text-[#016938] font-semibold">Bio (Optional)</span>
+                        <span id="bioCharCount" class="label-text text-[#f7f7f7] font-semibold">0/60</span>
+                    </label>
+                    <input id="bioInput" type="email" placeholder="Enter your bio"
+                        class="input input-bordered w-full bg-[#FAFAFA] placeholder:text-[#D9D9D9] focus:ring-2 focus:ring-[#265429]">
+                </div>
+
+                <!-- ACTIONS -->
+                <div class="flex items-center justify-between pt-4">
+                    <button id = "thirdBtn" class="btn bg-[#265429] text-white border-none hover:bg-[#1f4320] rounded-full px-8">
+                        Confirm
+                    </button>
+                </div>
+
+                <!-- FORGOT PASSWORD -->
+                <div class="text-center pt-4">
+                    <a href="forgot.html" class="text-[#265429] hover:underline text-sm"></a>
+                </div>
+            </div>
+        </div>
+    </main>
+
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="/scripts/default/register.js"></script>
 </body>

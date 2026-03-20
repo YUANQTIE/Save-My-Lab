@@ -49,7 +49,6 @@ $(document).ready(function() {
         try {
 
             if (pw1Input === pw2Input){
-                console.log("got here")
                 const res = await fetch(`/user/edit/password?id=${editPwId}`, {
                     method: 'PUT',
                     headers: {

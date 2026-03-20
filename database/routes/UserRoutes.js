@@ -34,6 +34,12 @@ router.get('/:emailInput/:passwordInput', UserController.isUserValid);
 //res.json: true/false
 router.get('/forgot', UserController.getIdGivenEmail);
 
+router.get('/emailCheck', UserController.isUserEmailInDB)
+
+router.get('/idNumberCheck', UserController.isUserIdNumberInDB)
+
+router.get('/usernameCheck', UserController.isUsernameInDB)
+
 //POST ROUTES
 //req.files: profile_picture
 //req.body: email, username, bio, password, id_number
