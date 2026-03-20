@@ -10,6 +10,15 @@ const User = require('../models/User.js'); // Import Admin model
   Description: Gets all of the admins and their records
   RETURNS ALL Fields*/
 
+exports.showAdmin = async(req, res) => {
+  try {
+    res.render('lab/see-reservations');
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Error');
+  }
+}
+
 exports.getAllAdmins = async (req, res) => {
   try {
     const admins = await Admin.find();

@@ -59,7 +59,6 @@ exports.isUserIdNumberInDB= async (req, res) => {
 exports.showProfile = async(req, res) => {
   try {
     const userData = await User.findById(req.query.id).lean();
-    console.log(userData)
     res.render('user/profile-settings', {user: userData});
   } catch (err) {
     console.error(err.message);
@@ -71,7 +70,6 @@ exports.showProfile = async(req, res) => {
 exports.showProfileAccountSecurity = async(req, res) => {
   try {
     const userData = await User.findById(req.query.id).lean();
-    console.log(userData)
     res.render('user/account-security', {user: userData});
   } catch (err) {
     console.error(err.message);
@@ -83,7 +81,6 @@ exports.showProfileAccountSecurity = async(req, res) => {
 exports.showProfileReservations = async(req, res) => {
   try {
     const userData = await User.findById(req.query.id).lean();
-    console.log(userData)
     res.render('user/account-reservations', {user: userData});
   } catch (err) {
     console.error(err.message);

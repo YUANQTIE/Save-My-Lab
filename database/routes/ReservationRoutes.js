@@ -14,7 +14,7 @@ router.get('/reservations', ReservationController.getAllReservations);
 //req.query: creationTimeStart, creationTimeEnd, roomName, building, reservationTimeStart, reservationTimeEnd, seatCount
 //req.params: id
 //res.json: reservation_id, creation_timestamp, reservation_start_timestamp, reservation_end_timestamp, checkedIn, room_name, building, seats: [seat_name]
-router.get('/reservations/:id', ReservationController.getUserReservations);
+router.get('/api/list/:id', ReservationController.getUserReservations);
 
 //filters for everyone
 //req.query: creationTimeStart, creationTimeEnd, roomName, building, reservationTimeStart, reservationTimeEnd, seatCount

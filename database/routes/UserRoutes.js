@@ -84,8 +84,8 @@ router.get("/landing", (req, res) => {
 
 router.get("/profile-settings", UserController.showProfile);
 router.get("/account-security", UserController.showProfileAccountSecurity);
-router.get("/reservations", UserController.showProfileReservations);
 router.get("/add-reservation", UserController.addReservation);
+router.get("/account-reserve", UserController.showProfileReservations);
 
 
 module.exports = router

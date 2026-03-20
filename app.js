@@ -38,7 +38,7 @@ app.use(express.static(path.join(__dirname, ''))); // serve everything in projec
 
 app.use('/admin', adminRoutes)
 app.use('/broken', brokenRoutes)
-app.use('/reservation', reservationRoutes)
+app.use('/reservations', reservationRoutes)
 app.use('/room', roomRoutes)
 app.use('/seat', seatRoutes)
 app.use('/user', userRoutes)

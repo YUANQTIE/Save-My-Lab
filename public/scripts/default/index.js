@@ -1,6 +1,6 @@
 $(document).ready(function() {
     console.log("Script Loaded and Ready");
-
+    
     $("#loginBtn").on("click", async function(e) {
         e.preventDefault();
 
@@ -82,4 +82,21 @@ $(document).ready(function() {
             alert("An error occurred. Check the F12 console.");
         }
     });
+
+    $("#show_password_btn").on("click", async function(e) {
+        e.preventDefault();
+        const eyeIcons = $("#show_password_btn").find('path, line, circle');
+        const type = $("#passwordInput").attr('type') === 'password' ? 'text' : 'password';
+        $("#passwordInput").attr('type', type);
+
+        eyeIcons.each(function() {
+            if ($(this).hasClass('hs-password-active:hidden')) {
+                $(this).toggleClass('hidden');
+            } else if ($(this).hasClass('hs-password-active:block')) {
+                $(this).toggleClass('hidden');
+            }
+        });
+    });
+
+
 });
