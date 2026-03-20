@@ -119,8 +119,6 @@ function weekView() {
 
   dateInput.setAttribute('min', today);
   dateInput.setAttribute('max', nextWk);
-  //dateInput.setAttribute('max', nextWk);
-
 }
 
 
