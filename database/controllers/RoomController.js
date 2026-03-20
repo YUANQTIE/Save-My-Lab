@@ -42,6 +42,7 @@ exports.getAllBuildings = async (req, res) =>{
 exports.getRoomInBuilding = async (req, res) =>{
     try{
         const rooms = await Room.find( { building : req.query.buildingName }).select("room_name");
+        console.log(rooms)
         res.json(rooms);
     } catch (err){
         console.error(err.message);
@@ -56,6 +57,9 @@ exports.getRoomInBuilding = async (req, res) =>{
 
 exports.getSeatStatus = async (req, res) => {
     try {
+        console.log("i got here")
+
+        console.log(req.query.timeStart, req.query.timeEnd);
         const timeStart = new Date(req.query.timeStart + "Z");
         const timeEnd = new Date(req.query.timeEnd + "Z");
 

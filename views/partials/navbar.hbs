@@ -68,10 +68,10 @@
     console.log("Navbar Script running");
     const url = new URLSearchParams(window.location.search);
     const userId = url.get('id');
-    $("#profile").on("click", async function (e) {
+    $("#reserve").on("click", async function (e) {
       e.preventDefault();
       try {
-        window.location.href = `/user/profile-settings?id=${userId}`
+        window.location.href = `/user/add-reservation?id=${userId}`
       } catch (err) {
         console.error("Login Error:", err);
         alert("An error occurred. Check the F12 console.");

@@ -85,9 +85,7 @@ router.get("/landing", (req, res) => {
 router.get("/profile-settings", UserController.showProfile);
 router.get("/account-security", UserController.showProfileAccountSecurity);
 router.get("/reservations", UserController.showProfileReservations);
-router.get("/student-add-reservation", (req, res) => {
-    res.sendFile(path.join(__dirname, "..", "..", "views", "user", "student-add-reservation.html"));
-});
+router.get("/add-reservation", UserController.addReservation);
 
 
 module.exports = router

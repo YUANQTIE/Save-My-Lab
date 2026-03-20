@@ -91,6 +91,17 @@ exports.showProfileReservations = async(req, res) => {
   }
 }
 
+exports.addReservation = async(req, res) => {
+  try {
+    const userData = await User.findById(req.query.id).lean();
+    console.log(userData)
+    res.render('user/student-add-reservation', {user: userData});
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Error');
+  }
+}
+
 //Get Profile of User
 exports.getIdGivenEmail = async (req, res) => {
   try {

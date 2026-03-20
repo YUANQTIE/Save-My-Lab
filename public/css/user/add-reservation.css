@@ -96,7 +96,6 @@ h2 {
   background-position: center;
   background-repeat: no-repeat;
   opacity: 0.55;                      
-  pointer-events: none;               
 }
 
 .seats-enabled .seat {
@@ -106,13 +105,11 @@ h2 {
 
 .seat.blue {
   background-image: url("../../images/computer-blue.svg");
-  pointer-events: none;
   cursor: default;
 }
 
 .seat.red {
   background-image: url("../../images/computer-red.svg");
-  pointer-events: none;
   cursor: default;
 }
 
@@ -120,6 +117,52 @@ h2 {
   background-image: url("../../images/computer-green.svg");
   pointer-events: auto;
   cursor: pointer;
+}
+
+.seat.gray {
+  background-image: url("../../images/computer-gray.svg");
+  pointer-events: auto;
+  cursor: default;
+}
+
+.seat.cursor-pointer, 
+.seat.green {
+  pointer-events: auto;
+  opacity: 1;
+}
+
+.seat[data-name] {
+  position: absolute;
+}
+
+.seat:hover::after {
+  content: attr(title); 
+  position: absolute;
+  bottom: 120%; 
+  left: 50%;
+  transform: translateX(-50%);
+  
+  background-color: rgba(0, 0, 0, 0.85);
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  white-space: nowrap; 
+  z-index: 100; 
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  pointer-events: none; 
+}
+
+.seat:hover::before {
+  content: "";
+  position: absolute;
+  bottom: 105%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: rgba(0, 0, 0, 0.85) transparent transparent transparent;
+  z-index: 100;
 }
 
 /* LEFT PANEL */
@@ -249,60 +292,31 @@ footer {
 }
 
 
-/* MODAL DISPLAY */
-
+/* Parent modal fills the screen and centers the card */
 .modal {
   position: fixed;
   inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0,0,0,0.3); /* dark transparent overlay */
+  z-index: 999999;
 }
 
+/* Optional: separate backdrop layer if needed */
 .modal-backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(0,0,0,0.2);
+  background: rgba(0,0,0,0.3);
   z-index: 1;
 }
 
+/* Card always on top */
 .modal-card {
   position: relative;
-  z-index: 2;
   background: white;
-  width: 480px;
-  margin: 15vh auto;
-  border-radius: 12px;
-  border: 2px solid #bdbdbd;
-}
-
-.modal-head {
-  background: #d9d9d9;
-  padding: 12px;
-  display: flex;
-  justify-content: space-between;
-}
-
-.modal-body { 
-  padding: 16px; 
-}
-
-.seat-grid {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.seat-display {
-  border: 2px solid #7f7f7f;
-  padding: 8px 12px;
-  border-radius: 999px;
-}
-
-.confirm-actions{
-  display:flex;
-  justify-content:flex-end;
-  gap:10px;
-  margin-top:14px;
-}
-
-.confirm-text{
-  margin: 0;
+  width: 300px;
+  padding: 20px;
+  border-radius: 8px;
+  z-index: 2;
 }
