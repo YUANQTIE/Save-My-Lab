@@ -1,0 +1,17 @@
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+    }
+
+    .background {
+        background-image:
+            linear-gradient(rgba(16, 51, 4, 0.6), rgba(16, 51, 4, 0.6)),
+            url("../../images/dlsubg1.jpg");
+
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        height: 100vh;
+    }

@@ -1,0 +1,184 @@
+<body class="bg-white">
+  <div class="flex flex-row">
+    <!-- Left Side -->
+    <div class="flex flex-col w-1/2 h-auto">
+      <!-- Search Bar -->
+      <form class="max-w-md mt-7 ml-16">
+        <label for="search" class="block mb-2.5 text-sm font-medium text-heading sr-only ">Search User</label>
+        <div class="relative">
+          <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+            <svg class="w-4 h-4 text-body" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+              fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
+                d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
+            </svg>
+          </div>
+          <input type="search" id="search"
+            class="rounded-lg block w-full p-3 ps-9 bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand shadow-xs placeholder:text-body"
+            placeholder="Search User" required />
+        </div>
+      </form>
+
+      <!-- User Profile Image -->
+      <div class="relative">
+        <img id="profile_image" class="w-[220px] h-48 mt-10 ml-[255px] rounded-[50%]" src="{{user.profile_picture}}"
+          alt="User Image">
+      </div>
+
+      <!-- File Input -->
+      <div class="flex flex-col w-[200px] mt-[10px] ml-[270px] absolute top-[351px] left-[146px]">
+        <label for="input_file" class="cursor-pointer">
+          <svg class="w-[30px] h-[30px]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+            stroke-width="1.5" stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+          </svg></label>
+        <input id="input_file"
+          class="hidden cursor-pointer bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full shadow-xs placeholder:text-body"
+          id="file_input" name="profile_picture" type="file" accept="image/jpeg, image/jpg, image/png">
+      </div>
+
+
+
+      <!-- Username -->
+      <div class="ml-2 mt-10 relative h-auto w-auto bg-gray-200">
+        <span id="profile_username" class="font-bold absolute inset-0 flex items-center justify-center text-2xl">
+          {{user.username}}
+        </span>
+      </div>
+
+      <!-- Title -->
+      <div class="ml-2 mt-8 relative h-auto w-auto bg-gray-200">
+        <span class="absolute inset-0 flex items-center justify-center text-md">
+          Student
+        </span>
+      </div>
+
+      <!-- Profile Settings -->
+      <a href="" id="profile-settings"
+        class="flex relative mt-10 absolute inset-0 flex items-center justify-center space-x-1 border border border-solid w-[170px] h-[30px] rounded-xl bg-[#a2cbb7] ml-[280px]">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+          <path fill-rule="evenodd"
+            d="M7.5 6a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM3.751 20.105a8.25 8.25 0 0 1 16.498 0 .75.75 0 0 1-.437.695A18.683 18.683 0 0 1 12 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 0 1-.437-.695Z"
+            clip-rule="evenodd" />
+        </svg>
+
+        <span class="text-md font-bold">
+          Profile Settings
+        </span>
+      </a>
+
+      <!-- Reservations -->
+      <a href="" id="reservations"
+        class="flex relative mt-4 absolute inset-0 flex items-center justify-center space-x-1 mr-4">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+          class="size-6">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M6.75 2.994v2.25m10.5-2.25v2.25m-14.252 13.5V7.491a2.25 2.25 0 0 1 2.25-2.25h13.5a2.25 2.25 0 0 1 2.25 2.25v11.251m-18 0a2.25 2.25 0 0 0 2.25 2.25h13.5a2.25 2.25 0 0 0 2.25-2.25m-18 0v-7.5a2.25 2.25 0 0 1 2.25-2.25h13.5a2.25 2.25 0 0 1 2.25 2.25v7.5m-6.75-6h2.25m-9 2.25h4.5m.002-2.25h.005v.006H12v-.006Zm-.001 4.5h.006v.006h-.006v-.005Zm-2.25.001h.005v.006H9.75v-.006Zm-2.25 0h.005v.005h-.006v-.005Zm6.75-2.247h.005v.005h-.005v-.005Zm0 2.247h.006v.006h-.006v-.006Zm2.25-2.248h.006V15H16.5v-.005Z" />
+        </svg>
+
+        <span class="text-md">
+          Reservations
+        </span>
+      </a>
+
+      <!-- Account Security -->
+      <a href="" id="account-security"
+        class="flex relative mt-5 absolute inset-0 flex items-center justify-center space-x-1 ml-[8px]">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+          class="size-6">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+        </svg>
+
+        <span class="text-md">
+          Account Security
+        </span>
+      </a>
+    </div>
+
+    <!-- Right Side -->
+    <div class="flex flex-col w-1/2">
+      <span class="mt-10 text-2xl font-bold">
+        Personal Information
+      </span>
+
+      <!-- Username Input -->
+      <span class="mt-3 text-xl">
+        Username
+      </span>
+
+      <div class="mt-2 w-[300px]">
+        <div id="username_border"
+          class="flex items-center rounded-md bg-white pl-1 outline outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-green-600">
+          <input id="username" type="text" name="username" placeholder={{user.username}}
+            class="rounded-md min-w-0 grow py-1.5 pr-3 pl-2 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6" />
+        </div>
+      </div>
+
+      <!-- ID Number -->
+      <span class="mt-5 text-xl">
+        ID Number
+      </span>
+
+      <div class="mt-2 w-[300px]">
+        <div
+          class="flex items-center rounded-md bg-white pl-1 outline outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-gray-300">
+          <input id="idNumber" type="text" name="email" placeholder={{user.id_number}} readonly
+            class="rounded-md min-w-0 grow py-1.5 pr-3 pl-2 text-base text-gray-900 placeholder:text-black focus:outline-none sm:text-sm/6 cursor-not-allowed" />
+        </div>
+      </div>
+
+      <!-- Email -->
+      <span class="mt-5 text-xl">
+        Email
+      </span>
+
+      <div class="mt-2 w-[300px]">
+        <div
+          class="flex items-center rounded-md bg-white pl-1 outline outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-gray-300">
+          <input id="email" type="text" name="email" placeholder={{user.email}} readonly
+            class="rounded-md min-w-0 grow py-1.5 pr-3 pl-2 text-base text-gray-900 placeholder:text-black focus:outline-none sm:text-sm/6 cursor-not-allowed" />
+        </div>
+      </div>
+
+
+      <!-- Biography Input -->
+      <span class="mt-5 text-xl">
+        Biography
+      </span>
+      <textarea id="biography" rows="4"
+        class="mt-2 rounded-md w-[500px] h-[200px] bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block p-2 shadow-xs placeholder:text-body"
+        placeholder="Biography">{{user.bio}}</textarea>
+
+      <!-- Error -->
+      <div id="error"
+        class="hidden mt-3 w-[370px] h-[40px] bg-red-100 border border-red-400 text-red-700 px-[10px] py-[5px] rounded relative">
+        <strong id="error_header" class="text-xs font-bold">Error!</strong>
+        <span id="error_text" class="text-xs block sm:inline"></span>
+        <span id="error_button" class="absolute px-[10px] py-[4px]">
+          <svg class="fill-current h-[20px] w-[20px] text-red-500" role="button" xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20">
+            <title>Close</title>
+            <path
+              d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" />
+          </svg>
+        </span>
+      </div>
+
+
+      <!-- Save Changes -->
+      <button id="save_changes"
+        class="mt-4 w-[120px] h-[40px] rounded-md text-white bg-green-800 transition delay-150 duration-300 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-green-700 ...">
+        Save Changes
+      </button>
+
+    </div>
+
+  </div>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="/scripts/user/profile-settings.js"></script>
+
+</body>
+
+</html>

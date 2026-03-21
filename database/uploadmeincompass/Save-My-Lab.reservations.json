@@ -1,0 +1,162 @@
+[
+  {
+  "_id": {
+    "$oid": "69aa7b6b4fff8cf6f341e77f"
+  },
+  "creation_timestamp": {
+    "$date": "2026-03-06T12:00:00.000Z"
+  },
+  "reservation_start_timestamp": {
+    "$date": "2026-03-06T14:00:00.000Z"
+  },
+  "reservation_end_timestamp": {
+    "$date": "2026-03-06T16:00:00.000Z"
+  },
+  "reservedBy": {
+    "$oid": "699d7c3d3232deb9582da6fd"
+  },
+  "seats": [
+    {
+      "$oid": "69abd435f7695f438b720e4b"
+    },
+    {
+      "$oid": "69abd435f7695f438b720e4d"
+    }
+  ],
+  "checkedIn": false,
+  "reservedByModel": "User",
+  "anonymous": false
+},
+{
+  "_id": {
+    "$oid": "69aa7be24fff8cf6f341e784"
+  },
+  "creation_timestamp": {
+    "$date": "2026-03-06T12:00:00.000Z"
+  },
+  "reservation_start_timestamp": {
+    "$date": "2026-03-09T18:30:00.000Z"
+  },
+  "reservation_end_timestamp": {
+    "$date": "2026-03-09T20:00:00.000Z"
+  },
+  "reservedBy": {
+    "$oid": "699d7c3d3232deb9582da6fd"
+  },
+  "seats": [
+    {
+      "$oid": "69abd46aeac7f0a65c49ba63"
+    },
+    {
+      "$oid": "69abd46aeac7f0a65c49ba65"
+    },
+    {
+      "$oid": "69abd46aeac7f0a65c49ba67"
+    },
+    {
+      "$oid": "69abd46aeac7f0a65c49ba69"
+    }
+  ],
+  "checkedIn": false,
+  "reservedByModel": "User",
+  "anonymous": false
+},
+{
+  "_id": {
+    "$oid": "69aa80fd4fff8cf6f341e79a"
+  },
+  "creation_timestamp": {
+    "$date": "2026-03-06T11:00:00.000Z"
+  },
+  "reservation_start_timestamp": {
+    "$date": "2026-03-11T13:00:00.000Z"
+  },
+  "reservation_end_timestamp": {
+    "$date": "2026-03-11T13:00:00.000Z"
+  },
+  "reservedBy": {
+    "$oid": "699d7c3d3232deb9582da6fe"
+  },
+  "seats": [
+    {
+      "$oid": "69abdd86ca895e82fea744b2"
+    },
+    {
+      "$oid": "69abdd86ca895e82fea744b4"
+    },
+    {
+      "$oid": "69abdd86ca895e82fea744b6"
+    }
+  ],
+  "checkedIn": false,
+  "reservedByModel": "User",
+  "anonymous": true
+},
+{
+  "_id": {
+    "$oid": "69aa82334fff8cf6f341e79d"
+  },
+  "creation_timestamp": {
+    "$date": "2026-03-06T12:00:00.000Z"
+  },
+  "reservation_start_timestamp": {
+    "$date": "2026-03-14T14:00:00.000Z"
+  },
+  "reservation_end_timestamp": {
+    "$date": "2026-03-14T16:00:00.000Z"
+  },
+  "reservedBy": {
+    "$oid": "699d786f3232deb9582da6e7"
+  },
+  "seats": [
+    {
+      "$oid": "69abdde35abbfff628fa0920"
+    },
+    {
+      "$oid": "69abdde35abbfff628fa0922"
+    },
+    {
+      "$oid": "69abdde35abbfff628fa0924"
+    },
+    {
+      "$oid": "69abdde35abbfff628fa0926"
+    }
+  ],
+  "checkedIn": false,
+  "reservedByModel": "Admin",
+  "anonymous": true
+},
+{
+  "_id": {
+    "$oid": "69aa84af4fff8cf6f341e7a5"
+  },
+  "creation_timestamp": {
+    "$date": "2026-03-06T12:00:00.000Z"
+  },
+  "reservation_start_timestamp": {
+    "$date": "2026-03-06T08:00:00.000Z"
+  },
+  "reservation_end_timestamp": {
+    "$date": "2026-03-06T10:00:00.000Z"
+  },
+  "reservedBy": {
+    "$oid": "699d7c3d3232deb9582da6fe"
+  },
+  "seats": [
+    {
+      "$oid": "69abde056b387e3a2a233d05"
+    },
+    {
+      "$oid": "69abde056b387e3a2a233d07"
+    },
+    {
+      "$oid": "69abde056b387e3a2a233d09"
+    },
+    {
+      "$oid": "69abde056b387e3a2a233d0b"
+    }
+  ],
+  "checkedIn": false,
+  "reservedByModel": "User",
+  "anonymous": false
+}]
