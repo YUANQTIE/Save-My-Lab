@@ -88,7 +88,7 @@
           </span>
 
           <div id="username_border"
-            class="max-w-[280px] flex items-center rounded-md bg-white pl-1 outline outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-green-800">
+            class="max-w-m flex items-center rounded-md bg-white pl-1 outline outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-green-800">
             <input id="username" type="text" name="username" placeholder={{user.username}}
               class="py-1.5 px-4 bg-transparent outline-none text-slate-900 placeholder:text-slate-400" />
           </div>
@@ -96,7 +96,7 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <!-- ID Number -->
-          <div class="w-[280px]">
+          <div>
             <span class="block text-md font-semibold text-slate-700 mb-2">
               ID Number
             </span>
@@ -109,7 +109,7 @@
           </div>
 
           <!-- Email -->
-          <div class="w-[280px]">
+          <div>
             <span class="block text-md font-semibold text-slate-700 mb-2">
               Email
             </span>
@@ -133,7 +133,7 @@
             Biography
           </span>
           <textarea id="biography" rows="4"
-            class="mt-2 rounded-md w-[500px] h-[200px] bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block p-2 shadow-xs placeholder:text-body"
+            class="w-full mt-2 rounded-md bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block p-2 shadow-xs placeholder:text-body"
             placeholder="Biography">{{user.bio}}</textarea>
         </div>
 
