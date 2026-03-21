@@ -99,9 +99,6 @@ exports.getUserReservations = async (req, res) =>{
             reservations = reservations.filter(reserve => reserve.seats[0].room_id.building === building); //filters by the building
         }
 
-
-        reservations = reservations.filter(reserve => reserve.anonymous === false)
-
         const result = reservations.map(reserve => ({ //map the final json
             reservation_id: reserve._id,
             creation_timestamp: reserve.creation_timestamp,
