@@ -57,8 +57,6 @@ exports.getRoomInBuilding = async (req, res) =>{
 
 exports.getSeatStatus = async (req, res) => {
     try {
-        console.log("i got here")
-
         console.log(req.query.timeStart, req.query.timeEnd);
         const timeStart = new Date(req.query.timeStart + "Z");
         const timeEnd = new Date(req.query.timeEnd + "Z");
@@ -81,7 +79,7 @@ exports.getSeatStatus = async (req, res) => {
         reservedSeats.forEach(resv => {
             resv.seats.forEach(seatId => {
                 let ownerDisplay = resv.reservedBy?.email || "sheeesh";
-                if (resv.anonymous) {
+                if (resv.anonymous === true) {
                     ownerDisplay = "Anonymous";
                 }
                 reservedSeatMap[seatId.toString()] = {
