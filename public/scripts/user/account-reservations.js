@@ -255,12 +255,12 @@ async function viewRow(e) {
             const seatNumber = seat.slice(-2)
             const seatChip = document.createElement('span');
             seatChip.className = `
-        w-[80px] py-2 rounded-xl font-semibold text-sm
+        w-[120px] py-2 rounded-xl font-semibold text-sm
         bg-[#f0f4f2] text-[#1e3a2a] border border-[#1e3a2a]/20
         shadow-sm px-[14px] mr-[7px]
     `;
             // Add an icon for a "premium" touch
-            seatChip.innerHTML = `<i class="fa-solid fa-couch opacity-70"></i> Seat ${seatNumber}`;
+            seatChip.innerHTML = `<i class="fa-solid fa-couch opacity-70"></i> Computer ${seatNumber}`;
             view_modal_body.appendChild(seatChip)
         });
     }
