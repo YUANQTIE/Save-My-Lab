@@ -187,9 +187,17 @@ function addRow(reservationId, building, room, date, startTime, endTime) {
             <td class="border-b border-default w-[120px] px-6 py-4">
               ${endTime}
             </td>
-        <td class="border-b border-default px-6 py-4 space-x-1.5">
-              <a href="#" id="view_button" class="view_button_class font-medium text-fg-brand hover:underline">View</a>
-              <a href="#" id="edit_button" class="edit_button_class font-medium text-fg-brand hover:underline">Edit</a>
+        <td class="border-b border-default px-4 py-4 space-x-1.5">
+            <div class="flex items-center">
+              <button id="view_button" class = "w-8 h-8 mr-2 flex items-center justify-center view_button_class text-slate-600 hover:bg-[#34493e]/5 hover:border-[#34493e]/20 hover:text-[#34493e]">
+                <img src="/images/seat.png" alt="View" class="w-5 h-5">
+              </button>
+              <button id="edit_button" class = "edit_button_class w-8 h-8 mr-2 flex items-center justify-center text-slate-600 hover:bg-[#34493e]/5 hover:border-[#34493e]/20 hover:text-[#34493e]">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                </svg>
+              </button>
+            </div>
         </td>
     `;
 
@@ -251,12 +259,15 @@ function changePicture() {
     }
 }
 
-filterDropdownButton.addEventListener('click', function () {
+
+
+filterDropdownButton.addEventListener('click', function (event) {
     if (filterDropdownMenu.classList.contains('hidden')) {
         filterDropdownMenu.classList.remove('hidden');
     } else {
         filterDropdownMenu.classList.add('hidden');
     }
+    event.stopPropagation();
 });
 
 building_filter.addEventListener("click", function () {
@@ -346,5 +357,11 @@ filterSearchButton.addEventListener("click", async function () {
         if (Array.isArray(filteredReservations)) {
             showReservations(filteredReservations);
         }
+    }
+});
+
+window.addEventListener('click', (event) => {
+    if (!filterDropdownMenu.classList.contains('hidden')) {
+        filterDropdownMenu.classList.add('hidden');
     }
 });

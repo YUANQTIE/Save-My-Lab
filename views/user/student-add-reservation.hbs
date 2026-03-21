@@ -3,7 +3,7 @@
 </head>
 
 <div class="page">
-  <span class="label-text">Add Reservation</span>
+  <span class="label-text">Reserve</span>
   <div class="content">
     <div class="layout-panel">
 
@@ -361,7 +361,8 @@
     </div>
   </div>
 
-  <div id="confirmModal" class="fixed inset-0 z-[9999] flex items-center justify-center p-4 hidden">
+  {{!-- Confirm Modal --}}
+  <div id="confirmModal" class="hidden fixed inset-0 z-[9999] flex items-center justify-center p-4">
     <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm modal-backdrop"></div>
 
     <div
@@ -409,9 +410,74 @@
           </label>
 
           <button id="confirmOkay" type="button"
-            class="bg-[#1e3a2a] hover:bg-[#2d523d] text-white font-bold py-2.5 px-8 rounded-xl transition-all shadow-md hover:shadow-lg active:scale-95">
-            Confirm
+            class="flex items-center bg-[#1e3a2a] hover:bg-[#2d523d] text-white font-bold py-2.5 px-8 rounded-xl transition-all shadow-md hover:shadow-lg active:scale-95">
+            <svg aria-hidden="true" id="loading" class="hidden w-5 h-5 mr-2 animate-spin text-white/20 fill-white" viewBox="0 0 100 101"
+              fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                fill="currentColor" />
+              <path
+                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                fill="currentColor" />
+            </svg>
+            <span id="confirmText">Confirm</span>
           </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {{!-- Success Modal --}}
+  <div id="successModal" tabindex="-1" class="hidden fixed inset-0 z-[9999] flex items-center justify-center p-4">
+    <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm modal-backdrop"></div>
+    <div class="relative p-4 w-full max-w-md max-h-full">
+      <div
+        class="relative z-10 w-full max-w-md bg-white rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] overflow-hidden border border-gray-100">
+        <button type="button" id="closeSuccessModal"
+          class="absolute top-3 end-2.5 text-body bg-transparent hover:bg-neutral-tertiary hover:text-heading rounded-base text-sm w-9 h-9 ms-auto inline-flex justify-center items-center"
+          data-modal-hide="popup-modal">
+          <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+            viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M6 18 17.94 6M18 18 6.06 6" />
+          </svg>
+          <span class="sr-only">Close modal</span>
+        </button>
+        {{!-- Checkmark --}}
+        <div class="p-4 md:p-5 text-center">
+          <svg class="w-12 h-12 mx-auto mb-4 text-green-700" viewBox="0 0 24 24" fill="currentColor"
+            xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd"
+              d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z"
+              clip-rule="evenodd" />
+          </svg>
+          <h3 class="mb-6 text-body">Reservation successful</h3>
+          {{!-- Contents --}}
+          <div class="grid grid-cols-2 gap-4 mb-6">
+            <div class="space-y-1">
+              <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Location</p>
+              <p class="text-sm font-semibold text-slate-800" id="successVenue">Gokongwei Building</p>
+              <p class="text-xs text-slate-500" id="successRoom">Room G201</p>
+            </div>
+            <div class="space-y-1 border-l pl-4 border-slate-100">
+              <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Schedule</p>
+              <p class="text-sm font-semibold text-slate-800" id="successDate">March 25, 2026</p>
+              <p class="text-xs text-slate-500" id="successTime">14:00 - 15:00</p>
+            </div>
+            <div class="w-[370px] bg-slate-50 rounded-xl p-4 border border-slate-100 mb-6">
+              <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">Selected Computers</p>
+              <div id="successSeats" class="flex flex-wrap gap-2">
+                <span
+                  class="px-2 py-1 bg-white border border-slate-200 rounded text-xs font-bold text-[#1e3a2a]">G201-31</span>
+              </div>
+            </div>
+          </div>
+          <div class="flex items-center space-x-4 justify-center">
+            <button id="successConfirm" type="button"
+              class="bg-[#1e3a2a] hover:bg-[#2d523d] text-white font-bold py-2.5 px-8 rounded-xl transition-all shadow-md hover:shadow-lg active:scale-95">
+              Confirm
+            </button>
+          </div>
         </div>
       </div>
     </div>
