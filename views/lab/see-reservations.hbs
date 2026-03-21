@@ -1,0 +1,114 @@
+<div class="page p-6 bg-white">
+  <p class="text-xl font-bold text-slate-800 mb-6">All Reservations</p>
+
+    <div class="bg-slate-50 p-4 rounded-xl mb-6 border border-slate-100 shadow-sm">
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3 items-center">
+                <select id ="buildingInput" class="select select-bordered select-xs w-full column-filter">
+                    <option value="">Input Building</option>
+                    <option value="Gokongwei Building">Gokongwei Building</option>
+                    <option value="St. La Salle Hall">St. La Salle Hall</option>
+                    <option value="Don Enrique T. Yuchengco Hall">Don Enrique T. Yuchengco Hall</option>
+                    <option value="Br. Andrew Gonzales Hall">Br. Andrew Gonzales Hall</option>
+                </select>
+
+                <select id="roomInput" class="select select-bordered select-xs w-full column-filter">
+                    <option value="">Input Room</option>
+                </select>
+
+                <input id="reservationDateInput" type="date" class="input input-bordered input-xs w-full column-filter">
+
+                <input id="emailInput" type="text" placeholder="Search by email" class="input input-bordered input-xs w-full column-filter">
+
+                <div class="flex items-center gap-1">
+                    <span class="text-[10px] font-bold uppercase text-slate-400">Start</span>
+                    <div class="flex items-center gap-1 flex-1">
+                        <select id="startHr" class="select select-bordered select-xs flex-1 time-filter">
+                            <option value="">Hr</option>
+                            <option value="07">7</option><option value="08">8</option><option value="09">9</option>
+                            <option value="10">10</option><option value="11">11</option><option value="12">12</option>
+                            <option value="13">1</option><option value="14">2</option><option value="15">3</option>
+                            <option value="16">4</option><option value="17">5</option><option value="18">6</option>
+                            <option value="19">7</option><option value="20">8</option>
+                        </select>
+                        <span class="text-slate-400 font-bold">:</span>
+                        <select id="startMin" class="select select-bordered select-xs flex-1 time-filter">
+                            <option value="">Min</option>
+                            <option value="00">00</option>
+                            <option value="30">30</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-1">
+                    <span class="text-[10px] font-bold uppercase text-slate-400">End</span>
+                    <div class="flex items-center gap-1 flex-1">
+                        <select id="endHr" class="select select-bordered select-xs flex-1 time-filter">
+                            <option value="">Hr</option>
+                            <option value="07">7</option><option value="08">8</option><option value="09">9</option>
+                            <option value="10">10</option><option value="11">11</option><option value="12">12</option>
+                            <option value="13">1</option><option value="14">2</option><option value="15">3</option>
+                            <option value="16">4</option><option value="17">5</option><option value="18">6</option>
+                            <option value="19">7</option><option value="20">8</option><option value="21">9</option>
+                        </select>
+                        <span class="text-slate-400 font-bold">:</span>
+                        <select id="endMin" class="select select-bordered select-xs flex-1 time-filter">
+                            <option value="">Min</option>
+                            <option value="00">00</option>
+                            <option value="30">30</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button id="resetBtn" class="btn btn-ghost btn-xs text-slate-500 hover:bg-slate-200">Reset</button>
+            </div>
+    </div>
+
+    <div class="overflow-x-auto w-full px-4">
+        <table id="reservationTable" class="table w-full border-collapse border border-slate-300">
+            <thead>
+                <tr class="">
+                    <th class="py-3 text-slate-800 pl-[19px] font-medium text-center">Building</th>
+                    <th class="py-3 text-slate-800 pl-[19px] font-medium text-center">Room</th>
+                    <th class="py-3 text-slate-800 pl-[19px] font-medium text-center">Date</th>
+                    <th class="py-3 text-slate-800 pl-[19px] font-medium text-center">Start Time</th>
+                    <th class="py-3 text-slate-800 pl-[19px] font-medium text-center">End Time</th>
+                    <th class="py-3 text-slate-800 pl-[19px] font-medium text-center">Reserved By</th>
+                    <th class="py-3 text-slate-800 pl-[19px] font-medium text-center">Seats</th>
+                    <th class="py-3 text-slate-800 pl-[19px] font-medium text-center">Action</th>
+                </tr>
+            </thead>
+            
+            <tbody id="tbody" class="text-slate-700">
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div id="LynnFromLasVegasModals" class="fixed inset-0 z-[9999] flex items-center justify-center p-4 hidden">
+    <div class="absolute inset-0 bg-black/60 modal-backdrop"></div>
+    <div class="relative z-10 w-full max-w-md bg-white rounded-xl shadow-2xl overflow-hidden">
+        <div class="bg-green-800 px-6 py-4 flex justify-between items-center border-b border-gray-300">
+            <h3 class="font-bold text-white">List of Seats</h3>
+            <button type="button" id="hide_view_modal" class="close-confirm text-body bg-transparent hover:bg-neutral-tertiary hover:text-heading rounded-base text-sm w-9 h-9 ms-auto inline-flex justify-center items-center" data-modal-hide="static-modal">
+                <svg class="fill-white w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                viewBox="0 0 24 24">
+                <path stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M6 18 17.94 6M18 18 6.06 6" />
+                </svg>
+            </button>
+        </div>
+
+        <div class="p-6 space-y-3">
+            <div class="modal-body">
+                <div class="seat-grid" id="chosen-seats"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="/scripts/lab/see-reservations.js"></script>
+
+  
+  

@@ -75,9 +75,10 @@ exports.getUserReservations = async (req, res) =>{
             };
         }
 
-        if (seatCount) {
+        if (seatCount && seatCount !== "undefined") {
             firstStage.seats = { $size: Number(seatCount) }; //filters the number of seats
         }
+
 
         let reservations = await Reservation.find(firstStage) //gets the first stage of filtering
         .populate({
@@ -88,13 +89,16 @@ exports.getUserReservations = async (req, res) =>{
             }
         });
 
+
         if (roomName) {
             reservations = reservations.filter(reserve => reserve.seats[0].room_id.room_name === roomName); //filters by the room name
         }
 
+
         if (building) {
             reservations = reservations.filter(reserve => reserve.seats[0].room_id.building === building); //filters by the building
         }
+
 
         reservations = reservations.filter(reserve => reserve.anonymous === false)
 
@@ -166,6 +170,8 @@ exports.getFilteredReservations = async (req, res) =>{
         const reservationTimeEnd = req.query.reservationTimeEnd;
         const seatCount = req.query.seatCount;
 
+        console.log(reservedBy, creationTimeStart, creationTimeEnd, roomName, building, reservationTimeStart, reservationTimeEnd, seatCount)
+
         let firstStage = {}; //filters by username
 
         if (creationTimeStart && creationTimeEnd) {
@@ -213,17 +219,25 @@ exports.getFilteredReservations = async (req, res) =>{
             reservations = reservations.filter(reserve => reserve.seats[0].room_id.building === building); //filters by the building
         }
 
-        const result = reservations.map(reserve => ({ //map the final json
-            reservation_id: reserve._id,
-            creation_timestamp: reserve.creation_timestamp,
-            reservation_start_timestamp: reserve.reservation_start_timestamp,
-            reservation_end_timestamp: reserve.reservation_end_timestamp,
-            reservedBy: reserve.reservedBy,
-            checkedIn: reserve.checkedIn,
-            room_name: reserve.seats[0].room_id.room_name,
-            building: reserve.seats[0].room_id.building,
-            seats: reserve.seats.map(seat => seat.seat_name)
-        }));
+        const EIGHT_HOURS_IN_MS = 8 * 60 * 60 * 1000;
+
+        const result = reservations.map(reserve => {
+            const adjustedStart = new Date(reserve.reservation_start_timestamp.getTime() - EIGHT_HOURS_IN_MS);
+            const adjustedEnd = new Date(reserve.reservation_end_timestamp.getTime() - EIGHT_HOURS_IN_MS);
+            
+            return { 
+                reservation_id: reserve._id,
+                creation_timestamp: reserve.creation_timestamp,
+                reservation_start_timestamp: adjustedStart.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }),
+                reservation_end_timestamp: adjustedEnd.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }),
+                date: adjustedStart.toLocaleDateString('en-GB'), 
+                reservedBy: reserve.reservedBy.email,
+                checkedIn: reserve.checkedIn,
+                room_name: reserve.seats[0].room_id.room_name,
+                building: reserve.seats[0].room_id.building,
+                seats: reserve.seats.map(seat => seat.seat_name)
+            };
+        });
 
         res.json(result);
 
@@ -290,9 +304,6 @@ exports.addAdminReservation = async (req, res) =>{
 
 exports.addUserReservation = async (req, res) =>{
   try {
-    console.log("i got hereeeee")
-    console.log(req.body.timeStart, req.body.timeEnd)
-    console.log(req.body.timeStart, req.body.seats)
     await Reservation.create({
       creation_timestamp: new Date(Date.now()),
       reservation_start_timestamp: req.body.timeStart + "Z",

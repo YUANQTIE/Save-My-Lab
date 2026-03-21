@@ -31,9 +31,10 @@ router.get('/:emailInput/:passwordInput', AdminController.isAdminValid);
 router.post('/add', AdminController.addAdmin);
 
 router.get("/landing", (req, res) => {
-    const id = req.query.id;
-
-    res.sendFile(path.join(__dirname, "..", "..", "views", "lab", "see-reservations.html"));
+    res.render('lab/see-reservations', {id: req.query.id, isAdmin: true})
 });
+
+router.get("/edit-computer-status", AdminController.showEditComputerStatus);
+router.get("/add-reservation", AdminController.showAddReservation);
 
 module.exports = router

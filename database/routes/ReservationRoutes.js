@@ -20,9 +20,9 @@ router.get('/api/list/:id', ReservationController.getUserReservations);
 router.get('/:reservationId/seats', ReservationController.getSeats);
 
 //filters for everyone
-//req.query: creationTimeStart, creationTimeEnd, roomName, building, reservationTimeStart, reservationTimeEnd, seatCount
+//req.query: reservedBy, creationTimeStart, creationTimeEnd, roomName, building, reservationTimeStart, reservationTimeEnd, seatCount
 //res.json: reservation_id, creation_timestamp, reservation_start_timestamp, reservation_end_timestamp, reservedBy, checkedIn, room_name, building, seats: [seat_name]
-router.get('/reservations/filter', ReservationController.getFilteredReservations);
+router.get('/reservationsAdmin/filter', ReservationController.getFilteredReservations);
 
 //checks if the user has not checkedIn on their reservation after 10 minutes (should enable the delete function)
 //req.params: id

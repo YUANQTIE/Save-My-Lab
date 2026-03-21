@@ -12,12 +12,41 @@ const User = require('../models/User.js'); // Import Admin model
 
 exports.showAdmin = async(req, res) => {
   try {
-    res.render('lab/see-reservations');
+    const adminData = await Admin.findById(req.query.id).lean();
+    res.render('lab/see-reservations', {
+      admin: adminData, 
+      isAdmin: true 
+    });
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Error');
   }
 }
+
+// Do the same for showEditComputerStatus and showAddReservation
+
+// Get and Render Profile of User for Profile Settings
+exports.showEditComputerStatus = async(req, res) => {
+  try {
+    const adminData = await Admin.findById(req.query.id).lean();
+    res.render('lab/edit-computer-status', {admin: adminData, isAdmin: true });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Error');
+  }
+}
+
+// Get and Render Profile of User for Account Security
+exports.showAddReservation = async(req, res) => {
+  try {
+    const adminData = await Admin.findById(req.query.id).lean();
+    res.render('lab/add-reservation', {admin: adminData, isAdmin: true });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Error');
+  }
+}
+
 
 exports.getAllAdmins = async (req, res) => {
   try {
