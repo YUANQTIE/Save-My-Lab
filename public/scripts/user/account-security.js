@@ -12,8 +12,9 @@ const error_button = document.getElementById("error_button");
 const border_color = "outline-gray-300";
 const error_input_border_size = "w-[250px]";
 const error_password_match_size = "w-[370px]";
-const wrong_password_classList = "hidden mt-3 w-[180px] h-[40px] bg-red-100 border border-red-400 text-red-700 px-[10px] py-[5px] rounded relative";
-const error_classList = "hidden mt-3 w-[380px] h-[40px] bg-red-100 border border-red-400 text-red-700 px-[10px] py-[5px] rounded relative";
+const wrong_password_classList = "hidden mt-3 w-[190px] h-[40px] bg-red-100 border border-red-400 text-red-700 px-[10px] py-[5px] rounded relative";
+const not_match_error_classList = "hidden mt-3 w-[380px] h-[40px] bg-red-100 border border-red-400 text-red-700 px-[10px] py-[5px] rounded relative";
+const error_classList = "hidden mt-3 w-[250px] h-[40px] bg-red-100 border border-red-400 text-red-700 px-[10px] py-[5px] rounded relative";
 const success_classList = "mt-3 w-[335px] h-[40px] bg-green-100 border border-green-400 text-green-700 px-[10px] py-[5px] rounded relative";
 const profile_image = document.getElementById("profile_image");
 const input_file = document.getElementById("input_file");
@@ -140,10 +141,8 @@ function saveChanges() {
     }
 
     if (cur_password_input.value != "" && new_password_input.value != "" && confirm_password_input.value != "") {
-        console.log(password)
         if (password != cur_password_input.value) {
             valid = false;
-            console.log("Wrong password")
             cur_password_border.classList.replace(border_color, "outline-red-300");
             error_header.innerHTML = "ERROR!"
             error_text.innerHTML = "Wrong Password";
@@ -167,7 +166,7 @@ function saveChanges() {
             new_password_border.classList.replace(border_color, "outline-red-300");
             confirm_password_border.classList.replace(border_color, "outline-red-300");
             error_text.innerHTML = "New Password and Confirm Password should match.";
-            error.classList = error_classList;
+            error.classList = not_match_error_classList;
             error_button.classList.remove("hidden");
             error.classList.remove("hidden");
             error.classList.replace(error_input_border_size, error_password_match_size);

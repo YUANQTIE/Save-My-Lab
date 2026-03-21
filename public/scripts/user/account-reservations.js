@@ -162,36 +162,6 @@ input_file.addEventListener("click", changePicture);
 
 table.addEventListener("click", viewRow);
 
-dropdownButton.addEventListener("click", function () {
-    dropdown.classList.toggle("hidden");
-});
-
-building_option.addEventListener("click", function () {
-    sort_text.innerHTML = "Building";
-    dropdown.classList.toggle("hidden");
-});
-
-room_option.addEventListener("click", function () {
-    sort_text.innerHTML = "Room";
-    dropdown.classList.toggle("hidden");
-});
-
-date_option.addEventListener("click", function () {
-    sort_text.innerHTML = "Date";
-    dropdown.classList.toggle("hidden");
-});
-
-start_time_option.addEventListener("click", function () {
-    sort_text.innerHTML = "Start Time";
-    dropdown.classList.toggle("hidden");
-});
-
-end_time_option.addEventListener("click", function () {
-    sort_text.innerHTML = "End Time";
-    dropdown.classList.toggle("hidden");
-});
-
-
 function addRow(reservationId, building, room, date, startTime, endTime) {
     const uniqueDialogId = `dialog-${reservationId}`;
 
