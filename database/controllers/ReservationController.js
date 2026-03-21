@@ -48,8 +48,6 @@ exports.getAllReservations = async (req, res) =>{
 */
 
 exports.getUserReservations = async (req, res) =>{
-    console.log("All Params:", req.params);
-    console.log("All Queries:", req.query);
     try{
         const creationTimeStart = req.query.creationTimeStart;
         const creationTimeEnd = req.query.creationTimeEnd;
@@ -121,6 +119,36 @@ exports.getUserReservations = async (req, res) =>{
         res.status(500).send('Error');
     }
 };
+
+/* 
+    Gets all seats of a reservation
+    Requires reservationId
+*/
+exports.getSeats = async (req, res) =>{
+    try{
+        const reservation = await Reservation.findById(req.params.reservationId).populate({
+            path: 'seats',
+            populate: {
+                path: 'room_id',
+                select: 'room_name building'
+            }
+        });;
+        if (!reservation) {
+            return res.status(404).json({ msg: 'Reservation not found' });
+        }
+
+        const result = {
+            seats: reservation.seats.map(seat => seat.seat_name)
+        }
+        res.json(result)
+    }
+    catch (err) {
+        console.error(err.message);
+        res.status(500).send('Error');
+    }
+};
+
+
 
 /* 
     Purpose: Filtering for all reservations (admin view)

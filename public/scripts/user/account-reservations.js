@@ -11,9 +11,13 @@ const room_option = document.getElementById("room_option");
 const date_option = document.getElementById("date_option");
 const start_time_option = document.getElementById("start_time_option");
 const end_time_option = document.getElementById("end_time_option");
+const view_modal = document.getElementById("view_modal")
+const view_modal_body = document.getElementById("view_modal_body")
+const hide_view_modal = document.getElementById("hide_view_modal")
+const confirm_okay = document.getElementById("confirm_okay")
 const url = new URLSearchParams(window.location.search);
 const userId = url.get('id');
-
+let reservations;
 $(document).ready(async function () {
     console.log("Profile-Settings Script running");
     $("#profile-settings").on("click", async function (e) {
@@ -46,7 +50,8 @@ $(document).ready(async function () {
         }
     });
 
-    const reservations = await getReservations();
+    let seats;
+    reservations = await getReservations();
     console.log(reservations)
     if (Array.isArray(reservations)) {
         const tbody = document.getElementById("tbody");
@@ -55,6 +60,7 @@ $(document).ready(async function () {
         reservations.forEach(res => {
             const startDate = new Date(res.reservation_start_timestamp);
             const endDate = new Date(res.reservation_end_timestamp);
+
             const formattedStartDate = new Intl.DateTimeFormat('en-US', {
                 month: 'long',
                 day: '2-digit',
@@ -73,6 +79,7 @@ $(document).ready(async function () {
                 hour12: true
             }).format(endDate);
             addRow(
+                res.reservation_id,
                 res.building,
                 res.room_name,
                 formattedStartDate,
@@ -99,6 +106,8 @@ async function getReservations() {
 input_file.addEventListener("click", changePicture);
 
 table.addEventListener("click", deleteRow);
+
+table.addEventListener("click", viewRow);
 
 dropdownButton.addEventListener("click", function () {
     dropdown.classList.toggle("hidden");
@@ -130,10 +139,17 @@ end_time_option.addEventListener("click", function () {
 });
 
 
-function addRow(building, room, date, startTime, endTime) {
-    tbody.innerHTML += `
-        <tr class="odd:bg-neutral-primary even:bg-neutral-secondary-soft border-b border-default">
-            <td scope="row" class="px-6 py-4 font-medium text-heading whitespace-nowrap">
+function addRow(reservationId, building, room, date, startTime, endTime) {
+    const uniqueDialogId = `dialog-${reservationId}`;
+
+    // Create the row element
+    const tr = document.createElement('tr');
+    tr.setAttribute('data-id', reservationId);
+    tr.className = "odd:bg-neutral-primary even:bg-neutral-secondary-soft border-b border-default";
+
+    // Set the internal HTML
+    tr.innerHTML = `
+        <td scope="row" class="px-6 py-4 font-medium text-heading whitespace-nowrap">
               ${building}
             </td>
             <td class="px-6 py-4">
@@ -148,13 +164,14 @@ function addRow(building, room, date, startTime, endTime) {
             <td class="w-[120px] px-6 py-4">
               ${endTime}
             </td>
-            <td class="px-6 py-4 space-x-1.5">
-              <a href="#" id="view_button" class="font-medium text-fg-brand hover:underline">View</a>
-              <a href="#" id="edit_button" class="font-medium text-fg-brand hover:underline">Edit</a>
-              <button command="show-modal" commandfor="dialog"
-                class="rounded-md bg-white py-1.5 text-fg-brand font-medium text-gray-900 hover:underline">Delete</button>
+        <td class="px-6 py-4 space-x-1.5">
+              <a href="#" id="view_button" class="view_button_class font-medium text-fg-brand hover:underline">View</a>
+              <a href="#" id="edit_button" class="view_button_class font-medium text-fg-brand hover:underline">Edit</a>
+              <button type="button" class="open-modal-btn font-medium text-fg-brand hover:underline">
+                Delete
+            </button>
               <el-dialog>
-                <dialog id="dialog" aria-labelledby="dialog-title"
+                <dialog id="${uniqueDialogId}" aria-labelledby="dialog-title"
                   class="fixed inset-0 size-auto max-h-none max-w-none overflow-y-auto bg-transparent backdrop:bg-transparent">
                   <el-dialog-backdrop
                     class="fixed inset-0 bg-gray-500/75 transition-opacity data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in"></el-dialog-backdrop>
@@ -183,9 +200,9 @@ function addRow(building, room, date, startTime, endTime) {
                         </div>
                       </div>
                       <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                        <button id="delete_button" type="button" command="close" commandfor="dialog"
+                        <button id="delete_button" type="button" onclick="this.closest('dialog').close()"
                           class="delete_button_class w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-red-500 sm:ml-3 sm:w-auto">Delete</button>
-                        <button type="button" command="close" commandfor="dialog"
+                        <button type="button" onclick="this.closest('dialog').close()"
                           class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs inset-ring inset-ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Cancel</button>
                       </div>
                     </el-dialog-panel>
@@ -193,18 +210,78 @@ function addRow(building, room, date, startTime, endTime) {
                 </dialog>
               </el-dialog>
             </td>
-          </tr>
-    `
+    `;
+
+    // ADD AN EVENT LISTENER TO THE "OPEN" BUTTON
+    tr.querySelector('.open-modal-btn').addEventListener('click', () => {
+        const dialog = tr.querySelector('dialog');
+        if (dialog) dialog.showModal();
+    });
+
+    // Append to the table body
+    tbody.appendChild(tr);
 }
 
-function deleteRow(e) {
+async function deleteRow(e) {
     const btn = e.target.closest(".delete_button_class");
+    if (!btn) return;
 
-    if (!btn) {
+
+    const row = btn.closest("tr");
+    if (!row) {
+        console.error("Could not find the parent row for this button.");
         return;
     }
 
-    btn.closest("tr").remove();
+    const reservationId = row.getAttribute('data-id');
+
+    console.log("Deleting Reservation ID:", reservationId);
+
+    row.remove();
+    const response = await fetch(`/reservations/${reservationId}/delete`, { method: 'DELETE' });
+    console.log(response)
+}
+
+async function viewRow(e) {
+    const btn = e.target.closest(".view_button_class");
+    if (!btn) return;
+
+    const row = btn.closest("tr");
+    if (!row) {
+        console.error("Could not find the parent row for this button.");
+        return;
+    }
+
+    const reservationId = row.getAttribute('data-id');
+    console.log("Viewing Reservation ID:", reservationId);
+
+    const response = await fetch(
+        `/reservations/${reservationId}/seats`
+    )
+
+    const seats = await response.json()
+    console.log(seats)
+    view_modal.classList.remove("hidden");
+
+    if (Array.isArray(seats.seats)) {
+        view_modal_body.innerHTML = "";
+
+        seats.seats.forEach(seat => {
+            console.log(seat)
+            view_modal_body.append(seat)
+            view_modal_body.append(" ")
+        });
+    }
+
+    hide_view_modal.addEventListener("click", function () {
+        view_modal.classList.add("hidden")
+    });
+
+    confirm_okay.addEventListener("click", function () {
+        view_modal.classList.add("hidden")
+    });
+
+
 }
 
 

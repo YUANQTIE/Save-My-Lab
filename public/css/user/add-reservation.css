@@ -258,7 +258,7 @@ h2 {
   border-radius: 12px;
   border: none;
   font-weight: bold;
-  background: #3b7f13;
+  background: oklch(39.3% 0.095 152.535);
   color: white;
   cursor: pointer;
 }
