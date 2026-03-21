@@ -11,13 +11,13 @@ cd Save-My-Lab
 ## 2. Install Dependencies
 
 ```bash
-npm install express express-fileupload hbs mongodb mongoose
+npm install
 ```
 
 ## 3. Run for the tables to show up in compass
 
 ```bash
-node index.js
+node app.js
 ```
 
 ## 4. Upload the json files in 'uploadmeincompass'
