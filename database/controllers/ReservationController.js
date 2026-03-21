@@ -68,10 +68,10 @@ exports.getUserReservations = async (req, res) =>{
 
         if (reservationTimeStart && reservationTimeEnd) {
             firstStage.reservation_start_timestamp = {
-                $gte: new Date(reservationTimeStart + "Z")
+                $gte: new Date(reservationTimeStart)
             };
             firstStage.reservation_end_timestamp = {
-                $lte: new Date(reservationTimeEnd + "Z") //filters the reservation date/time
+                $lte: new Date(reservationTimeEnd) //filters the reservation date/time
             };
         }
 

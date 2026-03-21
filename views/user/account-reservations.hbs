@@ -6,7 +6,7 @@
     <div class="flex flex-col w-auto h-auto">
       <!-- Search Bar -->
       <form class="max-w-md mt-7 ml-16">
-        <label for="search" class="block mb-2.5 text-sm font-medium text-heading sr-only ">Search</label>
+        <label for="search" class="block mb-2.5 text-sm font-medium text-heading sr-only ">Search User</label>
         <div class="relative">
           <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
             <svg class="w-4 h-4 text-body" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -17,7 +17,7 @@
           </div>
           <input type="search" id="search"
             class="rounded-lg block w-full p-3 ps-9 bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand shadow-xs placeholder:text-body"
-            placeholder="Search" required />
+            placeholder="Search User" required />
         </div>
       </form>
 
@@ -101,20 +101,66 @@
     </div>
 
     <!-- Right Side -->
+    {{!-- Filter Search --}}
     <div class="mt-5 relative overflow-x-auto bg-neutral-primary-soft shadow-xs rounded-base">
-      <div class="absolute top-[25px] right-[630px]">
-        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-          <svg class="w-4 h-4 text-body" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-            fill="none" viewBox="0 0 24 24">
-            <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
-              d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
-          </svg>
-        </div>
-        <input type="text" id="input-group-1"
-          class="rounded-xl block w-full max-w-96 ps-9 pe-3 py-2 bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand shadow-xs placeholder:text-body"
-          placeholder="Filter Search">
+      <div class="absolute top-[80px] h-6 ml-1"></div>
+
+      {{!-- Filter Dropdown Menu --}}
+      <div id="filterDropdownMenu"
+        class="w-[90px] hidden overflow-hidden absolute left-[80px] top-[75px] bg-white border border-slate-200 rounded-md shadow-lg z-10">
+        <ul id="filterDropDownOptions">
+          <li id="building_filter" class="px-4 py-2 text-slate-600 hover:bg-slate-50 text-sm cursor-pointer"
+            data-value="Building">Building
+          </li>
+          <li id="room_filter" class="px-4 py-2 text-slate-600 hover:bg-slate-50 text-sm cursor-pointer"
+            data-value="Room"> Room
+          </li>
+          <li id="date_filter" class="px-4 py-2 text-slate-600 hover:bg-slate-50 text-sm cursor-pointer"
+            data-value="Date">Date
+          </li>
+        </ul>
       </div>
-      <div class="absolute top-[10px] right-[0px] p-4 flex flex-col ml-[700px]">
+
+      {{!-- Search Bar --}}
+      <input id="filterSearch" type="text" id="input-group-1"
+        class="focus:outline-none focus:border-[#1e3a2a] focus:ring-2 focus:ring-[#1e3a2a]/20 transition-all duration-200 absolute top-[30px] right-[450px] pl-[110px] rounded-xl block w-[400px] py-2 bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base shadow-xs placeholder:text-body"
+        placeholder="Choose a filter">
+
+      {{!-- Filter By Dropdown Button --}}
+      <button id="filterDropdownButton"
+        class="w-[90px] absolute top-[34px] left-[80px] rounded border border-transparent py-1 px-1.5 text-center flex items-center text-sm transition-all text-slate-600 bg-transparent text-gray-600 border border-gray-200 hover:bg-gray-50">
+        <span id="filterDropdownText" class="text-ellipsis overflow-hidden">Filter By</span>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+          class="h-4 w-4 ml-1">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+        </svg>
+      </button>
+
+      {{!-- Filter Search Button --}}
+      <button id="filterSearchButton"
+        class="active:scale-95 transition-transform absolute left-[430px] top-[34px] rounded bg-green-900 p-1.5 border border-transparent text-center text-sm text-white transition-all shadow-sm hover:bg-green-800 focus:bg-green-800 focus:shadow-none active:bg-green-700 hover:bg-green-800 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+        type="button">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4">
+          <path fill-rule="evenodd"
+            d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
+            clip-rule="evenodd"></path>
+        </svg>
+      </button>
+
+      <button id="clear_filter_button" class="hidden flex items-center px-[6px] active:scale-95 transition-transform absolute top-[34px] left-[480px] text-xs w-[103px] h-[29px] transition-all duration-200 
+               bg-transparent text-[#1e3a2a] border border-[#1e3a2a] 
+               hover:bg-[#1e3a2a] hover:text-white rounded-md text-white font-bold py-[4px] rounded-full">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+          class="size-4">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+        </svg>
+
+        <span class="ml-[4px]">Clear Filter</span>
+      </button>
+
+
+      {{!-- Sort By --}}
+      <div class="hidden absolute top-[10px] right-[0px] p-4 flex flex-col ml-[700px]">
         <button id="dropdownButton" data-dropdown-toggle="dropdown"
           class="mb-2 rounded-lg shrink-0 inline-flex items-center justify-center text-body bg-neutral-secondary-medium box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading focus:ring-2 focus:ring-green-600 shadow-xs font-medium leading-5 rounded-base text-sm px-3 py-2 focus:outline-none"
           type="button">
@@ -136,57 +182,60 @@
           <ul class="p-2 text-sm text-body font-medium" aria-labelledby="dropdownDefaultButton">
             <li>
               <a href="#" id="building_option"
-                class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded">Building</a>
+                class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded">
+                Building</a>
             </li>
             <li>
               <a href="#" id="room_option"
-                class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded">Room</a>
+                class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded">
+                Room</a>
             </li>
             <li>
               <a href="#" id="date_option"
-                class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded">Date</a>
+                class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded">
+                Date</a>
             </li>
             <li>
               <a href="#" id="start_time_option"
-                class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded">Start
-                Time</a>
+                class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded">
+                Start Time</a>
             </li>
             <li>
               <a href="#" id="end_time_option"
-                class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded">End
-                Time</a>
+                class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded">
+                End Time</a>
             </li>
           </ul>
         </div>
       </div>
       <table id="table"
-        class="mt-[80px] ml-[70px] text-sm text-left rtl:text-right text-body w-[850px] border border-default">
+        class="mt-[80px] ml-[70px] text-sm text-left rtl:text-right text-body w-[850px] border border-default border-separate border-spacing-0 rounded-xl overflow-hidden">
         <thead class="bg-neutral-secondary-soft border-b border-default">
           <tr>
-            <th scope="col" class="px-6 py-3 font-medium">
+            <th scope="col" class="border-b border-default px-6 py-3 font-medium">
               Building
             </th>
-            <th scope="col" class="py-3 pl-[19px] font-medium">
+            <th scope="col" class="border-b border-default py-3 pl-[19px] font-medium">
               <div class="flex items-center">
                 Room
               </div>
             </th>
-            <th scope="col" class="px-6 py-3 font-medium">
+            <th scope="col" class="border-b border-default px-6 py-3 font-medium">
               <div class="flex items-center">
                 Date
               </div>
             </th>
-            <th scope="col" class="px-6 py-3 font-medium">
+            <th scope="col" class="border-b border-default px-6 py-3 font-medium">
               <div class="flex items-center">
                 Start Time
               </div>
             </th>
-            <th scope="col" class="px-6 py-3 font-medium">
+            <th scope="col" class="border-b border-default px-6 py-3 font-medium">
               <div class="flex items-center">
                 End Time
               </div>
             </th>
-            <th scope="col" class="px-6 py-3 font-medium">
+            <th scope="col" class="border-b border-default px-6 py-3 font-medium">
               Action
             </th>
           </tr>
@@ -196,36 +245,39 @@
       </table>
 
       <div id="view_modal" class="fixed inset-0 z-[9999] flex items-center justify-center p-4 hidden">
-        <div class="absolute inset-0 bg-black/60 modal-backdrop"></div>
-        <div class="relative z-10 w-full max-w-md bg-white rounded-xl shadow-2xl overflow-hidden">
-          <div class="bg-green-800 px-6 py-4 flex justify-between items-center border-b border-gray-300">
-            <h3 class="font-bold text-white">Seats</h3>
+        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm modal-backdrop"></div>
+
+        <div
+          class="relative z-10 w-full max-w-sm bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-100">
+          <div class="bg-[#1e3a2a] px-6 py-4 flex justify-between items-center">
+            <h3 class="font-bold text-white tracking-wide">Reserved Seats</h3>
             <button type="button" id="hide_view_modal"
-              class="text-body bg-transparent hover:bg-neutral-tertiary hover:text-heading rounded-base text-sm w-9 h-9 ms-auto inline-flex justify-center items-center"
-              data-modal-hide="static-modal">
-              <svg class="fill-white w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                viewBox="0 0 24 24">
-                <path stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M6 18 17.94 6M18 18 6.06 6" />
+              class="text-white/70 hover:text-white transition-transform active:scale-90">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
           </div>
 
-          <div class="p-6 space-y-3">
-            <span id="view_modal_body"></span>
+          <div class="p-8">
+            <div id="view_modal_body" class="flex flex-wrap gap-3 justify-center">
+            </div>
 
-            <div class="mt-6 flex justify-between items-center pt-4">
+            <div class="mt-8 flex justify-center">
               <button id="confirm_okay" type="button"
-                class="bg-green-800 hover:bg-[#014d29] text-white font-bold py-2 px-6 rounded-lg transition-colors">OK</button>
+                class="w-full bg-[#1e3a2a] hover:bg-[#2d523d] text-white font-bold py-3 px-6 rounded-xl transition-all shadow-md active:translate-y-0.5">
+                Got it
+              </button>
             </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
 
 
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="/scripts/user/account-reservations.js"></script>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="/scripts/user/account-reservations.js"></script>
 
 </body>
 
