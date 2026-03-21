@@ -5,7 +5,7 @@ var email;
 var reservationStartMinute;
 var reservationStartHour;
 var reservationEndMinute;
-var reservationEndHour; 
+var reservationEndHour;
 var seatCount = undefined;
 var reservationStartTimeStamp;
 var reservationEndTimeStamp;
@@ -37,11 +37,11 @@ $(document).ready(function () {
             roomsInBuildingsJ.forEach(r => {
                 roomSelect.append(`<option value="${r.room_name}">${r.room_name}</option>`);
             });
-            
+
             $("#roomInput").prop("disabled", false);
             updateReservationsList(email, creationTimeStart, creationTimeEnd, room, building, reservationStartTimeStamp, reservationEndTimeStamp, seatCount)
 
-        } 
+        }
         catch (err) {
             console.error("Error updating building:", err);
         }
@@ -49,10 +49,10 @@ $(document).ready(function () {
 
     $("#roomInput").on("change", async function (e) {
         try {
-          room = $(this).val().trim();
-          reservationsToBeDisplayed = undefined;
-          updateReservationsList(email, creationTimeStart, creationTimeEnd, room, building, reservationStartTimeStamp, reservationEndTimeStamp, seatCount)
-        } 
+            room = $(this).val().trim();
+            reservationsToBeDisplayed = undefined;
+            updateReservationsList(email, creationTimeStart, creationTimeEnd, room, building, reservationStartTimeStamp, reservationEndTimeStamp, seatCount)
+        }
         catch (err) {
             console.error("Error updating building:", err);
         }
@@ -60,19 +60,19 @@ $(document).ready(function () {
 
     $("#reservationDateInput").on("change", async function (e) {
         try {
-          reservationDate = $(this).val().trim();
-          reservationsToBeDisplayed = undefined;
-          updateInitialTimeStampValues()
-          $("#startHr").val("")
-          $("#startMin").val("")
-          $("#endHr").val("")
-          $("#endMin").val("")
-          $("#startHr").prop("disabled", false);
-          $("#startMin").prop("disabled", false);
-          $("#endHr").prop("disabled", false);
-          $("#endMin").prop("disabled", false);
-          updateReservationsList(email, creationTimeStart, creationTimeEnd, room, building, reservationStartTimeStamp, reservationEndTimeStamp, seatCount)
-        } 
+            reservationDate = $(this).val().trim();
+            reservationsToBeDisplayed = undefined;
+            updateInitialTimeStampValues()
+            $("#startHr").val("")
+            $("#startMin").val("")
+            $("#endHr").val("")
+            $("#endMin").val("")
+            $("#startHr").prop("disabled", false);
+            $("#startMin").prop("disabled", false);
+            $("#endHr").prop("disabled", false);
+            $("#endMin").prop("disabled", false);
+            updateReservationsList(email, creationTimeStart, creationTimeEnd, room, building, reservationStartTimeStamp, reservationEndTimeStamp, seatCount)
+        }
         catch (err) {
             console.error("Error updating building:", err);
         }
@@ -80,10 +80,10 @@ $(document).ready(function () {
 
     $("#emailInput").on("change", async function (e) {
         try {
-          email = $(this).val().trim();
-          reservationsToBeDisplayed = undefined;
-          updateReservationsList(email, creationTimeStart, creationTimeEnd, room, building, reservationStartTimeStamp, reservationEndTimeStamp, seatCount)
-        } 
+            email = $(this).val().trim();
+            reservationsToBeDisplayed = undefined;
+            updateReservationsList(email, creationTimeStart, creationTimeEnd, room, building, reservationStartTimeStamp, reservationEndTimeStamp, seatCount)
+        }
         catch (err) {
             console.error("Error updating building:", err);
         }
@@ -91,11 +91,11 @@ $(document).ready(function () {
 
     $("#startHr").on("change", async function (e) {
         try {
-          reservationStartHour = $(this).val().trim();
-          reservationsToBeDisplayed = undefined;
-          updateTimeStampValues()
-          updateReservationsList(email, creationTimeStart, creationTimeEnd, room, building, reservationStartTimeStamp, reservationEndTimeStamp, seatCount)
-        } 
+            reservationStartHour = $(this).val().trim();
+            reservationsToBeDisplayed = undefined;
+            updateTimeStampValues()
+            updateReservationsList(email, creationTimeStart, creationTimeEnd, room, building, reservationStartTimeStamp, reservationEndTimeStamp, seatCount)
+        }
         catch (err) {
             console.error("Error updating building:", err);
         }
@@ -103,11 +103,11 @@ $(document).ready(function () {
 
     $("#startMin").on("change", async function (e) {
         try {
-          reservationStartMinute = $(this).val().trim();
-          reservationsToBeDisplayed = undefined;
-          updateTimeStampValues()
-          updateReservationsList(email, creationTimeStart, creationTimeEnd, room, building, reservationStartTimeStamp, reservationEndTimeStamp, seatCount)
-        } 
+            reservationStartMinute = $(this).val().trim();
+            reservationsToBeDisplayed = undefined;
+            updateTimeStampValues()
+            updateReservationsList(email, creationTimeStart, creationTimeEnd, room, building, reservationStartTimeStamp, reservationEndTimeStamp, seatCount)
+        }
         catch (err) {
             console.error("Error updating building:", err);
         }
@@ -115,25 +115,25 @@ $(document).ready(function () {
 
     $("#endHr").on("change", async function (e) {
         try {
-          reservationEndHour = $(this).val().trim();
-          reservationsToBeDisplayed = undefined;
-          updateTimeStampValues()
-          updateReservationsList(email, creationTimeStart, creationTimeEnd, room, building, reservationStartTimeStamp, reservationEndTimeStamp, seatCount)
-        } 
+            reservationEndHour = $(this).val().trim();
+            reservationsToBeDisplayed = undefined;
+            updateTimeStampValues()
+            updateReservationsList(email, creationTimeStart, creationTimeEnd, room, building, reservationStartTimeStamp, reservationEndTimeStamp, seatCount)
+        }
         catch (err) {
-          console.error("Error updating building:", err);
+            console.error("Error updating building:", err);
         }
     });
 
     $("#endMin").on("change", async function (e) {
         try {
-          reservationEndMinute = $(this).val().trim();
-          reservationsToBeDisplayed = undefined;
-          updateTimeStampValues()
-          updateReservationsList(email, creationTimeStart, creationTimeEnd, room, building, reservationStartTimeStamp, reservationEndTimeStamp, seatCount)
-        } 
+            reservationEndMinute = $(this).val().trim();
+            reservationsToBeDisplayed = undefined;
+            updateTimeStampValues()
+            updateReservationsList(email, creationTimeStart, creationTimeEnd, room, building, reservationStartTimeStamp, reservationEndTimeStamp, seatCount)
+        }
         catch (err) {
-          console.error("Error updating building:", err);
+            console.error("Error updating building:", err);
         }
     });
 
@@ -151,27 +151,34 @@ $(document).ready(function () {
             }
 
             const seats = await response.json();
-            const unsortedSeatNames = seats.seats;
 
-            let seatNames = unsortedSeatNames.sort()
 
-            console.log(seatNames)
+            view_modal.classList.remove("hidden");
 
-            const seatGrid = $("#chosen-seats");
-            seatGrid.empty();
+            if (Array.isArray(seats.seats)) {
+                view_modal_body.innerHTML = "";
 
-            seatGrid.attr("class", "grid grid-cols-3 gap-3 p-4 w-full min-h-[50px]");
+                seats.seats.forEach(seat => {
+                    const seatNumber = seat.slice(-2)
+                    const seatChip = document.createElement('span');
+                    seatChip.className = `
+        w-[120px] py-2 rounded-xl font-semibold text-sm
+        bg-[#f0f4f2] text-[#1e3a2a] border border-[#1e3a2a]/20
+        shadow-sm px-[14px] mr-[7px]
+    `;
+                    // Add an icon for a "premium" touch
+                    seatChip.innerHTML = `<i class="fa-solid fa-couch opacity-70"></i> Computer ${seatNumber}`;
+                    view_modal_body.appendChild(seatChip)
+                });
+            }
 
-            seatNames.forEach(seatName => {
-                seatGrid.append(`
-                    <div class="bg-slate-100 border border-slate-300 rounded-md p-2 text-center font-bold text-slate-800 shadow-sm block">
-                        ${seatName}
-                    </div>
-                `);
+            hide_view_modal.addEventListener("click", function () {
+                view_modal.classList.add("hidden")
             });
-            
-            console.log("modal should showwww!!!")
-            $("#LynnFromLasVegasModals").removeClass("hidden");
+
+            confirm_okay.addEventListener("click", function () {
+                view_modal.classList.add("hidden")
+            });
         }
         catch (err) {
             console.error("Seat button error:", err);
@@ -182,50 +189,50 @@ $(document).ready(function () {
         $("#LynnFromLasVegasModals").addClass("hidden");
     });
 
-    $("#resetBtn").on("click", async function (e){
-      try{
-        $("#buildingInput").val("")
-        $("#roomInput").val("")
-        $("#reservationDateInput").val("")
-        $("#emailInput").val("")
-        $("#startHr").val("")
-        $("#startMin").val("")
-        $("#endHr").val("")
-        $("#endMin").val("")
-        $("#startHr").prop("disabled", true);
-        $("#startMin").prop("disabled", true);
-        $("#endHr").prop("disabled", true);
-        $("#endMin").prop("disabled", true);
-        $("#roomInput").prop("disabled", true);
-        building = undefined;
-        room = undefined;
-        email = undefined;
-        reservationDate = undefined;
-        reservationStartMinute = undefined;
-        reservationStartHour = undefined;
-        reservationEndMinute = undefined;
-        reservationEndHour = undefined;
-        reservationStartTimeStamp = undefined;
-        reservationEndTimeStamp = undefined;
-        updateReservationsList(email, creationTimeStart, creationTimeEnd, room, building, reservationStartTimeStamp, reservationEndTimeStamp, seatCount)
-      }
-      catch (err){
-        console.error("")
-      }
+    $("#resetBtn").on("click", async function (e) {
+        try {
+            $("#buildingInput").val("")
+            $("#roomInput").val("")
+            $("#reservationDateInput").val("")
+            $("#emailInput").val("")
+            $("#startHr").val("")
+            $("#startMin").val("")
+            $("#endHr").val("")
+            $("#endMin").val("")
+            $("#startHr").prop("disabled", true);
+            $("#startMin").prop("disabled", true);
+            $("#endHr").prop("disabled", true);
+            $("#endMin").prop("disabled", true);
+            $("#roomInput").prop("disabled", true);
+            building = undefined;
+            room = undefined;
+            email = undefined;
+            reservationDate = undefined;
+            reservationStartMinute = undefined;
+            reservationStartHour = undefined;
+            reservationEndMinute = undefined;
+            reservationEndHour = undefined;
+            reservationStartTimeStamp = undefined;
+            reservationEndTimeStamp = undefined;
+            updateReservationsList(email, creationTimeStart, creationTimeEnd, room, building, reservationStartTimeStamp, reservationEndTimeStamp, seatCount)
+        }
+        catch (err) {
+            console.error("")
+        }
     });
 
-    function updateTimeStampValues(){
-      if (reservationStartHour && reservationStartMinute){
-        reservationStartTimeStamp = reservationDate + "T" + reservationStartHour + ":" + reservationStartMinute + ":00.000";
-      }
-      if (reservationEndHour && reservationEndMinute){
-        reservationEndTimeStamp = reservationDate + "T" + reservationEndHour + ":" + reservationEndMinute + ":00.000";
-      }
+    function updateTimeStampValues() {
+        if (reservationStartHour && reservationStartMinute) {
+            reservationStartTimeStamp = reservationDate + "T" + reservationStartHour + ":" + reservationStartMinute + ":00.000";
+        }
+        if (reservationEndHour && reservationEndMinute) {
+            reservationEndTimeStamp = reservationDate + "T" + reservationEndHour + ":" + reservationEndMinute + ":00.000";
+        }
     }
 
-    function updateInitialTimeStampValues(){
-      reservationStartTimeStamp = reservationDate + "T00:00:00.000";
-      reservationEndTimeStamp = reservationDate + "T23:59:00.000";
+    function updateInitialTimeStampValues() {
+        reservationStartTimeStamp = reservationDate + "T00:00:00.000";
+        reservationEndTimeStamp = reservationDate + "T23:59:00.000";
     }
 
     async function updateReservationsList(email, creationTimeStart, creationTimeEnd, room, building, reservationStartTimeStamp, reservationEndTimeStamp, seatCount) {
@@ -270,7 +277,7 @@ $(document).ready(function () {
                             </div>
                         </td>
                     </tr>`;
-                
+
                 $tbody.append(row);
             });
 

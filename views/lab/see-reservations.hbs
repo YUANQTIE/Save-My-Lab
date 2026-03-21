@@ -111,25 +111,30 @@
     </div>
 </div>
 
-<div id="LynnFromLasVegasModals" class="fixed inset-0 z-[9999] flex items-center justify-center p-4 hidden">
-    <div class="absolute inset-0 bg-black/60 modal-backdrop"></div>
-    <div class="relative z-10 w-full max-w-md bg-white rounded-xl shadow-2xl overflow-hidden">
-        <div class="bg-green-800 px-6 py-4 flex justify-between items-center border-b border-gray-300">
-            <h3 class="font-bold text-white">List of Seats</h3>
+{{!-- Modal for View Seats --}}
+<div id="view_modal" class="fixed inset-0 z-[9999] flex items-center justify-center p-4 hidden">
+    <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm modal-backdrop"></div>
+
+    <div class="relative z-10 w-full max-w-sm bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-100">
+        <div class="bg-[#1e3a2a] px-6 py-4 flex justify-between items-center">
+            <h3 class="font-bold text-white tracking-wide">Reserved Seats</h3>
             <button type="button" id="hide_view_modal"
-                class="close-confirm text-body bg-transparent hover:bg-neutral-tertiary hover:text-heading rounded-base text-sm w-9 h-9 ms-auto inline-flex justify-center items-center"
-                data-modal-hide="static-modal">
-                <svg class="fill-white w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                    height="24" viewBox="0 0 24 24">
-                    <path stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M6 18 17.94 6M18 18 6.06 6" />
+                class="text-white/70 hover:text-white transition-transform active:scale-90">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </button>
         </div>
 
-        <div class="p-6 space-y-3">
-            <div class="modal-body">
-                <div class="seat-grid" id="chosen-seats"></div>
+        <div class="p-8">
+            <div id="view_modal_body" class="flex flex-wrap gap-3 justify-center">
+            </div>
+
+            <div class="mt-8 flex justify-center">
+                <button id="confirm_okay" type="button"
+                    class="w-full bg-[#1e3a2a] hover:bg-[#2d523d] text-white font-bold py-3 px-6 rounded-xl transition-all shadow-md active:translate-y-0.5">
+                    Got it
+                </button>
             </div>
         </div>
     </div>
