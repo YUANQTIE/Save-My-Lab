@@ -79,16 +79,15 @@ async function updateBio(userId) {
 
 //Puts Profile Picture
 async function updateProfilePicture(userId, image) {
+    const formData = new FormData();
+    formData.append('profile_picture', image);
     const response = await fetch(`/user/${userId}/edit/profile-picture`, {
         method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ profile_picture: image.name })
+        body: formData
     });
+    const result = await response;
+    console.log(result)
 }
-
-getStudentData(userId)
 
 function saveChanges() {
     username_border.classList.replace("outline-red-300", username_border_color);
@@ -101,6 +100,7 @@ function saveChanges() {
         error.classList = error_classList;
         error_button.classList.remove("hidden");
         error.classList.remove("hidden");
+        error_header.innerHTML = "Error!"
 
         username_input.addEventListener("click", (event) => {
             username_border.classList.replace("outline-red-300", username_border_color);
@@ -118,7 +118,6 @@ function saveChanges() {
         username_border.classList.replace("outline-red-300", username_border_color);
         username_input.placeholder = username_input.value;
         profile_username.innerHTML = username_input.value;
-        username_input.value = "";
         error_header.innerHTML = "Success!";
         error_text.innerHTML = "You have successfully updated your profile."
         error_button.classList.add("hidden");
@@ -129,20 +128,7 @@ function saveChanges() {
 function changePicture() {
     input_file.onchange = function () {
         const image = input_file.files[0];
+        profile_image.src =  URL.createObjectURL(image)
         updateProfilePicture(userId, image);
-        profile_image.src = URL.createObjectURL(image);
     }
-}
-
-function convertToBase64(file) {
-    return new Promise((resolve, reject) => {
-        const fileReader = new FileReader();
-        fileReader.readAsDataURL(file);
-        fileReader.onload = () => {
-            resolve(fileReader.result);
-        }
-        fileReader.onerror = () => {
-            reject(error);
-        }
-    })
 }

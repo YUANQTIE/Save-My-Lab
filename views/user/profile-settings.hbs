@@ -41,7 +41,7 @@
       <!-- Profile Settings -->
       <nav class="w-full flex flex-col space-y-2">
         <a href="" id="profile-settings"
-          class="flex items-center justify-start px-4 py-3 rounded-xl bg-[#34493e] hover:bg-[#3d564a] text-white shadow-md space-x-3">
+          class="flex items-center justify-start px-4 py-3 rounded-xl bg-green-900 hover:bg-green-800 text-white shadow-md space-x-3">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
             <path fill-rule="evenodd"
               d="M7.5 6a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM3.751 20.105a8.25 8.25 0 0 1 16.498 0 .75.75 0 0 1-.437.695A18.683 18.683 0 0 1 12 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 0 1-.437-.695Z"
@@ -89,7 +89,7 @@
 
             <div id="username_border"
               class="max-w-m flex items-center rounded-md bg-white pl-1">
-              <input id="username" type="text" name="username" placeholder={{user.username}}
+              <input id="username" type="text" name="username" placeholder={{user.username}} value={{user.username}}
                 class="rounded-md min-w-0 grow py-2 pr-3 pl-2 text-base text-gray-900 placeholder:text-gray-400 border border-slate-200 text-sm rounded-lg focus:ring-2 focus:ring-[#1e3a2a]/20 focus:border-[#1e3a2a] outline-none transition-all" />
             </div>
           </div>

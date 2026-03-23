@@ -1,9 +1,11 @@
 const express = require('express');
+const path = require('path');
+const fs = require('fs');
 const User = require('../models/User.js'); // Import User model
 
 // GET ROUTES 
 
-exports.isUsernameInDB= async (req, res) => {
+exports.isUsernameInDB = async (req, res) => {
   try {
     const username = req.query.username;
     const user = await User.findOne({ username });
@@ -20,7 +22,7 @@ exports.isUsernameInDB= async (req, res) => {
   }
 };
 
-exports.isUserEmailInDB= async (req, res) => {
+exports.isUserEmailInDB = async (req, res) => {
   try {
     const email = req.query.email;
     const user = await User.findOne({ email });
@@ -37,7 +39,7 @@ exports.isUserEmailInDB= async (req, res) => {
   }
 };
 
-exports.isUserIdNumberInDB= async (req, res) => {
+exports.isUserIdNumberInDB = async (req, res) => {
   try {
     const id_number = Number(req.query.idNumber);
     const user = await User.findOne({ id_number });
@@ -56,10 +58,10 @@ exports.isUserIdNumberInDB= async (req, res) => {
 };
 
 // Get and Render Profile of User for Profile Settings
-exports.showProfile = async(req, res) => {
+exports.showProfile = async (req, res) => {
   try {
     const userData = await User.findById(req.query.id).lean();
-    res.render('user/profile-settings', {user: userData});
+    res.render('user/profile-settings', { user: userData });
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Error');
@@ -67,10 +69,10 @@ exports.showProfile = async(req, res) => {
 }
 
 // Get and Render Profile of User for Account Security
-exports.showProfileAccountSecurity = async(req, res) => {
+exports.showProfileAccountSecurity = async (req, res) => {
   try {
     const userData = await User.findById(req.query.id).lean();
-    res.render('user/account-security', {user: userData});
+    res.render('user/account-security', { user: userData });
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Error');
@@ -78,21 +80,21 @@ exports.showProfileAccountSecurity = async(req, res) => {
 }
 
 // Get and Render Profile of User for Reservations
-exports.showProfileReservations = async(req, res) => {
+exports.showProfileReservations = async (req, res) => {
   try {
     const userData = await User.findById(req.query.id).lean();
-    res.render('user/account-reservations', {user: userData});
+    res.render('user/account-reservations', { user: userData });
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Error');
   }
 }
 
-exports.addReservation = async(req, res) => {
+exports.addReservation = async (req, res) => {
   try {
     const userData = await User.findById(req.query.id).lean();
     console.log(userData)
-    res.render('user/student-add-reservation', {user: userData});
+    res.render('user/student-add-reservation', { user: userData });
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Error');
@@ -196,9 +198,9 @@ exports.isUserValid = async (req, res) => {
       password: passwordInput
     });
     if (user) {
-        user.last_login = new Date();
-        await user.save();
-        return res.json(true);
+      user.last_login = new Date();
+      await user.save();
+      return res.json(true);
     }
     res.json(false);
   } catch (err) {
@@ -235,21 +237,26 @@ exports.editBiography = async (req, res) => {
 
 exports.editProfilePicture = async (req, res) => {
   try {
+    if (!req.files || !req.files.profile_picture) {
+      return res.status(400).send("No file was uploaded. Check your field name.");
+    }
+
     const file = req.files.profile_picture;
 
     const fileName = `${req.params.id}.jpg`;
-    const savePath = `public/profile_pictures/${fileName}`;
-
+    const uploadDir = path.join(__dirname, '..', '..', 'public', 'profile_pictures');
+    console.log("FULL SYSTEM PATH:", uploadDir);
+    const savePath = path.join(uploadDir, fileName);
+    console.log(file)
     await file.mv(savePath);
 
     await User.findByIdAndUpdate(req.params.id, {
-      profile_picture: `public/profile_pictures/${fileName}`
+      profile_picture: `/profile_pictures/${fileName}`
     });
-
-    res.send("Profile picture updated successfully");
+    return res.status(200).json({ message: "Profile picture updated successfully" });
   } catch (err) {
     console.error(err);
-    res.status(500).send("Error");
+    return res.status(500).json({ error: "Internal Server Error", details: err.message });
   }
 };
 
@@ -353,13 +360,13 @@ exports.addUser = async (req, res) => {
 
       user.profile_picture = `/images/${fileName}`;
       await user.save();
-    } 
+    }
 
     res.status(201).send("User added successfully");
 
   } catch (err) {
     if (err.code === 11000) {
-        return res.status(400).send("Username or Email already exists.");
+      return res.status(400).send("Username or Email already exists.");
     }
     console.error(err);
     res.status(500).send("Error saving user");
