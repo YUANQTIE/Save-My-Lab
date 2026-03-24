@@ -27,7 +27,12 @@ router.get('/reservationsAdmin/filter', ReservationController.getFilteredReserva
 //checks if the user has not checkedIn on their reservation after 10 minutes (should enable the delete function)
 //req.params: id
 //res.json: true/false
-router.get('/checkDeletable', ReservationController.isReservationDeletable);
+router.get('/:reservationId/checkDeletable', ReservationController.isReservationDeletable);
+
+//checks if the reservation has already ended, if not, then it is editable
+//req.params: id
+//res.json: true/false
+router.get('/:reservationId/checkEditable', ReservationController.isReservationEditable);
 
 //POST ROUTES
 

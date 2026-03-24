@@ -118,17 +118,8 @@ function showReservations(reservations) {
         }).format(endDate);
 
         if (endTime < currentTime) {
-            console.log("Earlier: ")
-            console.log("End Time: ", endTime)
-            console.log("Current Time: ", currentTime)
             return;
         }
-        else {
-            console.log("Later: ")
-            console.log("End Time: ", endTime)
-            console.log("Current Time: ", currentTime)
-        }
-
         addRow(
             res.reservation_id,
             res.building,

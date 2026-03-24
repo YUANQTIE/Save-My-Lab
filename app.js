@@ -50,35 +50,11 @@ app.get('/', (req, res) => {
 
 mongoose.connect(url)
   .then(() => {
-    console.log("✅ Mongoose connected to Atlas");
+    console.log("Mongoose connected to Atlas");
     app.listen(port, () => {
-      console.log(`🚀 Save-My-Lab is running at http://localhost:${port}`);
+      console.log(`port at http://localhost:${port}`);
     });
   })
   .catch((err) => {
-    console.error("❌ Database connection error:", err.message);
+    console.error("Database connection error:", err.message);
   });
-
-
-  const User = require('./database/models/User');
-
-  
-mongoose.connection.once('open', async () => {
-  console.log("Connected to DB");
-
-  const existing = await User.findOne({ email: "test@test.com" });
-
-  if (!existing) {
-    await User.create({
-      email: "test@test.com",
-      username: "testuser",
-      password: "123",
-      id_number: 1,
-      date_created: new Date()
-    });
-
-    console.log("✅ Test user inserted");
-  } else {
-    console.log("⚡ Test user already exists");
-  }
-});
