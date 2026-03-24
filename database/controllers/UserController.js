@@ -197,6 +197,7 @@ exports.isUserValid = async (req, res) => {
       email: emailInput,
       password: passwordInput
     });
+    console.log("DB RESULT:", user);
     if (user) {
       user.last_login = new Date();
       await user.save();

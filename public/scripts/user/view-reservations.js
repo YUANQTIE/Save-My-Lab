@@ -1,8 +1,6 @@
 const table = document.getElementById("table");
 const tbody = document.getElementById("tbody");
 const delete_button = document.getElementById("delete_button");
-const profile_image = document.getElementById("profile_image");
-const input_file = document.getElementById("input_file");
 const dropdownButton = document.getElementById("dropdownButton");
 const sort_text = document.getElementById("sort_text");
 const dropdown = document.getElementById("dropdown");
@@ -28,37 +26,7 @@ const url = new URLSearchParams(window.location.search);
 const userId = url.get('id');
 let reservations;
 $(document).ready(async function () {
-    console.log("Profile-Settings Script running");
-    $("#profile-settings").on("click", async function (e) {
-        e.preventDefault();
-        try {
-            window.location.href = `/user/profile-settings?id=${userId}`
-        } catch (err) {
-            console.error("Login Error:", err);
-            alert("An error occurred. Check the F12 console.");
-        }
-    });
-
-    $("#account-security").on("click", async function (e) {
-        e.preventDefault();
-        try {
-            window.location.href = `/user/account-security?id=${userId}`
-        } catch (err) {
-            console.error("Login Error:", err);
-            alert("An error occurred. Check the F12 console.");
-        }
-    });
-
-    $("#reservations").on("click", async function (e) {
-        e.preventDefault();
-        try {
-            window.location.href = `/user/account-reserve?id=${userId}`
-        } catch (err) {
-            console.error("Login Error:", err);
-            alert("An error occurred. Check the F12 console.");
-        }
-    });
-
+    console.log("View-Reservations Script running");
     let seats;
     reservations = await getReservations();
     console.log(reservations)
@@ -73,34 +41,13 @@ function showReservations(reservations) {
     reservations.forEach(res => {
         const startDate = new Date(res.reservation_start_timestamp);
         const endDate = new Date(res.reservation_end_timestamp);
-        let currentDate = new Date();
-        let currentTime = currentDate.toLocaleTimeString('en-US', { hour12: false })
-        let endTime = endDate.toLocaleTimeString('en-GB', {
-            timeZone: 'UTC',
-            hour12: false
-        });
-        const formattedCurrentDate = new Intl.DateTimeFormat('en-US', {
-            month: 'long',
-            day: '2-digit',
-            year: 'numeric',
-            timeZone: 'UTC'
-        }).format(currentDate);
-
+        const creationDate = new Date(res.creation_timestamp);
         const formattedStartDate = new Intl.DateTimeFormat('en-US', {
             month: 'long',
             day: '2-digit',
             year: 'numeric',
             timeZone: 'UTC'
         }).format(startDate);
-
-        const convertedStartDate = convertDate(formattedStartDate)
-        const convertedCurrentDate = convertDate(formattedCurrentDate)
-
-        if (convertedStartDate < convertedCurrentDate) {
-            console.log("True")
-            return;
-        }
-
 
         const formattedStartTime = new Intl.DateTimeFormat('en-US', {
             hour: 'numeric',
@@ -117,17 +64,17 @@ function showReservations(reservations) {
             timeZone: 'UTC'
         }).format(endDate);
 
-        if (endTime < currentTime) {
-            console.log("Earlier: ")
-            console.log("End Time: ", endTime)
-            console.log("Current Time: ", currentTime)
-            return;
-        }
-        else {
-            console.log("Later: ")
-            console.log("End Time: ", endTime)
-            console.log("Current Time: ", currentTime)
-        }
+        const formattedCreationDate = new Intl.DateTimeFormat('en-US', {
+            month: 'long',
+            day: '2-digit',
+            year: 'numeric',
+        }).format(creationDate);
+
+        const formattedCreationTime = new Intl.DateTimeFormat('en-US', {
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: true,
+        }).format(creationDate);
 
         addRow(
             res.reservation_id,
@@ -135,7 +82,9 @@ function showReservations(reservations) {
             res.room_name,
             formattedStartDate,
             formattedStartTime,
-            formattedEndTime
+            formattedEndTime,
+            formattedCreationDate,
+            formattedCreationTime
         );
     });
 }
@@ -192,12 +141,9 @@ async function getReservationsByDate(date) {
 }
 
 
-
-input_file.addEventListener("click", changePicture);
-
 table.addEventListener("click", viewRow);
 
-function addRow(reservationId, building, room, date, startTime, endTime) {
+function addRow(reservationId, building, room, date, startTime, endTime, resDate, resTime) {
     const uniqueDialogId = `dialog-${reservationId}`;
 
     // Create the row element
@@ -210,20 +156,23 @@ function addRow(reservationId, building, room, date, startTime, endTime) {
         <td scope="row" class="border-b border-default px-6 py-4 font-medium text-heading whitespace-nowrap">
               ${building}
             </td>
-            <td class="border-b border-default px-6 py-4">
+            <td class="border-b border-default px-4 py-4">
               ${room}
             </td>
-            <td class="border-b border-default px-6 py-4">
+            <td class="border-b border-default px-4 py-4">
               ${date}
             </td>
-            <td class="border-b border-default px-6 py-4">
-              ${startTime}
+            <td class="border-b border-default px-4 py-4">
+              ${startTime} - ${endTime}
             </td>
-            <td class="border-b border-default w-[120px] px-6 py-4">
-              ${endTime}
+            <td class="border-b border-default px-4 py-4">
+              ${resDate}
+            </td>
+            <td class="border-b border-default px-4 py-4">
+              ${resTime}
             </td>
         <td class="border-b border-default px-4 py-4 space-x-1.5">
-            <div class="flex items-center justify-center">
+            <div class="flex justify-center items-center">
               <button id="view_button" class = "w-8 h-8 flex items-center justify-center view_button_class text-slate-600 hover:bg-[#34493e]/5 hover:border-[#34493e]/20 hover:text-[#34493e]">
                 <img src="/images/seat.png" alt="View" class="w-5 h-5">
               </button>
@@ -286,14 +235,6 @@ async function viewRow(e) {
         view_modal.classList.add("hidden")
     });
 }
-
-
-function changePicture() {
-    input_file.onchange = function () {
-        profile_image.src = URL.createObjectURL(input_file.files[0]);
-    }
-}
-
 
 
 filterDropdownButton.addEventListener('click', function (event) {

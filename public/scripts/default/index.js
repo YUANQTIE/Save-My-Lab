@@ -38,7 +38,7 @@ $(document).ready(function() {
                 window.location.href = `/admin/landing?id=${admin._id}`;
                 return;
             }
-
+            console.log(isUser)
             alert("No valid account found"); //NEED TO MAKE THIS REFLECT IN INDEX.HTML
 
         } catch (err) {

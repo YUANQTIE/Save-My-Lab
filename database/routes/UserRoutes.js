@@ -86,6 +86,9 @@ router.get("/profile-settings", UserController.showProfile);
 router.get("/account-security", UserController.showProfileAccountSecurity);
 router.get("/add-reservation", UserController.addReservation);
 router.get("/account-reserve", UserController.showProfileReservations);
+router.get("/view-reservations", (req,res) => {
+    res.render('user/view-reservations', {id: req.query.id})
+})
 
 
 module.exports = router

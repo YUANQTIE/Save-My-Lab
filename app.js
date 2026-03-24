@@ -1,13 +1,16 @@
 
+// MongoDB Atlas Password: QmrUY1dbH0F7K6ml
 
 const mongoose = require("mongoose");
+const express = require('express');
+const exphbs = require('express-handlebars');
+const path = require('path');
+const fileUpload = require('express-fileupload');
 
-mongoose.connect('mongodb://localhost/Save-My-Lab')
-
-/* Initialize express */
-const express = require('express')
-const exphbs = require('express-handlebars')
-const app = new express()
+const app = express(); // Define app FIRST
+const port = process.env.PORT || 3000;
+const url = "mongodb://nigelhenryso_db_user:QmrUY1dbH0F7K6ml@ac-7tknf2d-shard-00-00.cllro3o.mongodb.net:27017,ac-7tknf2d-shard-00-01.cllro3o.mongodb.net:27017,ac-7tknf2d-shard-00-02.cllro3o.mongodb.net:27017/Save-My-Lab?ssl=true&replicaSet=atlas-7l0y2d-shard-0&authSource=admin&appName=SaveMyLab";
+// mongoose.connect('mongodb://localhost/Save-My-Lab')
 
 const adminRoutes = require('./database/routes/AdminRoutes');
 const brokenRoutes = require('./database/routes/BrokenRoutes.js');
@@ -17,20 +20,16 @@ const seatRoutes = require('./database/routes/SeatRoutes.js')
 const userRoutes = require('./database/routes/UserRoutes.js');
 const auxRoutes = require('./database/routes/AuxiliaryRoutes.js');
 
-/* For file uploads */
-const fileUpload = require('express-fileupload')
 
 /* We'll use handlebars for this one */
 var hbs = require('hbs')
-app.engine("hbs", exphbs.engine({extname: 'hbs', defaultLayout: 'main', partialsDir: __dirname + '/views/partials'}))
-app.set('view engine','hbs');
+app.engine("hbs", exphbs.engine({ extname: 'hbs', defaultLayout: 'main', partialsDir: __dirname + '/views/partials' }))
+app.set('view engine', 'hbs');
 app.set("views", "./views")
-
-const path = require('path') // our path directory
 
 app.use(express.json()) // use json
 app.use(express.text()) // use json
-app.use(express.urlencoded( {extended: true})); // files consist of more than strings
+app.use(express.urlencoded({ extended: true })); // files consist of more than strings
 app.use(express.static('public')) // we'll add a static directory named "public"
 //app.use('/views', express.static(path.join(__dirname, 'views')));
 app.use(fileUpload()) // for fileuploads
@@ -49,6 +48,37 @@ app.get('/', (req, res) => {
 });
 
 
-const server = app.listen(3000, function () {
-    console.log('server running');
+mongoose.connect(url)
+  .then(() => {
+    console.log("✅ Mongoose connected to Atlas");
+    app.listen(port, () => {
+      console.log(`🚀 Save-My-Lab is running at http://localhost:${port}`);
+    });
+  })
+  .catch((err) => {
+    console.error("❌ Database connection error:", err.message);
+  });
+
+
+  const User = require('./database/models/User');
+
+  
+mongoose.connection.once('open', async () => {
+  console.log("Connected to DB");
+
+  const existing = await User.findOne({ email: "test@test.com" });
+
+  if (!existing) {
+    await User.create({
+      email: "test@test.com",
+      username: "testuser",
+      password: "123",
+      id_number: 1,
+      date_created: new Date()
+    });
+
+    console.log("✅ Test user inserted");
+  } else {
+    console.log("⚡ Test user already exists");
+  }
 });

@@ -15,6 +15,16 @@
             placeholder="Search User" required />
         </div>
       </form>
+      {{!-- Search Button --}}
+      <button id="userSearchButton"
+        class="active:scale-95 transition-transform absolute top-30 left-64 mt-9 rounded bg-green-900 p-1.5 border border-transparent text-center text-sm text-white transition-all shadow-sm hover:bg-green-800 focus:bg-green-800 focus:shadow-none active:bg-green-700 hover:bg-green-800 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+        type="button">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4">
+          <path fill-rule="evenodd"
+            d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
+            clip-rule="evenodd"></path>
+        </svg>
+      </button>
 
       {{!-- User Image --}}
       <div class="relative group mt-10 mb-6">
@@ -73,82 +83,42 @@
 
     <!-- Right Side -->
     <main class="flex-1 p-4 md:p-10 lg:p-16">
-      {{!-- Filter Search --}}
-      <div class="flex flex-wrap items-center gap-3 mb-8">
-        <div class="relative flex-grow max-w-lg">
-          {{!-- Filter Dropdown Menu --}}
-          <div id="filterDropdownMenu"
-            class="hidden absolute top-12 left-2 w-24 overflow-hidden bg-white border border-slate-200 rounded-md shadow-lg z-10">
-            <ul id="filterDropDownOptions">
-              <li id="building_filter" class="px-4 py-2 text-slate-600 hover:bg-slate-50 text-sm cursor-pointer"
-                data-value="Building">Building
-              </li>
-              <li id="room_filter" class="px-4 py-2 text-slate-600 hover:bg-slate-50 text-sm cursor-pointer"
-                data-value="Room"> Room
-              </li>
-              <li id="date_filter" class="px-4 py-2 text-slate-600 hover:bg-slate-50 text-sm cursor-pointer"
-                data-value="Date">Date
-              </li>
-            </ul>
-          </div>
-          {{!-- Search Bar --}}
-          <input id="filterSearch" type="text" id="input-group-1"
-            class="w-full pl-28 pr-12 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-[#1e3a2a]/10 focus:border-[#1e3a2a] outline-none transition-all shadow-sm"
-            placeholder="Choose a filter">
-
-          {{!-- Filter By Dropdown Button --}}
-          <button id="filterDropdownButton"
-            class="absolute left-2 top-2 px-3 py-1 rounded border border-transparent py-1 px-1.5 text-center flex items-center text-sm transition-all text-slate-600 bg-transparent text-gray-600 border border-gray-200 hover:bg-gray-50">
-            <span id="filterDropdownText" class="text-ellipsis overflow-hidden">Filter By</span>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-              stroke="currentColor" class="h-4 w-4 ml-1">
-              <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-            </svg>
-          </button>
-
-          {{!-- Filter Search Button --}}
-          <button id="filterSearchButton"
-            class="active:scale-95 transition-transform absolute right-2 top-2 p-1.5 rounded bg-green-900 p-1.5 border border-transparent text-center text-sm text-white transition-all shadow-sm hover:bg-green-800 focus:bg-green-800 focus:shadow-none active:bg-green-700 hover:bg-green-800 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-            type="button">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4">
-              <path fill-rule="evenodd"
-                d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
-                clip-rule="evenodd"></path>
-            </svg>
-          </button>
-        </div>
-        {{!-- Clear Filter Button --}}
-        <button id="clear_filter_button" class="hidden flex items-center active:scale-95 transition-transform px-2 text-xs w-[103px] h-[29px] transition-all duration-200 
+      {{!-- Upcoming Reservations Header --}}
+      <h1 class="text-3xl font-bold text-slate-800 font-sans mt-8 mb-8">
+        Upcoming Reservations
+      </h1>
+      {{!-- Clear Filter Button --}}
+      <button id="clear_filter_button" class="hidden flex items-center active:scale-95 transition-transform px-2 text-xs w-[103px] h-[29px] transition-all duration-200 
                bg-transparent text-[#1e3a2a] border border-[#1e3a2a] 
                hover:bg-[#1e3a2a] hover:text-white rounded-md text-white font-bold py-[4px] rounded-full">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-            stroke="currentColor" class="size-4">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-          </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+          class="size-4">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+        </svg>
 
-          <span class="ml-[4px]">Clear Filter</span>
-        </button>
-        {{!-- Table --}}
-        <div class="w-full bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-          <div class="overflow-x-auto">
-            <table id="table" class="w-full text-sm text-left border-collapse">
-              <thead class="bg-slate-50 border-b border-slate-100">
-                <tr>
-                  <th class="px-6 py-4 font-bold text-slate-600">Building</th>
-                  <th class="px-6 py-4 font-bold text-slate-600">Room</th>
-                  <th class="px-6 py-4 font-bold text-slate-600">Date</th>
-                  <th class="px-6 py-4 font-bold text-slate-600">Start</th>
-                  <th class="px-6 py-4 font-bold text-slate-600">End</th>
-                  <th class="px-6 py-4 font-bold text-slate-600">Action</th>
-                </tr>
-              </thead>
-              <tbody id="tbody">
-              </tbody>
-            </table>
-          </div>
+        <span class="ml-[4px]">Clear Filter</span>
+      </button>
+      {{!-- Table --}}
+      <div class="w-full bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+        <div class="overflow-x-auto">
+          <table id="table" class="text-center w-full text-sm text-left border-collapse">
+            <thead class="text-center bg-slate-50 border-b border-slate-100">
+              <tr>
+                <th class="px-6 py-4 font-bold text-slate-600">Building</th>
+                <th class="px-6 py-4 font-bold text-slate-600">Room</th>
+                <th class="px-6 py-4 font-bold text-slate-600">Date</th>
+                <th class="px-6 py-4 font-bold text-slate-600">Start</th>
+                <th class="px-6 py-4 font-bold text-slate-600">End</th>
+                <th class="px-6 py-4 font-bold text-slate-600">Action</th>
+              </tr>
+            </thead>
+            <tbody id="tbody">
+            </tbody>
+          </table>
         </div>
       </div>
-    </main>
+  </div>
+  </main>
   </div>
   {{!-- Modal for View Seats --}}
   <div id="view_modal" class="fixed inset-0 z-[9999] flex items-center justify-center p-4 hidden">

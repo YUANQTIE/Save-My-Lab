@@ -9,7 +9,7 @@ const UserSchema = new mongoose.Schema({
     password: {type: String, required: true},
     last_login: {type: Date},
     id_number: {type: Number, required: true, unique: true}
-})
+}, { collection: 'users' })
 
 const User = mongoose.model("User", UserSchema);
 
