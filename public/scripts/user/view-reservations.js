@@ -25,6 +25,19 @@ const date_filter = document.getElementById("date_filter")
 const url = new URLSearchParams(window.location.search);
 const userId = url.get('id');
 let reservations;
+let listOfReservations = []
+class reservation {
+    constructor(id, building, roomName, startDate, startTime, endTime, creationDate, creationTime) {
+        this.id = id,
+        this.building = building;
+        this.roomName = roomName;
+        this.startDate = startDate;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.creationDate = creationDate;
+        this.creationTime = creationTime;
+    }
+}
 $(document).ready(async function () {
     console.log("View-Reservations Script running");
     let seats;
@@ -35,11 +48,14 @@ $(document).ready(async function () {
     }
 })
 
-function showReservations(reservations) {
+async function showReservations(reservations) {
     tbody.innerHTML = "";
+    let listOfReservations = []
 
     reservations.forEach(res => {
-        const startDate = new Date(res.reservation_start_timestamp);
+        const rawStart = res.reservation_start_timestamp.replace('Z', '').replace(' ', 'T');
+        const startDate = new Date(rawStart);
+        const newStartDate = new Date(res.reservation_start_timestamp)
         const endDate = new Date(res.reservation_end_timestamp);
         const creationDate = new Date(res.creation_timestamp);
         const formattedStartDate = new Intl.DateTimeFormat('en-US', {
@@ -54,7 +70,7 @@ function showReservations(reservations) {
             minute: 'numeric',
             hour12: true,
             timeZone: 'UTC'
-        }).format(startDate);
+        }).format(newStartDate);
 
 
         const formattedEndTime = new Intl.DateTimeFormat('en-US', {
@@ -76,17 +92,38 @@ function showReservations(reservations) {
             hour12: true,
         }).format(creationDate);
 
-        addRow(
+        listOfReservations.push(new reservation(
             res.reservation_id,
             res.building,
             res.room_name,
-            formattedStartDate,
+            startDate,
             formattedStartTime,
             formattedEndTime,
             formattedCreationDate,
-            formattedCreationTime
+            formattedCreationTime)
         );
     });
+    listOfReservations.sort((a, b) => b.startDate.getTime() - a.startDate.getTime());
+    console.log(listOfReservations)
+    for(const res of listOfReservations) {
+        const formattedStartDate = new Intl.DateTimeFormat('en-US', {
+            month: 'long',
+            day: '2-digit',
+            year: 'numeric',
+            timeZone: 'UTC'
+        }).format(res.startDate);
+        await addRow(
+            res.id,
+            res.building,
+            res.roomName,
+            formattedStartDate,
+            res.startTime,
+            res.endTime,
+            res.creationDate,
+            res.creationTime
+        );
+
+    }
 }
 
 function convertDate(date) {
@@ -143,16 +180,16 @@ async function getReservationsByDate(date) {
 
 table.addEventListener("click", viewRow);
 
-function addRow(reservationId, building, room, date, startTime, endTime, resDate, resTime) {
-    const uniqueDialogId = `dialog-${reservationId}`;
-
+async function addRow(reservationId, building, room, date, startTime, endTime, resDate, resTime) {
     // Create the row element
     const tr = document.createElement('tr');
     tr.setAttribute('data-id', reservationId);
     tr.className = "odd:bg-neutral-primary even:bg-neutral-secondary-soft border-b border-default";
+    let response = await fetch(`/reservations/${reservationId}/checkEditable`)
+    let editable = await response.json()
 
-    // Set the internal HTML
-    tr.innerHTML = `
+    if (editable) {
+        tr.innerHTML = `
         <td scope="row" class="border-b border-default px-6 py-4 font-medium text-heading whitespace-nowrap">
               ${building}
             </td>
@@ -184,6 +221,37 @@ function addRow(reservationId, building, room, date, startTime, endTime, resDate
             </div>
         </td>
     `;
+    }
+    else {
+        tr.innerHTML = `
+        <td scope="row" class="border-b border-default px-6 py-4 font-medium text-heading whitespace-nowrap">
+              ${building}
+            </td>
+            <td class="border-b border-default px-4 py-4">
+              ${room}
+            </td>
+            <td class="border-b border-default px-4 py-4">
+              ${date}
+            </td>
+            <td class="border-b border-default px-4 py-4">
+              ${startTime} - ${endTime}
+            </td>
+            <td class="border-b border-default px-4 py-4">
+              ${resDate}
+            </td>
+            <td class="border-b border-default px-4 py-4">
+              ${resTime}
+            </td>
+        <td class="border-b border-default px-4 py-4 space-x-1.5">
+            <div class="flex justify-center items-center">
+              <button id="view_button" class = "w-8 h-8 flex items-center justify-center view_button_class text-slate-600 hover:bg-[#34493e]/5 hover:border-[#34493e]/20 hover:text-[#34493e]">
+                <img src="/images/seat.png" alt="View" class="w-5 h-5">
+              </button>
+            </div>
+        </td>
+    `;
+    }
+
 
     // Append to the table body
     tbody.appendChild(tr);

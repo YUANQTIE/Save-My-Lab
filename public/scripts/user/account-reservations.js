@@ -27,6 +27,17 @@ const date_filter = document.getElementById("date_filter")
 const url = new URLSearchParams(window.location.search);
 const userId = url.get('id');
 let reservations;
+let listOfReservations = []
+class reservation {
+    constructor(id, building, roomName, startDate, startTime, endTime) {
+        this.id = id,
+        this.building = building;
+        this.roomName = roomName;
+        this.startDate = startDate;
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
+}
 $(document).ready(async function () {
     console.log("Profile-Settings Script running");
     $("#profile-settings").on("click", async function (e) {
@@ -67,10 +78,13 @@ $(document).ready(async function () {
     }
 })
 
-function showReservations(reservations) {
+async function showReservations(reservations) {
     tbody.innerHTML = "";
+    let listOfReservations = []
 
     reservations.forEach(res => {
+        const rawStart = res.reservation_start_timestamp.replace('Z', '').replace(' ', 'T');
+        const rawStartDate = new Date(rawStart);
         const startDate = new Date(res.reservation_start_timestamp);
         const endDate = new Date(res.reservation_end_timestamp);
         let currentDate = new Date();
@@ -120,15 +134,37 @@ function showReservations(reservations) {
         if (endTime < currentTime) {
             return;
         }
-        addRow(
+
+        listOfReservations.push(new reservation(
             res.reservation_id,
             res.building,
             res.room_name,
-            formattedStartDate,
+            rawStartDate,
             formattedStartTime,
-            formattedEndTime
+            formattedEndTime,)
         );
     });
+    listOfReservations.sort((a, b) => a.startDate.getTime() - b.startDate.getTime());
+    console.log(listOfReservations)
+    for(const res of listOfReservations) {
+        const formattedStartDate = new Intl.DateTimeFormat('en-US', {
+            month: 'long',
+            day: '2-digit',
+            year: 'numeric',
+            timeZone: 'UTC'
+        }).format(res.startDate);
+        await addRow(
+            res.id,
+            res.building,
+            res.roomName,
+            formattedStartDate,
+            res.startTime,
+            res.endTime,
+            res.creationDate,
+            res.creationTime
+        );
+
+    }
 }
 
 function convertDate(date) {
