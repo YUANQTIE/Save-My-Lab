@@ -14,8 +14,10 @@ const success_classList = "mt-3 w-[315px] h-[40px] bg-green-100 border border-gr
 const username_border_color = "outline-gray-300";
 const profile_image = document.getElementById("profile_image");
 const input_file = document.getElementById("input_file");
+const userDropdownMenu = document.getElementById("userDropdownMenu")
+const search = document.getElementById("search")
 const url = new URLSearchParams(window.location.search);
-const userId = url.get('id');
+const userId = url.get('originalId');
 
 save_button.addEventListener("click", saveChanges);
 input_file.addEventListener("click", changePicture);
@@ -26,7 +28,7 @@ $(document).ready(function () {
     $("#profile-settings").on("click", async function (e) {
         e.preventDefault();
         try {
-            window.location.href = `/user/profile-settings?id=${userId}`
+            window.location.href = `/user/profile-settings?originalId=${userId}`
         } catch (err) {
             console.error("Login Error:", err);
             alert("An error occurred. Check the F12 console.");
@@ -36,7 +38,7 @@ $(document).ready(function () {
     $("#account-security").on("click", async function (e) {
         e.preventDefault();
         try {
-            window.location.href = `/user/account-security?id=${userId}`
+            window.location.href = `/user/account-security?originalId=${userId}`
         } catch (err) {
             console.error("Login Error:", err);
             alert("An error occurred. Check the F12 console.");
@@ -46,7 +48,7 @@ $(document).ready(function () {
     $("#reservations").on("click", async function (e) {
         e.preventDefault();
         try {
-            window.location.href = `/user/account-reserve?id=${userId}`
+            window.location.href = `/user/account-reserve?originalId=${userId}`
         } catch (err) {
             console.error("Login Error:", err);
             alert("An error occurred. Check the F12 console.");
@@ -132,3 +134,44 @@ function changePicture() {
         updateProfilePicture(userId, image);
     }
 }
+
+async function getUserSearchSuggestions(input) {
+    if (input.trim().length === 0) {
+        userDropdownMenu.innerHTML = ''; // Clear suggestions
+        return; // Don't even call the database
+    }
+    const response = await fetch(`/user/searchRecommended?username=${input}`)
+    const users = await response.json()
+    if(users.length == 0) {
+        const li = document.createElement('li')
+        li.className = "px-4 py-2 text-slate-600 text-sm";
+        li.innerHTML = "No User Found"
+        userDropdownMenu.appendChild(li)
+    }
+    console.log("Users: ", users)
+    for (let i = 0; i < 5 && i < users.length; i++) {
+        const li = document.createElement('li')
+        let userId = users[i]._id
+        li.setAttribute('data-id', userId);
+        li.className = "userSuggestion px-4 py-2 text-slate-600 hover:bg-slate-50 text-sm cursor-pointer";
+        li.innerHTML = `${users[i].username}`
+        userDropdownMenu.appendChild(li)
+    }
+}
+
+async function viewUser(e) {
+    const btn = e.target.closest(".userSuggestion")
+    if (!btn) return;
+    const user = btn.closest('li')
+    const searchedUserId = user.getAttribute('data-id')
+    search.value = ""
+    userDropdownMenu.innerHTML = '';
+    window.location.href = `/user/view-other-user-profile?id=${searchedUserId}&originalId=${userId}`
+}
+
+search.addEventListener('input', (e) => {
+    getUserSearchSuggestions(e.target.value)
+    console.log("Value changed to: " + e.target.value);
+});
+
+userDropdownMenu.addEventListener('click', viewUser);

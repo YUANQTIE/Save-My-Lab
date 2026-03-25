@@ -23,7 +23,7 @@ const building_filter = document.getElementById("building_filter")
 const room_filter = document.getElementById("room_filter")
 const date_filter = document.getElementById("date_filter")
 const url = new URLSearchParams(window.location.search);
-const userId = url.get('id');
+const userId = url.get('originalId');
 let reservations;
 let listOfReservations = []
 class reservation {

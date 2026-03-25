@@ -57,10 +57,20 @@ exports.isUserIdNumberInDB = async (req, res) => {
   }
 };
 
+exports.showUserSearched = async (req, res) => {
+  try {
+    const userData = await User.findById(req.query.id).lean();
+    res.render('user/view-other-user-profile', { user: userData });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Error');
+  }
+}
+
 // Get and Render Profile of User for Profile Settings
 exports.showProfile = async (req, res) => {
   try {
-    const userData = await User.findById(req.query.id).lean();
+    const userData = await User.findById(req.query.originalId).lean();
     res.render('user/profile-settings', { user: userData });
   } catch (err) {
     console.error(err.message);
@@ -71,7 +81,7 @@ exports.showProfile = async (req, res) => {
 // Get and Render Profile of User for Account Security
 exports.showProfileAccountSecurity = async (req, res) => {
   try {
-    const userData = await User.findById(req.query.id).lean();
+    const userData = await User.findById(req.query.originalId).lean();
     res.render('user/account-security', { user: userData });
   } catch (err) {
     console.error(err.message);
@@ -82,7 +92,7 @@ exports.showProfileAccountSecurity = async (req, res) => {
 // Get and Render Profile of User for Reservations
 exports.showProfileReservations = async (req, res) => {
   try {
-    const userData = await User.findById(req.query.id).lean();
+    const userData = await User.findById(req.query.originalId).lean();
     res.render('user/account-reservations', { user: userData });
   } catch (err) {
     console.error(err.message);
@@ -92,7 +102,7 @@ exports.showProfileReservations = async (req, res) => {
 
 exports.addReservation = async (req, res) => {
   try {
-    const userData = await User.findById(req.query.id).lean();
+    const userData = await User.findById(req.query.originalId).lean();
     console.log(userData)
     res.render('user/student-add-reservation', { user: userData });
   } catch (err) {
@@ -126,10 +136,10 @@ exports.getIdGivenEmail = async (req, res) => {
 
 exports.getRecommendedUsers = async (req, res) => {
   try {
-    const username = req.query.username;
+    const usernameSearched = req.query.username;
 
     const users = await User.find({
-      username: { $regex: username }
+      username: { $regex: usernameSearched, $options: 'i'}
     });
 
     res.json(users);
@@ -305,7 +315,7 @@ exports.editUsername = async (req, res) => {
 exports.editPassword = async (req, res) => {
   try {
     console.log("im here")
-    const id = req.query.id
+    const id = req.query.originalId
     const containsWhitespace = str => /\s/.test(str);
 
     const user = await User.findById(id);

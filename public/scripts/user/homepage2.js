@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
     const urlParams = new URLSearchParams(window.location.search);
-    const currentId = urlParams.get('id');
+    const currentId = urlParams.get('originalId');
 
     console.log(currentId)
 
@@ -9,7 +9,7 @@ $(document).ready(function() {
         e.preventDefault();
 
         try {
-            window.location.href = `/user/landing?id=${currentId}`
+            window.location.href = `/user/landing?originalId=${currentId}`
 
         } catch (err) {
             console.error("Login Error:", err);
@@ -21,7 +21,7 @@ $(document).ready(function() {
         e.preventDefault();
 
         try {
-            window.location.href = `/user/profile?id=${currentId}`
+            window.location.href = `/user/profile?originalId=${currentId}`
 
         } catch (err) {
             console.error("Login Error:", err);
@@ -33,7 +33,7 @@ $(document).ready(function() {
         e.preventDefault();
 
         try {
-            window.location.href = `/user/reserve?id=${currentId}`
+            window.location.href = `/user/reserve?originalId=${currentId}`
         } catch (err) {
             console.error("Login Error:", err);
             alert("An error occurred. Check the F12 console.");

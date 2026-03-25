@@ -17,7 +17,7 @@ app.set("views", "./views")
 //this is for yung recommended usernames sa search bar
 //req.query: username
 //res.json: _id, email, username, bio, date_created, password, profile_picture, last_login, id_number
-router.get('/search', UserController.getRecommendedUsers);
+router.get('/searchRecommended', UserController.getRecommendedUsers);
 
 //this is for getting the info of a user sa search bar
 //req.params: id
@@ -35,7 +35,7 @@ router.get('/login-validity', UserController.get21DaysUsers);
 //checks if user can log in
 //req.params: emailInput, passwordInput
 //res.json: true/false
-router.get('/:emailInput/:passwordInput', UserController.isUserValid);
+router.get('/verify/:emailInput/:passwordInput', UserController.isUserValid);
 
 //checks if user can log in
 //req.params: emailInput, passwordInput
@@ -89,6 +89,7 @@ router.get("/account-reserve", UserController.showProfileReservations);
 router.get("/view-reservations", (req,res) => {
     res.render('user/view-reservations', {id: req.query.id})
 })
+router.get("/view-other-user-profile", UserController.showUserSearched);
 
 
 module.exports = router

@@ -1,6 +1,6 @@
 const queryString = window.location.search;
 const url = new URLSearchParams(queryString);
-const userId = url.get('id');
+const userId = url.get('originalId');
 const successModal = document.getElementById("successModal")
 const successConfirm = document.getElementById("successConfirm")
 const closeSuccessModal = document.getElementById("closeSuccessModal")

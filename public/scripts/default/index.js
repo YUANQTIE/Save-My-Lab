@@ -15,7 +15,7 @@ $(document).ready(function() {
         }
 
         try {
-            const res1 = await fetch(`/user/${emailInput}/${passwordInput}`);
+            const res1 = await fetch(`/user/verify/${emailInput}/${passwordInput}`);
             const isUser = await res1.json();
 
             if (isUser) {
@@ -23,11 +23,11 @@ $(document).ready(function() {
                 const users = await usersRes.json();
                 const user = users.find(u => u.email === emailInput);
 
-                window.location.href = `/user/landing?id=${user._id}`;
+                window.location.href = `/user/landing?originalId=${user._id}`;
                 return;
             }
 
-            const res2 = await fetch(`/admin/${emailInput}/${passwordInput}`);
+            const res2 = await fetch(`/admin/verify/${emailInput}/${passwordInput}`);
             const isAdmin = await res2.json();
             if (isAdmin) {
                 const adminsRes = await fetch("/admin/admins");

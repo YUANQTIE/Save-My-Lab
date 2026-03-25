@@ -1,53 +1,29 @@
 const table = document.getElementById("table");
 const tbody = document.getElementById("tbody");
-const delete_button = document.getElementById("delete_button");
+const profile_username = document.getElementById("profile_username");
 const profile_image = document.getElementById("profile_image");
-const input_file = document.getElementById("input_file");
-const dropdownButton = document.getElementById("dropdownButton");
-const sort_text = document.getElementById("sort_text");
-const dropdown = document.getElementById("dropdown");
-const building_option = document.getElementById("building_option");
-const room_option = document.getElementById("room_option");
-const date_option = document.getElementById("date_option");
-const start_time_option = document.getElementById("start_time_option");
-const end_time_option = document.getElementById("end_time_option");
-const view_modal = document.getElementById("view_modal")
-const view_modal_body = document.getElementById("view_modal_body")
-const hide_view_modal = document.getElementById("hide_view_modal")
-const confirm_okay = document.getElementById("confirm_okay")
-const userDropdownMenu = document.getElementById("userDropdownMenu")
-const search = document.getElementById("search")
 const noReservations = document.getElementById("noReservations")
 const url = new URLSearchParams(window.location.search);
-const userId = url.get('originalId');
+const userId = url.get('id');
 let reservations;
 let listOfReservations = []
 class reservation {
     constructor(id, building, roomName, startDate, startTime, endTime) {
         this.id = id,
-            this.building = building;
+        this.building = building;
         this.roomName = roomName;
         this.startDate = startDate;
         this.startTime = startTime;
         this.endTime = endTime;
     }
 }
+
 $(document).ready(async function () {
     console.log("Profile-Settings Script running");
     $("#profile-settings").on("click", async function (e) {
         e.preventDefault();
         try {
-            window.location.href = `/user/profile-settings?originalId=${userId}`
-        } catch (err) {
-            console.error("Login Error:", err);
-            alert("An error occurred. Check the F12 console.");
-        }
-    });
-
-    $("#account-security").on("click", async function (e) {
-        e.preventDefault();
-        try {
-            window.location.href = `/user/account-security?originalId=${userId}`
+            window.location.href = `/user/view-other-user-profile?id=${userId}`
         } catch (err) {
             console.error("Login Error:", err);
             alert("An error occurred. Check the F12 console.");
@@ -57,29 +33,28 @@ $(document).ready(async function () {
     $("#reservations").on("click", async function (e) {
         e.preventDefault();
         try {
-            window.location.href = `/user/account-reserve?originalId=${userId}`
+            window.location.href = `/user/account-reserve?id=${userId}`
         } catch (err) {
             console.error("Login Error:", err);
             alert("An error occurred. Check the F12 console.");
         }
     });
-
     reservations = await getReservations();
-    console.log(reservations)
+    console.log("Reservations of Searched User: ", reservations)
     if (Array.isArray(reservations)) {
         showReservations(reservations);
     }
 })
 
 async function showReservations(reservations) {
+    tbody.innerHTML = "";
+    let listOfReservations = []
     if(reservations.length == 0) {
         noReservations.classList.remove("hidden")
     }
     else {
         noReservations.classList.add("hidden")
     }
-    tbody.innerHTML = "";
-    let listOfReservations = []
 
     reservations.forEach(res => {
         const rawStart = res.reservation_start_timestamp.replace('Z', '').replace(' ', 'T');
@@ -167,32 +142,6 @@ async function showReservations(reservations) {
     }
 }
 
-function convertDate(date) {
-    const dateObj = new Date(date);
-
-    // Extract parts
-    const year = dateObj.getFullYear();
-    const month = String(dateObj.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
-    const day = String(dateObj.getDate()).padStart(2, '0');
-
-    const formattedDate = `${year}-${month}-${day}`;
-    return formattedDate;
-}
-
-async function getReservations() {
-    const response = await fetch(`/reservations/api/list/${userId}`);
-    if (!response.ok) {
-        console.error("Server error:", response.status);
-        return [];
-    }
-
-    return await response.json();
-}
-
-input_file.addEventListener("click", changePicture);
-
-table.addEventListener("click", viewRow);
-
 function addRow(reservationId, building, room, date, startTime, endTime) {
     const uniqueDialogId = `dialog-${reservationId}`;
 
@@ -223,11 +172,6 @@ function addRow(reservationId, building, room, date, startTime, endTime) {
               <button id="view_button" class = "w-8 h-8 flex items-center justify-center view_button_class text-slate-600 hover:bg-[#34493e]/5 hover:border-[#34493e]/20 hover:text-[#34493e]">
                 <img src="/images/seat.png" alt="View" class="w-5 h-5">
               </button>
-              <button id="edit_button" class = "edit_button_class w-8 h-8 flex items-center justify-center text-slate-600 hover:bg-[#34493e]/5 hover:border-[#34493e]/20 hover:text-[#34493e]">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                </svg>
-              </button>
             </div>
         </td>
     `;
@@ -235,6 +179,17 @@ function addRow(reservationId, building, room, date, startTime, endTime) {
     // Append to the table body
     tbody.appendChild(tr);
 }
+
+async function getReservations() {
+    const response = await fetch(`/reservations/api/list/${userId}`);
+    if (!response.ok) {
+        console.error("Server error:", response.status);
+        return [];
+    }
+
+    return await response.json();
+}
+
 
 async function viewRow(e) {
     const btn = e.target.closest(".view_button_class");
@@ -283,50 +238,16 @@ async function viewRow(e) {
     });
 }
 
+table.addEventListener("click", viewRow);
 
-function changePicture() {
-    input_file.onchange = function () {
-        profile_image.src = URL.createObjectURL(input_file.files[0]);
-    }
+function convertDate(date) {
+    const dateObj = new Date(date);
+
+    // Extract parts
+    const year = dateObj.getFullYear();
+    const month = String(dateObj.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+    const day = String(dateObj.getDate()).padStart(2, '0');
+
+    const formattedDate = `${year}-${month}-${day}`;
+    return formattedDate;
 }
-
-async function getUserSearchSuggestions(input) {
-    if (input.trim().length === 0) {
-        userDropdownMenu.innerHTML = ''; // Clear suggestions
-        return; // Don't even call the database
-    }
-    const response = await fetch(`/user/searchRecommended?username=${input}`)
-    const users = await response.json()
-    if(users.length == 0) {
-        const li = document.createElement('li')
-        li.className = "px-4 py-2 text-slate-600 text-sm";
-        li.innerHTML = "No User Found"
-        userDropdownMenu.appendChild(li)
-    }
-    console.log("Users: ", users)
-    for (let i = 0; i < 5 && i < users.length; i++) {
-        const li = document.createElement('li')
-        let userId = users[i]._id
-        li.setAttribute('data-id', userId);
-        li.className = "userSuggestion px-4 py-2 text-slate-600 hover:bg-slate-50 text-sm cursor-pointer";
-        li.innerHTML = `${users[i].username}`
-        userDropdownMenu.appendChild(li)
-    }
-}
-
-async function viewUser(e) {
-    const btn = e.target.closest(".userSuggestion")
-    if (!btn) return;
-    const user = btn.closest('li')
-    const searchedUserId = user.getAttribute('data-id')
-    search.value = ""
-    userDropdownMenu.innerHTML = '';
-    window.location.href = `/user/view-other-user-profile?id=${searchedUserId}&originalId=${userId}`
-}
-
-search.addEventListener('input', (e) => {
-    getUserSearchSuggestions(e.target.value)
-    console.log("Value changed to: " + e.target.value);
-});
-
-userDropdownMenu.addEventListener('click', viewUser);
