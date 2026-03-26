@@ -4,6 +4,11 @@ const userId = url.get('originalId');
 const successModal = document.getElementById("successModal")
 const successConfirm = document.getElementById("successConfirm")
 const closeSuccessModal = document.getElementById("closeSuccessModal")
+const dateInput = document.getElementById("dateInput")
+const startHourInput = document.getElementById("startHourInput")
+const startMinuteInput = document.getElementById("startMinuteInput")
+const endHourInput = document.getElementById("endHourInput")
+const endMinuteInput = document.getElementById("endMinuteInput")
 const loading = document.getElementById("loading")
 var building;
 var room;
@@ -24,6 +29,14 @@ $(document).ready(function () {
     function showLoader() {
         loading.style.setProperty('display', 'block', 'important');
         loading.classList.remove('hidden');
+    }
+
+    function format(hour) {
+        if (hour < 10) {
+            return '0' + hour
+        }
+        else
+            return hour
     }
 
     function weekView() {
@@ -111,7 +124,7 @@ $(document).ready(function () {
             seats = [];
             seat_names = [];
             console.log("Selected date:", reservationDate);
-
+            displayStartTimeInputs()
             $("#time").removeClass("hidden");
             $("#confirmBtn").prop("disabled", true);
 
@@ -123,6 +136,14 @@ $(document).ready(function () {
 
 
     function checkTimeInputs() {
+        if ($("#startHourInput").val() && $("#startMinuteInput").val()) {
+            console.log("CALLED DISPLAYENDHOURS")
+            displayEndHourInputs(parseInt($("#startHourInput").val().trim()), $("#startMinuteInput").val().trim())
+        }
+        if ($("#startHourInput").val() && $("#endHourInput").val()) {
+            console.log("CALLED DISPLAYENDMINUTES")
+            displayEndMinuteInputs(parseInt($("#startHourInput").val()), parseInt($("#endHourInput").val()))
+        }
         if ($("#startHourInput").val() && $("#startMinuteInput").val() && $("#endHourInput").val() && $("#endMinuteInput").val()) {
             reservationStartHour = $("#startHourInput").val().trim();
             reservationStartMinute = $("#startMinuteInput").val().trim();
@@ -266,8 +287,19 @@ $(document).ready(function () {
 
     }
 
+    $("#startHourInput, #startMinuteInput").on("input", async function () {
+        endHourInput.innerHTML = `<option value="" disabled selected>--</option>`
+        endMinuteInput.innerHTML = `<option value="" disabled selected>--</option>`
+    });
 
-    $("#venueInput, #roomInput, #dateInput, #startHourInput, #startMinuteInput, #endHourInput, #endMinuteInput").on("change", async function () {
+    $("#venueInput, #roomInput, #dateInput").on("input", async function () {
+        startHourInput.innerHTML = `<option value="" disabled selected>--</option>`
+        startMinuteInput.innerHTML = `<option value="" disabled selected>--</option>`
+        endHourInput.innerHTML = `<option value="" disabled selected>--</option>`
+        endMinuteInput.innerHTML = `<option value="" disabled selected>--</option>`
+    });
+
+    $("#venueInput, #roomInput, #dateInput, #startHourInput, #startMinuteInput, #endHourInput, #endMinuteInput").on("input", async function () {
         checkTimeInputs();
         if (reservationStartTimeStamp && reservationEndTimeStamp && building && room) {
             if (reservationEndTimeStamp > reservationStartTimeStamp) {
@@ -397,4 +429,98 @@ $(document).ready(function () {
     successConfirm.addEventListener('click', function (event) {
         successModal.classList.add("hidden")
     });
-});
+
+    function displayStartTimeInputs() {
+        let currentDate = new Date();
+        const formattedCurrentDate = currentDate.toLocaleDateString('en-CA')
+        let currentTime = currentDate.toLocaleTimeString('en-US', { hour12: false })
+        const currentHour = currentDate.getHours()
+        const currentMinutes = currentDate.getMinutes()
+        let chosenDate = dateInput.value.trim()
+        console.log("Chosen Date: ", chosenDate)
+        console.log("Current Date: ", formattedCurrentDate)
+        if (chosenDate == formattedCurrentDate) {
+            for (let i = currentHour; i <= 20; i++) {
+                let option = document.createElement("option")
+                let hour = format(i)
+                option.innerHTML = `<option value="${hour}">${i}</option>`
+                startHourInput.appendChild(option)
+            }
+            if (currentMinutes < 30) {
+                let option = document.createElement("option")
+                let firstOption = "00"
+                option.innerHTML = `<option value="${firstOption}">${firstOption}</option>`
+                startMinuteInput.appendChild(option)
+                let option2 = document.createElement("option")
+                let secondOption = "30"
+                option2.innerHTML = `<option value="${secondOption}">${secondOption}</option>`
+                startMinuteInput.appendChild(option2)
+            }
+            else {
+                let option = document.createElement("option")
+                let firstOption = "30"
+                option.innerHTML = `<option value="${firstOption}">${firstOption}</option>`
+                startMinuteInput.appendChild(option)
+            }
+        }
+        else {
+            for (let i = 7; i <= 20; i++) {
+                let option = document.createElement("option")
+                let hour = format(i)
+                option.innerHTML = `<option value="${hour}">${i}</option>`
+                startHourInput.appendChild(option)
+            }
+            let option = document.createElement("option")
+            let firstOption = "00"
+            option.innerHTML = `<option value="${firstOption}">${firstOption}</option>`
+            startMinuteInput.appendChild(option)
+            let option2 = document.createElement("option")
+            let secondOption = "30"
+            option2.innerHTML = `<option value="${secondOption}">${secondOption}</option>`
+            startMinuteInput.appendChild(option2)
+        }
+    }
+
+    function displayEndHourInputs(startHour, startMinute) {
+        console.log("Start Hour:", startHour)
+        console.log("Start Minute:", startMinute)
+        if (startMinute == "00") {
+            console.log("00")
+            for (let i = startHour; i <= 20; i++) {
+                let option = document.createElement("option")
+                let hour = format(i)
+                option.innerHTML = `<option value="${hour}">${i}</option>`
+                endHourInput.appendChild(option)
+            }
+        }
+        else {
+            console.log("30")
+            for (let i = startHour + 1; i <= 20; i++) {
+                let option = document.createElement("option")
+                let hour = format(i)
+                option.innerHTML = `<option value="${hour}">${i}</option>`
+                endHourInput.appendChild(option)
+            }
+        }
+    }
+
+    function displayEndMinuteInputs(startHour, endHour) {
+        if (startHour == endHour) {
+            let option = document.createElement("option")
+            let firstOption = "30"
+            option.innerHTML = `<option value="${firstOption}">${firstOption}</option>`
+            endMinuteInput.appendChild(option)
+        }
+        else {
+            let option = document.createElement("option")
+            let firstOption = "00"
+            option.innerHTML = `<option value="${firstOption}">${firstOption}</option>`
+            endMinuteInput.appendChild(option)
+            let option2 = document.createElement("option")
+            let secondOption = "30"
+            option2.innerHTML = `<option value="${secondOption}">${secondOption}</option>`
+            endMinuteInput.appendChild(option2)
+        }
+    }
+
+})
