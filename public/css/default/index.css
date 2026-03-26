@@ -25,3 +25,11 @@
     background-position: center;
     background-repeat: no-repeat;
 }
+
+.shift-left {
+    transform: translateX(-220px);
+}
+
+.hidden {
+  display: none;
+}

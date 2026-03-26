@@ -20,7 +20,7 @@ $(document).ready(function() {
         const emailInput = $("#emailInput").val().trim();
 
         try {
-            const response = await fetch(`/user/forgot?email=${emailInput}`);
+            const response = await fetch(`/admin/forgot?email=${emailInput}`);
 
             if (!response.ok) {
                 const errorData = await response.json();
@@ -49,7 +49,7 @@ $(document).ready(function() {
         try {
 
             if (pw1Input === pw2Input){
-                const res = await fetch(`/user/edit/password?id=${editPwId}`, {
+                const res = await fetch(`/admin/edit/password?originalId=${editPwId}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json'
@@ -61,11 +61,11 @@ $(document).ready(function() {
 
                 const message = await res.text();
 
-                if (message == "User password updated successfully"){
+                if (message == "Admin password updated successfully"){
                     alert("Password updated successfully.")
                     window.location.href = `/`
                 }
-                if (message.length > 0 && message != "User password updated successfully"){
+                if (message.length > 0 && message != "Admin password updated successfully"){
                     $("#errMes").text(message);
                 }
 

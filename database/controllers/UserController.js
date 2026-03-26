@@ -2,6 +2,8 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const User = require('../models/User.js'); // Import User model
+const bcrypt = require('bcrypt')
+const saltCount = 10;
 
 // GET ROUTES 
 
@@ -178,23 +180,6 @@ exports.getAllUsers = async (req, res) => {
   }
 };
 
-
-// Purpose: Login Verification
-// Description: Gets the users whose last login date was 21 days ago
-// Returns Fields: ID
-
-exports.get21DaysUsers = async (req, res) => {
-  try {
-    const Week3Users = await User.find(
-      { last_login: { $gte: 21 } }
-    ).select("_id");
-    res.json(Week3Users);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Error');
-  }
-};
-
 /* Purpose: Login Verification
    Description: Checks if inputted email has this inputted password in User collection
    Accepts: emailInput (str), passwordInput (str)
@@ -203,12 +188,15 @@ exports.get21DaysUsers = async (req, res) => {
 exports.isUserValid = async (req, res) => {
   try {
     const { emailInput, passwordInput } = req.params;
-    const user = await User.findOne({
-      email: emailInput,
-      password: passwordInput
-    });
+    const user = await User.findOne({ email: emailInput });
+
+    if (!user){
+      return res.send("No user found.")
+    }
+
+    const match = await bcrypt.compare(passwordInput, user.password)
     console.log("DB RESULT:", user);
-    if (user) {
+    if (match) {
       user.last_login = new Date();
       await user.save();
       return res.json(true);
@@ -320,7 +308,13 @@ exports.editPassword = async (req, res) => {
 
     const user = await User.findById(id);
 
+    if (!user){
+      return res.send("No user found");
+    }
+
     const pw = req.body.password;
+
+    const hashedPassword = await bcrypt.hash(pw, saltCount);
     // if (pw.length < 8) {
     //   return res.send("Password must have minimum 8 characters")
     // }
@@ -331,11 +325,9 @@ exports.editPassword = async (req, res) => {
     //   return res.send("Password must not be the same from previous password.")
     // }
 
-    await User.findByIdAndUpdate(id,
-      { password: pw });
-    res.send("User password updated successfully");
+    await User.findByIdAndUpdate(id, { password: hashedPassword });
 
-
+    return res.send("User password updated successfully");
 
   } catch (err) {
     res.status(500).send("Error");
@@ -353,12 +345,14 @@ exports.addUser = async (req, res) => {
   try {
     const { email, username, bio, password, id_number } = req.body;
 
+    const hashedPassword = await bcrypt.hash(password, saltCount);
+
     const user = await User.create({
       email,
       username,
       bio,
       date_created: new Date(),
-      password,
+      password : hashedPassword,
       id_number
     });
 

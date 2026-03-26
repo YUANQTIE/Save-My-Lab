@@ -1,6 +1,9 @@
 const express = require('express');
 const Admin = require('../models/Admin.js'); // Import Admin model
 const User = require('../models/User.js'); // Import Admin model
+const bcrypt = require('bcrypt')
+const saltCount = 10;
+
 
 // GET ROUTES 
 
@@ -9,6 +12,23 @@ const User = require('../models/User.js'); // Import Admin model
 /* Purpose: General use
   Description: Gets all of the admins and their records
   RETURNS ALL Fields*/
+
+  //Get Profile of User
+exports.getIdGivenEmail = async (req, res) => {
+  try {
+    const email = req.query.email;
+    const admin = await Admin.findOne({ email }).select("_id");
+
+    if (!admin) {
+      return res.status(404).json({ message: "Admin not found" });
+    }
+
+    res.json(admin);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Error');
+  }
+};
 
 exports.showAdmin = async(req, res) => {
   try {
@@ -81,12 +101,18 @@ exports.getAdminFields = async (req, res) => {
 exports.isAdminValid =  async (req, res) => {
   try {
     const { emailInput, passwordInput } = req.params;
-    const admin = await Admin.findOne({
-      email: emailInput,
-      password: passwordInput
-    });
-    const isValid = admin ? true : false;
-    res.json(isValid);
+    const admin = await Admin.findOne({ email: emailInput });
+
+    if (!admin){
+      return res.send("No user found.")
+    }
+
+    const match = await bcrypt.compare(passwordInput, admin.password)
+    if (match) {
+      await admin.save();
+      return res.json(true);
+    }
+    res.json(false);
   } catch (err) {
     res.status(500).send('Error');
   }
@@ -129,6 +155,41 @@ exports.addAdmin = async (req, res) => {
     res.send("Admin added successfully");
   } catch (err) {
     console.error(err);
+    res.status(500).send("Error");
+  }
+};
+
+// PUT
+
+exports.editPassword = async (req, res) => {
+  try {
+    const id = req.query.originalId
+    const containsWhitespace = str => /\s/.test(str);
+
+    const admin = await Admin.findById(id);
+
+    if (!admin){
+      return res.send("No admin found");
+    }
+
+    const pw = req.body.password;
+
+    const hashedPassword = await bcrypt.hash(pw, saltCount);
+    // if (pw.length < 8) {
+    //   return res.send("Password must have minimum 8 characters")
+    // }
+    // if (containsWhitespace(pw)) {
+    //   return res.send("Password must not have whitespaces")
+    // }
+    // if (pw === user.password) {
+    //   return res.send("Password must not be the same from previous password.")
+    // }
+
+    await Admin.findByIdAndUpdate(id, { password: hashedPassword });
+
+    return res.send("Admin password updated successfully");
+
+  } catch (err) {
     res.status(500).send("Error");
   }
 };

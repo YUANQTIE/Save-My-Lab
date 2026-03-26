@@ -22,7 +22,6 @@ const ReservationSchema = new mongoose.Schema({
     }],
 
     anonymous: { type: Boolean, default: false },
-    checkedIn: { type: Boolean, default: false }
 });
 
 const Reservation = mongoose.model("Reservation", ReservationSchema);

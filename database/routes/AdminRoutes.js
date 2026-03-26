@@ -24,11 +24,22 @@ router.get('/accounts', AdminController.getAllAccounts);
 //res.json: true/false
 router.get('/verify/:emailInput/:passwordInput', AdminController.isAdminValid);
 
+router.get('/forgot', AdminController.getIdGivenEmail);
+
+//req.body: password
+router.put('/edit/password', AdminController.editPassword);
+
+
 //POST ROUTES
 
 //checks if the admin logging in is valid
 //req.body: "email", "password"
 router.post('/add', AdminController.addAdmin);
+
+//PUT ROUTE
+
+//req.body: password
+router.put('/edit/password/:id', AdminController.editPassword);
 
 router.get("/landing", (req, res) => {
     res.render('lab/see-reservations', {id: req.query.id, isAdmin: true})

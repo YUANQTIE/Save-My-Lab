@@ -19,6 +19,7 @@
     "vite-tsconfig-paths": "^5.1.4"
   },
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "express": "^5.2.1",
     "express-fileupload": "^1.5.2",
     "express-handlebars": "^8.0.6",

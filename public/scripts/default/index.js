@@ -1,11 +1,20 @@
 $(document).ready(function() {
-    console.log("Script Loaded and Ready");
+
+    $("#changeToAdmin").on("click", async function(e) {
+        $("#cardContainer1").addClass("hidden");
+        $("#cardContainer2").removeClass("hidden");
+    });
+
+    $("#changeToUser").on("click", async function(e) {
+        $("#cardContainer1").removeClass("hidden");
+        $("#cardContainer2").addClass("hidden");
+    });
     
-    $("#loginBtn").on("click", async function(e) {
+    $("#loginUserBtn").on("click", async function(e) {
         e.preventDefault();
 
-        const emailInput = $("#emailInput").val().trim();
-        const passwordInput = $("#passwordInput").val().trim();
+        const emailInput = $("#userEmailInput").val().trim();
+        const passwordInput = $("#userPasswordInput").val().trim();
 
         console.log("Input Check:", emailInput, passwordInput);
 
@@ -27,6 +36,30 @@ $(document).ready(function() {
                 return;
             }
 
+            else{
+                alert("No valid account found");
+            }
+
+        } catch (err) {
+            console.error("Login Error:", err);
+            alert("An error occurred. Check the F12 console.");
+        }
+    });
+
+    $("#loginAdminBtn").on("click", async function(e) {
+        e.preventDefault();
+
+        const emailInput = $("#adminEmailInput").val().trim();
+        const passwordInput = $("#adminPasswordInput").val().trim();
+
+        console.log("Input Check:", emailInput, passwordInput);
+
+        if (!emailInput || !passwordInput) {
+            alert("Please enter both email and password");
+            return;
+        }
+
+        try {
             const res2 = await fetch(`/admin/verify/${emailInput}/${passwordInput}`);
             const isAdmin = await res2.json();
             if (isAdmin) {
@@ -38,20 +71,22 @@ $(document).ready(function() {
                 window.location.href = `/admin/landing?id=${admin._id}`;
                 return;
             }
-            console.log(isUser)
-            alert("No valid account found"); //NEED TO MAKE THIS REFLECT IN INDEX.HTML
 
+            else{
+                alert("No valid account found");
+            }
+            
         } catch (err) {
             console.error("Login Error:", err);
             alert("An error occurred. Check the F12 console.");
         }
     });
 
-    $("#registerBtn").on("click", async function(e) {
+    $("#registerUserBtn").on("click", async function(e) {
         e.preventDefault();
 
         try {
-            window.location.href = `/aux/register`
+            window.location.href = `/aux/register-user`
 
         } catch (err) {
             console.error("Login Error:", err);
@@ -59,11 +94,11 @@ $(document).ready(function() {
         }
     });
 
-    $("#forgotBtn").on("click", async function(e) {
+    $("#forgotUserBtn").on("click", async function(e) {
         e.preventDefault();
 
         try {
-            window.location.href = `/aux/forgot`
+            window.location.href = `/aux/forgot-user`
 
         } catch (err) {
             console.error("Login Error:", err);
@@ -71,11 +106,11 @@ $(document).ready(function() {
         }
     });
 
-    $("#vsaBtn").on("click", async function(e) {
+    $("#registerAdminBtn").on("click", async function(e) {
         e.preventDefault();
 
         try {
-            window.location.href = `/aux/vsa`
+            window.location.href = `/aux/register-admin`
 
         } catch (err) {
             console.error("Login Error:", err);
@@ -83,11 +118,23 @@ $(document).ready(function() {
         }
     });
 
-    $("#show_password_btn").on("click", async function(e) {
+    $("#forgotAdminBtn").on("click", async function(e) {
         e.preventDefault();
-        const eyeIcons = $("#show_password_btn").find('path, line, circle');
-        const type = $("#passwordInput").attr('type') === 'password' ? 'text' : 'password';
-        $("#passwordInput").attr('type', type);
+
+        try {
+            window.location.href = `/aux/forgot-admin`
+
+        } catch (err) {
+            console.error("Login Error:", err);
+            alert("An error occurred. Check the F12 console.");
+        }
+    });
+
+    $("#show_password_btn_user").on("click", async function(e) {
+        e.preventDefault();
+        const eyeIcons = $("#show_password_btn_user").find('path, line, circle');
+        const type = $("#userPasswordInput").attr('type') === 'password' ? 'text' : 'password';
+        $("#userPasswordInput").attr('type', type);
 
         eyeIcons.each(function() {
             if ($(this).hasClass('hs-password-active:hidden')) {
@@ -98,5 +145,18 @@ $(document).ready(function() {
         });
     });
 
+    $("#show_password_btn_admin").on("click", async function(e) {
+        e.preventDefault();
+        const eyeIcons = $("#show_password_btn_admin").find('path, line, circle');
+        const type = $("#adminPasswordInput").attr('type') === 'password' ? 'text' : 'password';
+        $("#adminPasswordInput").attr('type', type);
 
+        eyeIcons.each(function() {
+            if ($(this).hasClass('hs-password-active:hidden')) {
+                $(this).toggleClass('hidden');
+            } else if ($(this).hasClass('hs-password-active:block')) {
+                $(this).toggleClass('hidden');
+            }
+        });
+    });
 });

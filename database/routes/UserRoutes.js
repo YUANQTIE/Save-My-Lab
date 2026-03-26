@@ -28,10 +28,6 @@ router.get('/search/:id', UserController.getUserById);
 //res.json: _id, email, username, bio, date_created, password, profile_picture, last_login, id_number
 router.get('/users', UserController.getAllUsers);
 
-//gets all the users na lumagpas ng 21 days
-//res.json: _id, email, username, bio, date_created, password, profile_picture
-router.get('/login-validity', UserController.get21DaysUsers);
-
 //checks if user can log in
 //req.params: emailInput, passwordInput
 //res.json: true/false
@@ -71,7 +67,7 @@ router.put("/:id/edit/profile-picture-default", UserController.removeProfilePict
 router.put('/:id/edit/username', UserController.editUsername);
 
 //req.body: password
-router.put('/edit/password/:id', UserController.editPassword);
+router.put('/edit/password', UserController.editPassword);
 
 //DELETE ROUTES
 //req.params: id
