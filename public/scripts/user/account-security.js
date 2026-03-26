@@ -224,9 +224,12 @@ async function getUserSearchSuggestions(input) {
     }
     console.log("Users: ", users)
     for (let i = 0; i < 5 && i < users.length; i++) {
+        let searchedUserId = users[i]._id
+        if(userId == searchedUserId) {
+            return
+        }
         const li = document.createElement('li')
-        let userId = users[i]._id
-        li.setAttribute('data-id', userId);
+        li.setAttribute('data-id', searchedUserId);
         li.className = "userSuggestion px-4 py-2 text-slate-600 hover:bg-slate-50 text-sm cursor-pointer";
         li.innerHTML = `${users[i].username}`
         userDropdownMenu.appendChild(li)
@@ -244,8 +247,46 @@ async function viewUser(e) {
 }
 
 search.addEventListener('input', (e) => {
+    userDropdownMenu.innerHTML = ''; 
     getUserSearchSuggestions(e.target.value)
     console.log("Value changed to: " + e.target.value);
 });
+
+search.addEventListener('keydown', async (e) => {
+  if (e.key === 'Enter') {
+    // Prevent default form submission if necessary
+    e.preventDefault(); 
+    const username = e.target.value;
+    console.log(username)
+    userDropdownMenu.innerHTML = ''; 
+    search.value = ""
+    const response = await fetch(`/user/searchRecommended?username=${username}`)
+    const user = await response.json()
+    console.log("User: ", user)
+    if(user.length == 0) {
+        userDropdownMenu.innerHTML = ''; 
+        const li = document.createElement('li')
+        li.className = "px-4 py-2 text-slate-600 text-sm";
+        li.innerHTML = "No User Found"
+        userDropdownMenu.appendChild(li)
+    }
+    else if(user.length == 1) {
+        const searchedUserId = user[0]._id
+        window.location.href = `/user/view-other-user-profile?id=${searchedUserId}&originalId=${userId}`
+    }
+    else {
+        return
+    }
+  }
+});
+
+window.addEventListener('click', (event) => {
+    userDropdownMenu.innerHTML = '';
+});
+
+search.addEventListener('click', (e) => {
+    userDropdownMenu.innerHTML = ''; 
+    getUserSearchSuggestions(e.target.value)
+})
 
 userDropdownMenu.addEventListener('click', viewUser);
