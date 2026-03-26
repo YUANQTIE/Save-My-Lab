@@ -136,11 +136,11 @@ $(document).ready(function () {
 
 
     function checkTimeInputs() {
-        if ($("#startHourInput").val() && $("#startMinuteInput").val()) {
+        if ($("#startHourInput").val() && $("#startMinuteInput").val() && !$("#endHourInput").val() && !$("#endMinuteInput").val()) {
             console.log("CALLED DISPLAYENDHOURS")
             displayEndHourInputs(parseInt($("#startHourInput").val().trim()), $("#startMinuteInput").val().trim())
         }
-        if ($("#startHourInput").val() && $("#endHourInput").val()) {
+        if ($("#startHourInput").val() && $("#endHourInput").val() && !$("#endMinuteInput").val()) {
             console.log("CALLED DISPLAYENDMINUTES")
             displayEndMinuteInputs(parseInt($("#startHourInput").val()), parseInt($("#endHourInput").val()))
         }
@@ -290,6 +290,7 @@ $(document).ready(function () {
     $("#startHourInput, #startMinuteInput").on("input", async function () {
         endHourInput.innerHTML = `<option value="" disabled selected>--</option>`
         endMinuteInput.innerHTML = `<option value="" disabled selected>--</option>`
+        
     });
 
     $("#venueInput, #roomInput, #dateInput").on("input", async function () {
@@ -486,7 +487,7 @@ $(document).ready(function () {
         console.log("Start Minute:", startMinute)
         if (startMinute == "00") {
             console.log("00")
-            for (let i = startHour; i <= 20; i++) {
+            for (let i = startHour; i <= 21; i++) {
                 let option = document.createElement("option")
                 let hour = format(i)
                 option.innerHTML = `<option value="${hour}">${i}</option>`
@@ -495,7 +496,7 @@ $(document).ready(function () {
         }
         else {
             console.log("30")
-            for (let i = startHour + 1; i <= 20; i++) {
+            for (let i = startHour + 1; i <= 21; i++) {
                 let option = document.createElement("option")
                 let hour = format(i)
                 option.innerHTML = `<option value="${hour}">${i}</option>`
@@ -511,7 +512,7 @@ $(document).ready(function () {
             option.innerHTML = `<option value="${firstOption}">${firstOption}</option>`
             endMinuteInput.appendChild(option)
         }
-        else {
+        else if(startHour != endHour && endHour != 21){
             let option = document.createElement("option")
             let firstOption = "00"
             option.innerHTML = `<option value="${firstOption}">${firstOption}</option>`
@@ -520,6 +521,12 @@ $(document).ready(function () {
             let secondOption = "30"
             option2.innerHTML = `<option value="${secondOption}">${secondOption}</option>`
             endMinuteInput.appendChild(option2)
+        }
+        else {
+            let option = document.createElement("option")
+            let firstOption = "00"
+            option.innerHTML = `<option value="${firstOption}">${firstOption}</option>`
+            endMinuteInput.appendChild(option)
         }
     }
 

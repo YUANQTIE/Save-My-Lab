@@ -12,6 +12,21 @@ var reservationEndTimeStamp;
 var creationTimeStart = undefined;
 var creationTimeEnd = undefined;
 var reservationsToBeDisplayed;
+const tbody = document.getElementById("tbody")
+let listOfReservations = []
+class reservation {
+    constructor(id, building, roomName, startDate, startTime, endTime, reservedBy, creationDate, creationTime) {
+        this.id = id,
+            this.building = building;
+        this.roomName = roomName;
+        this.startDate = startDate;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.reservedBy = reservedBy;
+        this.creationDate = creationDate;
+        this.creationTime = creationTime;
+    }
+}
 
 $(document).ready(function () {
     updateReservationsList(email, creationTimeStart, creationTimeEnd, room, building, reservationStartTimeStamp, reservationEndTimeStamp, seatCount)
@@ -257,44 +272,272 @@ $(document).ready(function () {
         console.log(response)
     }
 
-    function convertTo24(timeStr) {
-        const [time, modifier] = timeStr.split(' ');
-        let [hours, minutes] = time.split(':');
+    async function showReservations(reservations) {
+        tbody.innerHTML = "";
+        let listOfReservations = []
 
-        if (hours === '12') {
-            hours = '00';
+        reservations.forEach(res => {
+            const rawStart = res.reservation_start_timestamp.replace('Z', '').replace(' ', 'T');
+            const startDate = new Date(rawStart);
+            const newStartDate = new Date(res.reservation_start_timestamp)
+            const endDate = new Date(res.reservation_end_timestamp);
+            const creationDate = new Date(res.creation_timestamp);
+            const formattedStartDate = new Intl.DateTimeFormat('en-US', {
+                month: 'long',
+                day: '2-digit',
+                year: 'numeric',
+                timeZone: 'UTC'
+            }).format(startDate);
+
+            const formattedStartTime = new Intl.DateTimeFormat('en-US', {
+                hour: 'numeric',
+                minute: 'numeric',
+                hour12: true,
+                timeZone: 'UTC'
+            }).format(newStartDate);
+
+
+            const formattedEndTime = new Intl.DateTimeFormat('en-US', {
+                hour: 'numeric',
+                minute: 'numeric',
+                hour12: true,
+                timeZone: 'UTC'
+            }).format(endDate);
+
+            const formattedCreationDate = new Intl.DateTimeFormat('en-US', {
+                month: 'long',
+                day: '2-digit',
+                year: 'numeric',
+            }).format(creationDate);
+
+            const formattedCreationTime = new Intl.DateTimeFormat('en-US', {
+                hour: 'numeric',
+                minute: 'numeric',
+                hour12: true,
+            }).format(creationDate);
+            console.log("-----------------------------------")
+            console.log("res.reservedBy: ", res.reservedBy)
+            console.log("formattedStartDate: ", formattedStartDate)
+            console.log("formattedStartTime: ", formattedStartTime)
+            console.log("formattedEndTime: ", formattedEndTime)
+            console.log("-----------------------------------")
+            console.log()
+            listOfReservations.push(new reservation(
+                res.reservation_id,
+                res.building,
+                res.room_name,
+                startDate,
+                formattedStartTime,
+                formattedEndTime,
+                res.reservedBy,
+                formattedCreationDate,
+                formattedCreationTime)
+            );
+        });
+        listOfReservations.sort((a, b) => b.startDate.getTime() - a.startDate.getTime());
+        console.log(listOfReservations)
+        for (const res of listOfReservations) {
+            const formattedStartDate = new Intl.DateTimeFormat('en-US', {
+                month: 'long',
+                day: '2-digit',
+                year: 'numeric',
+                timeZone: 'UTC'
+            }).format(res.startDate);
+            await addRow(
+                res.id,
+                res.building,
+                res.roomName,
+                formattedStartDate,
+                res.startTime,
+                res.endTime,
+                res.reservedBy,
+                res.creationDate,
+                res.creationTime
+            );
+
         }
-
-        if (modifier === 'PM') {
-            hours = parseInt(hours, 10) + 12;
-        }
-
-        return `${hours.toString().padStart(2, '0')}:${minutes}`;
     }
 
-    function toMinutes(time) {
-        const [hours, minutes] = time.split(':').map(Number);
-        return hours * 60 + minutes;
+    async function addRow(reservationId, building, room, date, startTime, endTime, reservedBy, resDate, resTime) {
+        // Create the row element
+        const tr = document.createElement('tr');
+        tr.setAttribute('data-id', reservationId);
+        tr.className = "odd:bg-neutral-primary even:bg-neutral-secondary-soft border-b border-default";
+        let response = await fetch(`/reservations/${reservationId}/checkEditable`)
+        let editable = await response.json()
+        let response2 = await fetch(`/reservations/${reservationId}/checkDeletable`)
+        let deletable = await response2.json()
+        const uniqueDialogId = `dialog-${reservationId}`
+
+        if (deletable && editable) {
+            tr.innerHTML = `<td class="py-3 text-slate-800 pl-[19px] text-sm text-center">${building}</td>
+                        <td class="py-3 text-slate-800 px-4 text-sm text-center">${room}</td>
+                        <td class="py-3 text-slate-800 px-4 text-sm text-center">${date}</td>
+                        <td class="py-3 text-slate-800 px-4 text-sm text-center">${startTime} - ${endTime}</td>
+                        <td class="py-3 text-slate-800 px-4 text-sm text-center">${reservedBy}</td>
+                        <td class="py-3 text-slate-800 px-4 text-sm text-center">${resDate}</td>
+                        <td class="py-3 text-slate-800 px-4 text-sm text-center">${resTime}</td>
+                        <td class="py-3 pl-4">
+                            <div class="flex gap-3 justify-center items-center">
+                                <button class = "seatBtn button icon-button text-slate-600 hover:bg-[#34493e]/5 hover:border-[#34493e]/20 hover:text-[#34493e]">
+                                    <img src="/images/seat.png" alt="View" class="w-5 h-5">
+                                </button>
+                                <button class = "button icon-button text-slate-600 hover:bg-[#34493e]/5 hover:border-[#34493e]/20 hover:text-[#34493e]">
+                                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                </svg>
+
+                                </button>
+                                <button class = "open-modal-btn button icon-button button-red hover:text-white hover:bg-red-500">
+                                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                                  </svg>
+                                </button>
+                                <el-dialog>
+                                <dialog id="${uniqueDialogId}" aria-labelledby="dialog-title" class="fixed inset-0 size-auto max-h-none max-w-none overflow-y-auto bg-transparent backdrop:bg-transparent">
+                                    <el-dialog-backdrop class="fixed inset-0 bg-gray-500/75 transition-opacity data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in"></el-dialog-backdrop>
+
+                                    <div tabindex="0" class="flex min-h-full items-end justify-center p-4 text-center focus:outline-none sm:items-center sm:p-0">
+                                    <el-dialog-panel class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all data-closed:translate-y-4 data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in sm:my-8 sm:w-full sm:max-w-lg data-closed:sm:translate-y-0 data-closed:sm:scale-95">
+                                        <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                                        <div class="sm:flex sm:items-start">
+                                            <div class="mx-auto flex size-12 shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:size-10">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon" aria-hidden="true" class="size-6 text-red-600">
+                                                <path d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" stroke-linecap="round" stroke-linejoin="round" />
+                                            </svg>
+                                            </div>
+                                            <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                                            <h3 id="dialog-title" class="text-base font-semibold text-gray-900">Delete Reservation</h3>
+                                            <div class="mt-2">
+                                                <p class="text-sm text-gray-500">Are you sure you want to permanently delete your
+                                                reservation? This action cannot be undone</p>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                        <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                                            <button id="delete_button" type="button" onclick="this.closest('dialog').close()" class="delete_button_class inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-red-500 sm:ml-3 sm:w-auto">Delete</button>
+                                            <button type="button" onclick="this.closest('dialog').close()" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs inset-ring inset-ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Cancel</button>
+                                        </div>
+                                    </el-dialog-panel>
+                                    </div>
+                                </dialog>
+                                </el-dialog>
+                            </div>
+                        </td>`;
+
+
+            tr.querySelector('.open-modal-btn').addEventListener('click', () => {
+                const dialog = tr.querySelector('dialog');
+                if (dialog) dialog.showModal();
+            });
+        }
+        else if (!deletable && editable) {
+            tr.innerHTML = `<td class="py-3 text-slate-800 pl-[19px] text-sm text-center">${building}</td>
+                        <td class="py-3 text-slate-800 px-4 text-sm text-center">${room}</td>
+                        <td class="py-3 text-slate-800 px-4 text-sm text-center">${date}</td>
+                        <td class="py-3 text-slate-800 px-4 text-sm text-center">${startTime} - ${endTime}</td>
+                        <td class="py-3 text-slate-800 px-4 text-sm text-center">${reservedBy}</td>
+                        <td class="py-3 text-slate-800 px-4 text-sm text-center">${resDate}</td>
+                        <td class="py-3 text-slate-800 px-4 text-sm text-center">${resTime}</td>
+                        <td class="py-3 pl-4">
+                            <div class="flex gap-3 justify-center items-center">
+                                <button class = "seatBtn button icon-button text-slate-600 hover:bg-[#34493e]/5 hover:border-[#34493e]/20 hover:text-[#34493e]">
+                                    <img src="/images/seat.png" alt="View" class="w-5 h-5">
+                                </button>
+                                <button class = "button icon-button text-slate-600 hover:bg-[#34493e]/5 hover:border-[#34493e]/20 hover:text-[#34493e]">
+                                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                </svg>
+
+                                </button>
+                            </div>
+                        </td>`;
+        }
+        else if (deletable && !editable) {
+            tr.innerHTML = `<td class="py-3 text-slate-800 pl-[19px] text-sm text-center">${building}</td>
+                        <td class="py-3 text-slate-800 px-4 text-sm text-center">${room}</td>
+                        <td class="py-3 text-slate-800 px-4 text-sm text-center">${date}</td>
+                        <td class="py-3 text-slate-800 px-4 text-sm text-center">${startTime} - ${endTime}</td>
+                        <td class="py-3 text-slate-800 px-4 text-sm text-center">${reservedBy}</td>
+                        <td class="py-3 text-slate-800 px-4 text-sm text-center">${resDate}</td>
+                        <td class="py-3 text-slate-800 px-4 text-sm text-center">${resTime}</td>
+                        <td class="py-3 pl-4">
+                            <div class="flex gap-3 justify-center items-center">
+                                <button class = "seatBtn button icon-button text-slate-600 hover:bg-[#34493e]/5 hover:border-[#34493e]/20 hover:text-[#34493e]">
+                                    <img src="/images/seat.png" alt="View" class="w-5 h-5">
+                                </button>
+
+                                </button>
+                                <button class = "open-modal-btn button icon-button button-red hover:text-white hover:bg-red-500">
+                                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                                  </svg>
+                                </button>
+                                <el-dialog>
+                                <dialog id="${uniqueDialogId}" aria-labelledby="dialog-title" class="fixed inset-0 size-auto max-h-none max-w-none overflow-y-auto bg-transparent backdrop:bg-transparent">
+                                    <el-dialog-backdrop class="fixed inset-0 bg-gray-500/75 transition-opacity data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in"></el-dialog-backdrop>
+
+                                    <div tabindex="0" class="flex min-h-full items-end justify-center p-4 text-center focus:outline-none sm:items-center sm:p-0">
+                                    <el-dialog-panel class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all data-closed:translate-y-4 data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in sm:my-8 sm:w-full sm:max-w-lg data-closed:sm:translate-y-0 data-closed:sm:scale-95">
+                                        <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                                        <div class="sm:flex sm:items-start">
+                                            <div class="mx-auto flex size-12 shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:size-10">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon" aria-hidden="true" class="size-6 text-red-600">
+                                                <path d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" stroke-linecap="round" stroke-linejoin="round" />
+                                            </svg>
+                                            </div>
+                                            <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                                            <h3 id="dialog-title" class="text-base font-semibold text-gray-900">Delete Reservation</h3>
+                                            <div class="mt-2">
+                                                <p class="text-sm text-gray-500">Are you sure you want to permanently delete your
+                                                reservation? This action cannot be undone</p>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                        <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                                            <button id="delete_button" type="button" onclick="this.closest('dialog').close()" class="delete_button_class inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-red-500 sm:ml-3 sm:w-auto">Delete</button>
+                                            <button type="button" onclick="this.closest('dialog').close()" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs inset-ring inset-ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Cancel</button>
+                                        </div>
+                                    </el-dialog-panel>
+                                    </div>
+                                </dialog>
+                                </el-dialog>
+                            </div>
+                        </td>`;
+        }
+        else {
+            tr.innerHTML = `<td class="py-3 text-slate-800 pl-[19px] text-sm text-center">${building}</td>
+                        <td class="py-3 text-slate-800 px-4 text-sm text-center">${room}</td>
+                        <td class="py-3 text-slate-800 px-4 text-sm text-center">${date}</td>
+                        <td class="py-3 text-slate-800 px-4 text-sm text-center">${startTime} - ${endTime}</td>
+                        <td class="py-3 text-slate-800 px-4 text-sm text-center">${reservedBy}</td>
+                        <td class="py-3 text-slate-800 px-4 text-sm text-center">${resDate}</td>
+                        <td class="py-3 text-slate-800 px-4 text-sm text-center">${resTime}</td>
+                        <td class="py-3 pl-4">
+                            <div class="flex gap-3 justify-center items-center">
+                                <button class = "seatBtn button icon-button text-slate-600 hover:bg-[#34493e]/5 hover:border-[#34493e]/20 hover:text-[#34493e]">
+                                    <img src="/images/seat.png" alt="View" class="w-5 h-5">
+                                </button>
+                            </div>
+                        </td>`;
+        }
+        tbody.appendChild(tr);
     }
 
-    function isTenMinutes(currentTime, startTime) {
-        let currentMinutes = toMinutes(currentTime)
-        let startMinutes = toMinutes(startTime)
 
-        if (currentMinutes - startMinutes >= 10) {
-            return true
-        }
-        return false
-    }
 
-    async function isDeletable(reservationId) {
-        let response = await fetch(`/reservations/${reservationId}/checkDeletable`)
-        let answer = await response.json()
-        console.log(answer == true)
-        if (answer == true) {
-            return true
-        }
-        return false;
+    function convertDate(date) {
+        const dateObj = new Date(date);
+
+        // Extract parts
+        const year = dateObj.getFullYear();
+        const month = String(dateObj.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+        const day = String(dateObj.getDate()).padStart(2, '0');
+
+        const formattedDate = `${year}-${month}-${day}`;
+        return formattedDate;
     }
 
 
@@ -309,203 +552,10 @@ $(document).ready(function () {
 
             const reservationsToBeDisplayed = await response.json();
 
-            const $tbody = $('#tbody');
-
-            $tbody.empty();
-
-            for (const res of reservationsToBeDisplayed) {
-                let currentDate = new Date();
-                let currentTime = currentDate.toLocaleTimeString('en-US', { hour12: false })
-                const uniqueDialogId = `dialog-${res.reservation_id}`;
-                const creationDate = new Date(res.creation_timestamp);
-                let startTime = convertTo24(res.reservation_start_timestamp)
-
-                const formattedCurrentDate = new Intl.DateTimeFormat('en-US', {
-                    month: 'long',
-                    day: '2-digit',
-                    year: 'numeric',
-                    timeZone: 'UTC'
-                }).format(currentDate);
-
-                const formattedCreationDate = new Intl.DateTimeFormat('en-US', {
-                    month: 'long',
-                    day: '2-digit',
-                    year: 'numeric',
-                }).format(creationDate);
-
-                const formattedCreationTime = new Intl.DateTimeFormat('en-US', {
-                    hour: 'numeric',
-                    minute: 'numeric',
-                    hour12: true,
-                }).format(creationDate);
-
-                const tr = document.createElement('tr');
-                tr.setAttribute('data-id', res.reservation_id);
-                let response = await fetch(`/reservations/${res.reservation_id}/checkDeletable`)
-                let deletable = await response.json()
-                let response2 = await fetch(`/reservations/${res.reservation_id}/checkEditable`)
-                let editable = await response2.json()
-                tr.className = "odd:bg-neutral-primary even:bg-neutral-secondary-soft border-b border-default";
-                if (deletable && editable) {
-                    tr.innerHTML = `<td class="py-3 text-slate-800 pl-[19px] text-sm text-center">${res.building}</td>
-                        <td class="py-3 text-slate-800 px-4 text-sm text-center">${res.room_name}</td>
-                        <td class="py-3 text-slate-800 px-4 text-sm text-center">${res.date}</td>
-                        <td class="py-3 text-slate-800 px-4 text-sm text-center">${res.reservation_start_timestamp} - ${res.reservation_end_timestamp}</td>
-                        <td class="py-3 text-slate-800 px-4 text-sm text-center">${res.reservedBy}</td>
-                        <td class="py-3 text-slate-800 px-4 text-sm text-center">${formattedCreationDate}</td>
-                        <td class="py-3 text-slate-800 px-4 text-sm text-center">${formattedCreationTime}</td>
-                        <td class="py-3 pl-4">
-                            <div class="flex gap-3 justify-center items-center">
-                                <button class = "seatBtn button icon-button text-slate-600 hover:bg-[#34493e]/5 hover:border-[#34493e]/20 hover:text-[#34493e]">
-                                    <img src="/images/seat.png" alt="View" class="w-5 h-5">
-                                </button>
-                                <button class = "button icon-button text-slate-600 hover:bg-[#34493e]/5 hover:border-[#34493e]/20 hover:text-[#34493e]">
-                                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                                </svg>
-
-                                </button>
-                                <button class = "open-modal-btn button icon-button button-red hover:text-white hover:bg-red-500">
-                                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                                  </svg>
-                                </button>
-                                <el-dialog>
-                                <dialog id="${uniqueDialogId}" aria-labelledby="dialog-title" class="fixed inset-0 size-auto max-h-none max-w-none overflow-y-auto bg-transparent backdrop:bg-transparent">
-                                    <el-dialog-backdrop class="fixed inset-0 bg-gray-500/75 transition-opacity data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in"></el-dialog-backdrop>
-
-                                    <div tabindex="0" class="flex min-h-full items-end justify-center p-4 text-center focus:outline-none sm:items-center sm:p-0">
-                                    <el-dialog-panel class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all data-closed:translate-y-4 data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in sm:my-8 sm:w-full sm:max-w-lg data-closed:sm:translate-y-0 data-closed:sm:scale-95">
-                                        <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                                        <div class="sm:flex sm:items-start">
-                                            <div class="mx-auto flex size-12 shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:size-10">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon" aria-hidden="true" class="size-6 text-red-600">
-                                                <path d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
-                                            </div>
-                                            <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                                            <h3 id="dialog-title" class="text-base font-semibold text-gray-900">Delete Reservation</h3>
-                                            <div class="mt-2">
-                                                <p class="text-sm text-gray-500">Are you sure you want to permanently delete your
-                                                reservation? This action cannot be undone</p>
-                                            </div>
-                                            </div>
-                                        </div>
-                                        </div>
-                                        <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                                            <button id="delete_button" type="button" onclick="this.closest('dialog').close()" class="delete_button_class inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-red-500 sm:ml-3 sm:w-auto">Delete</button>
-                                            <button type="button" onclick="this.closest('dialog').close()" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs inset-ring inset-ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Cancel</button>
-                                        </div>
-                                    </el-dialog-panel>
-                                    </div>
-                                </dialog>
-                                </el-dialog>
-                            </div>
-                        </td>`;
-
-
-                    tr.querySelector('.open-modal-btn').addEventListener('click', () => {
-                        const dialog = tr.querySelector('dialog');
-                        if (dialog) dialog.showModal();
-                    });
-                }
-                else if(!deletable && editable){
-                    tr.innerHTML = `<td class="py-3 text-slate-800 pl-[19px] text-sm text-center">${res.building}</td>
-                        <td class="py-3 text-slate-800 px-4 text-sm text-center">${res.room_name}</td>
-                        <td class="py-3 text-slate-800 px-4 text-sm text-center">${res.date}</td>
-                        <td class="py-3 text-slate-800 px-4 text-sm text-center">${res.reservation_start_timestamp} - ${res.reservation_end_timestamp}</td>
-                        <td class="py-3 text-slate-800 px-4 text-sm text-center">${res.reservedBy}</td>
-                        <td class="py-3 text-slate-800 px-4 text-sm text-center">${formattedCreationDate}</td>
-                        <td class="py-3 text-slate-800 px-4 text-sm text-center">${formattedCreationTime}</td>
-                        <td class="py-3 pl-4">
-                            <div class="flex gap-3 justify-center items-center">
-                                <button class = "seatBtn button icon-button text-slate-600 hover:bg-[#34493e]/5 hover:border-[#34493e]/20 hover:text-[#34493e]">
-                                    <img src="/images/seat.png" alt="View" class="w-5 h-5">
-                                </button>
-                                <button class = "button icon-button text-slate-600 hover:bg-[#34493e]/5 hover:border-[#34493e]/20 hover:text-[#34493e]">
-                                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                                </svg>
-
-                                </button>
-                            </div>
-                        </td>`;
-                }
-                else if(deletable && !editable) {
-                    tr.innerHTML = `<td class="py-3 text-slate-800 pl-[19px] text-sm text-center">${res.building}</td>
-                        <td class="py-3 text-slate-800 px-4 text-sm text-center">${res.room_name}</td>
-                        <td class="py-3 text-slate-800 px-4 text-sm text-center">${res.date}</td>
-                        <td class="py-3 text-slate-800 px-4 text-sm text-center">${res.reservation_start_timestamp} - ${res.reservation_end_timestamp}</td>
-                        <td class="py-3 text-slate-800 px-4 text-sm text-center">${res.reservedBy}</td>
-                        <td class="py-3 text-slate-800 px-4 text-sm text-center">${formattedCreationDate}</td>
-                        <td class="py-3 text-slate-800 px-4 text-sm text-center">${formattedCreationTime}</td>
-                        <td class="py-3 pl-4">
-                            <div class="flex gap-3 justify-center items-center">
-                                <button class = "seatBtn button icon-button text-slate-600 hover:bg-[#34493e]/5 hover:border-[#34493e]/20 hover:text-[#34493e]">
-                                    <img src="/images/seat.png" alt="View" class="w-5 h-5">
-                                </button>
-
-                                </button>
-                                <button class = "open-modal-btn button icon-button button-red hover:text-white hover:bg-red-500">
-                                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                                  </svg>
-                                </button>
-                                <el-dialog>
-                                <dialog id="${uniqueDialogId}" aria-labelledby="dialog-title" class="fixed inset-0 size-auto max-h-none max-w-none overflow-y-auto bg-transparent backdrop:bg-transparent">
-                                    <el-dialog-backdrop class="fixed inset-0 bg-gray-500/75 transition-opacity data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in"></el-dialog-backdrop>
-
-                                    <div tabindex="0" class="flex min-h-full items-end justify-center p-4 text-center focus:outline-none sm:items-center sm:p-0">
-                                    <el-dialog-panel class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all data-closed:translate-y-4 data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in sm:my-8 sm:w-full sm:max-w-lg data-closed:sm:translate-y-0 data-closed:sm:scale-95">
-                                        <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                                        <div class="sm:flex sm:items-start">
-                                            <div class="mx-auto flex size-12 shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:size-10">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon" aria-hidden="true" class="size-6 text-red-600">
-                                                <path d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
-                                            </div>
-                                            <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                                            <h3 id="dialog-title" class="text-base font-semibold text-gray-900">Delete Reservation</h3>
-                                            <div class="mt-2">
-                                                <p class="text-sm text-gray-500">Are you sure you want to permanently delete your
-                                                reservation? This action cannot be undone</p>
-                                            </div>
-                                            </div>
-                                        </div>
-                                        </div>
-                                        <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                                            <button id="delete_button" type="button" onclick="this.closest('dialog').close()" class="delete_button_class inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-red-500 sm:ml-3 sm:w-auto">Delete</button>
-                                            <button type="button" onclick="this.closest('dialog').close()" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs inset-ring inset-ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Cancel</button>
-                                        </div>
-                                    </el-dialog-panel>
-                                    </div>
-                                </dialog>
-                                </el-dialog>
-                            </div>
-                        </td>`;
-                }
-                else {
-                    tr.innerHTML = `<td class="py-3 text-slate-800 pl-[19px] text-sm text-center">${res.building}</td>
-                        <td class="py-3 text-slate-800 px-4 text-sm text-center">${res.room_name}</td>
-                        <td class="py-3 text-slate-800 px-4 text-sm text-center">${res.date}</td>
-                        <td class="py-3 text-slate-800 px-4 text-sm text-center">${res.reservation_start_timestamp} - ${res.reservation_end_timestamp}</td>
-                        <td class="py-3 text-slate-800 px-4 text-sm text-center">${res.reservedBy}</td>
-                        <td class="py-3 text-slate-800 px-4 text-sm text-center">${formattedCreationDate}</td>
-                        <td class="py-3 text-slate-800 px-4 text-sm text-center">${formattedCreationTime}</td>
-                        <td class="py-3 pl-4">
-                            <div class="flex gap-3 justify-center items-center">
-                                <button class = "seatBtn button icon-button text-slate-600 hover:bg-[#34493e]/5 hover:border-[#34493e]/20 hover:text-[#34493e]">
-                                    <img src="/images/seat.png" alt="View" class="w-5 h-5">
-                                </button>
-                            </div>
-                        </td>`;
-                }
-
-                $tbody.append(tr);
-
-            }
+            showReservations(reservationsToBeDisplayed)
 
         } catch (error) {
-            console.error("Failed to fetch reservations:", error)}
+            console.error("Failed to fetch reservations:", error)
+        }
     }
 })

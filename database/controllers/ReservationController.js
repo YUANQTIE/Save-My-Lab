@@ -180,10 +180,10 @@ exports.getFilteredReservations = async (req, res) => {
 
         if (reservationTimeStart && reservationTimeEnd) {
             firstStage.reservation_start_timestamp = {
-                $gte: new Date(reservationTimeStart + "Z")
+                $gte: new Date(reservationTimeStart)
             };
             firstStage.reservation_end_timestamp = {
-                $lte: new Date(reservationTimeEnd + "Z") //filters the reservation date/time
+                $lte: new Date(reservationTimeEnd) //filters the reservation date/time
             };
         }
 
@@ -216,24 +216,12 @@ exports.getFilteredReservations = async (req, res) => {
             reservations = reservations.filter(reserve => reserve.seats[0].room_id.building === building); //filters by the building
         }
 
-        const EIGHT_HOURS_IN_MS = 8 * 60 * 60 * 1000;
-
         const result = reservations.map(reserve => {
-            const adjustedStart = new Date(reserve.reservation_start_timestamp.getTime() - EIGHT_HOURS_IN_MS);
-            const adjustedEnd = new Date(reserve.reservation_end_timestamp.getTime() - EIGHT_HOURS_IN_MS);
-            const formattedStartDate = new Intl.DateTimeFormat('en-US', {
-                month: 'long',
-                day: '2-digit',
-                year: 'numeric',
-                timeZone: 'UTC'
-            }).format(reserve.reservation_start_timestamp);
-
             return {
                 reservation_id: reserve._id,
                 creation_timestamp: reserve.creation_timestamp,
-                reservation_start_timestamp: adjustedStart.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }),
-                reservation_end_timestamp: adjustedEnd.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }),
-                date: formattedStartDate,
+                reservation_start_timestamp: reserve.reservation_start_timestamp,
+                reservation_end_timestamp: reserve.reservation_end_timestamp,
                 reservedBy: reserve.reservedBy.email,
                 checkedIn: reserve.checkedIn,
                 room_name: reserve.seats[0].room_id.room_name,
@@ -278,20 +266,18 @@ exports.isReservationDeletable = async (req, res) => {
         }).format(reservationStart);
         const [startHours, startMinutes] = startTime.split(':').map(Number);
         let startTimeInMinutes = startHours * 60 + startMinutes
-        console.log("currentTimeInMinutes ", currentTimeInMinutes)
-        console.log("startTime: ", startTime)
 
         if (startDate > currentDate) {
-            return res.json(false)
-        }
-        else if (startDate < currentDate) {
-            return res.json(true);
-        }
-        else if (startDate == currentDate && currentTimeInMinutes - startTimeInMinutes >= 10) {
             return res.json(true)
         }
-        else {
+        else if (startDate < currentDate) {
             return res.json(false);
+        }
+        else if (startDate == currentDate && currentTimeInMinutes - startTimeInMinutes >= 10) {
+            return res.json(false)
+        }
+        else {
+            return res.json(true);
         }
 
     } catch (err) {
@@ -356,8 +342,8 @@ exports.addAdminReservation = async (req, res) => {
     try {
         await Reservation.create({
             creation_timestamp: new Date(Date.now()),
-            reservation_start_timestamp: new Date(req.body.timeStart),
-            reservation_end_timestamp: new Date(req.body.timeEnd),
+            reservation_start_timestamp: req.body.timeStart + "Z",
+            reservation_end_timestamp: req.body.timeEnd + "Z",
             reservedBy: req.params.adminId,
             reservedByModel: "Admin",
             seats: req.body.seats

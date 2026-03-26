@@ -1,38 +1,21 @@
-<!DOCTYPE html>
-<html>
 <head>
-  <link rel="icon" type="image/x-icon" href="../../images/favicon.ico">
-  <title>Save.My.Lab</title>
-  <link rel="stylesheet" href="css/add-reservation.css">
+  <link rel="stylesheet" href="/css/user/add-reservation.css">
 </head>
-<body>
-
-<header id="head">
-  <div class="left">
-    <img src="../../images/logo.jpg" class="logo" alt="logo">
-    <span class="title">Save.My.Lab</span>
-  </div>
-
-  <div class="right">
-    <a href="user-profile.html" class="header-button">RETURN</a>
-  </div>
-</header>
 
 <div class="page">
-  <h2>Add Reservations</h2>
-
+  <span class="label-text">Reserve</span>
   <div class="content">
-
     <div class="layout-panel">
 
       <!-- default dlsu pic -->
-      <div class="room-wrapper venue-layout" data-venue="">
-        <img src="../../images/dlsu.png" class="room-image">
+      <div id="default" class="flex flex-col items-center justify-center opacity-40 py-20">
+        <i class="fa-solid fa-map-location-dot text-6xl mb-4"></i>
+        <p class="font-medium">Please select a venue from the sidebar</p>
       </div>
 
       <!-- andrew circles-->
-      <div class="room-wrapper venue-layout hidden" data-venue="Andrew Building">
-        <img src="../../images/ANDREW.png" class="room-image">
+      <div id="andrew" class="room-wrapper venue-layout hidden" data-venue="Andrew Building">
+        <img src="../../public/images/ANDREW.png" class="room-image">
 
         <!-- 1st column -->
         <div class="seat" style="top:32.4%; left:18.2%;"></div>
@@ -88,8 +71,8 @@
       </div>
 
       <!-- LS CIRCLES-->
-      <div class="room-wrapper venue-layout hidden" data-venue="LS Building">
-        <img src="../../images/LS.png" class="room-image">
+      <div id="ls" class="room-wrapper venue-layout hidden" data-venue="LS Building">
+        <img src="../../public/images/LS.png" class="room-image">
 
         <!-- 1st column -->
         <div class="seat" style="top:38.9%; left:17.74%;"></div>
@@ -153,12 +136,12 @@
       </div>
 
       <!-- goks-->
-      <div class="room-wrapper venue-layout hidden" data-venue="Gokongwei Building">
-        <img src="../../images/GOKS.png" class="room-image">
+      <div id="goks" class="room-wrapper venue-layout hidden" data-venue="Gokongwei Building">
+        <img src="../../public/images/GOKS.png" class="room-image">
 
         <!-- 1st column -->
-        <div class="seat red" style="top:35.8%; left:21.27%;"></div>
-        <div class="seat blue" style="top:49.2%; left:21.27%;"></div>
+        <div class="seat" style="top:35.8%; left:21.27%;"></div>
+        <div class="seat" style="top:49.2%; left:21.27%;"></div>
         <div class="seat" style="top:62.6%; left:21.27%;"></div>
         <div class="seat" style="top:75.8%; left:21.27%;"></div>
         <div class="seat" style="top:89.2%; left:21.27%;"></div>
@@ -221,8 +204,8 @@
       </div>
 
       <!-- yuch -->
-      <div class="room-wrapper venue-layout hidden" data-venue="Yuchengco Building">
-        <img src="../../images/YUCH.png" class="room-image">
+      <div id="yuch" class="room-wrapper venue-layout hidden" data-venue="Yuchengco Building">
+        <img src="../../public/images/YUCH.png" class="room-image">
 
         <!-- 1st column -->
         <div class="seat" style="top:18.9%; left:19.47%;"></div>
@@ -288,178 +271,179 @@
         <div class="seat" style="top:18.9%; left:89.55%;"></div>
         <div class="seat" style="top:49.65%; left:89.55%;"></div>
       </div>
-
     </div>
 
+
     <div class="controls">
-      <div class="input-box">
-        <select id="venueSelect" required>
+      <!-- Venue Input -->
+      <div id="venue" class="input-box">
+        <select id="venueInput" required>
           <option value="" disabled selected>Input Venue...</option>
           <option value="Gokongwei Building">Gokongwei Building</option>
-          <option value="Andrew Building">Andrew Building</option>
-          <option value="LS Building">LS Building</option>
-          <option value="Yuchengco Building">Yuchengco Building</option>
+          <option value="Br. Andrew Gonzales Hall">Br. Andrew Gonzales Hall</option>
+          <option value="St. La Salle Hall">St. La Salle Hall</option>
+          <option value="Don Enrique T. Yuchengco Hall">Don Enrique T. Yuchengco Hall</option>
         </select>
       </div>
 
-      <div class="input-box hidden" id="roomBox">
-        <select id="roomSelect">
+      <!-- Room Input -->
+      <div id="room" class="input-box hidden" id="roomBox">
+        <select id="roomInput">
           <option value="" disabled selected>Input Room...</option>
         </select>
       </div>
 
-      <div class="input-box hidden" id="dateBox">
-        <input id="dateInput" type="date">
+      <!-- Date Input -->
+      <div id="date" class="input-box hidden" id="dateBox">
+        <input id="dateInput" type="date" min="" max="">
       </div>
 
-      <div class="time-block hidden" id="timeBox">
+      <!-- Time Input -->
+      <div id="time" class="time-block hidden" id="timeBox">
         <div class="time-row">
           <label class="time-label">Time Start</label>
-          <select id="startHour" class="time-input">
+          <select id="startHourInput" class="time-input">
             <option value="" disabled selected>--</option>
-            <option value="07">07</option>
-            <option value="08">08</option>
-            <option value="09">09</option>
-            <option value="10">10</option>
-            <option value="11">11</option>
-            <option value="12">12</option>
-            <option value="13">13</option>
-            <option value="14">14</option>
-            <option value="15">15</option>
-            <option value="16">16</option>
-            <option value="17">17</option>
-            <option value="18">18</option>
-            <option value="19">19</option>
-            <option value="20">20</option>
           </select>
           <span class="time-colon">:</span>
-          <select id="startMinute" class="time-input">
+          <select id="startMinuteInput" class="time-input">
             <option value="" disabled selected>--</option>
-            <option value="00">00</option>
-            <option value="30">30</option>
           </select>
         </div>
 
         <div class="time-row">
           <label class="time-label">Time End</label>
-          <select id="endHour" class="time-input">
+          <select id="endHourInput" class="time-input">
             <option value="" disabled selected>--</option>
-            <option value="07">07</option>
-            <option value="08">08</option>
-            <option value="09">09</option>
-            <option value="10">10</option>
-            <option value="11">11</option>
-            <option value="12">12</option>
-            <option value="13">13</option>
-            <option value="14">14</option>
-            <option value="15">15</option>
-            <option value="16">16</option>
-            <option value="17">17</option>
-            <option value="18">18</option>
-            <option value="19">19</option>
-            <option value="20">20</option>
-            <option value="21">21</option>
           </select>
           <span class="time-colon">:</span>
-          <select id="endMinute" class="time-input">
+          <select id="endMinuteInput" class="time-input">
             <option value="" disabled selected>--</option>
-            <option value="00">00</option>
-            <option value="30">30</option>
           </select>
         </div>
       </div>
 
+      <!-- Confirm Button -->
       <button id="confirmBtn" class="confirm-button" disabled>CONFIRM</button>
-
-      <div id="brokenContainer" class="hidden">
-        <p><b>Chosen Computers:</b> <span id="brokenText">None</span></p>
-      </div>
     </div>
   </div>
-</div>
 
+  {{!-- Confirm Modal --}}
+  <div id="confirmModal" class="hidden fixed inset-0 z-[9999] flex items-center justify-center p-4">
+    <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm modal-backdrop"></div>
 
+    <div
+      class="relative z-10 w-full max-w-md bg-white rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] overflow-hidden border border-gray-100">
 
-<!-- Modal toggle -->
-<button data-modal-target="default-modal" data-modal-toggle="default-modal" class="text-white bg-brand box-border border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none" type="button">
-  Toggle modal
-</button>
-
-<!-- Main modal -->
-<div id="default-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-    <div class="relative p-4 w-full max-w-2xl max-h-full">
-        <!-- Modal content -->
-        <div class="relative bg-neutral-primary-soft border border-default rounded-base shadow-sm p-4 md:p-6">
-            <!-- Modal header -->
-            <div class="flex items-center justify-between border-b border-default pb-4 md:pb-5">
-                <h3 class="text-lg font-medium text-heading">
-                    Terms of Service
-                </h3>
-                <button type="button" class="text-body bg-transparent hover:bg-neutral-tertiary hover:text-heading rounded-base text-sm w-9 h-9 ms-auto inline-flex justify-center items-center" data-modal-hide="default-modal">
-                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/></svg>
-                    <span class="sr-only">Close modal</span>
-                </button>
-            </div>
-            <!-- Modal body -->
-            <div class="space-y-4 md:space-y-6 py-4 md:py-6">
-                <p class="leading-relaxed text-body">
-                    With less than a month to go before the European Union enacts new consumer privacy laws for its citizens, companies around the world are updating their terms of service agreements to comply.
-                </p>
-                <p class="leading-relaxed text-body">
-                    The European Union’s General Data Protection Regulation (G.D.P.R.) goes into effect on May 25 and is meant to ensure a common set of data rights in the European Union. It requires organizations to notify users as soon as possible of high-risk data breaches that could personally affect them.
-                </p>
-            </div>
-            <!-- Modal footer -->
-            <div class="flex items-center border-t border-default space-x-4 pt-4 md:pt-5">
-                <button data-modal-hide="default-modal" type="button" class="text-white bg-brand box-border border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">I accept</button>
-                <button data-modal-hide="default-modal" type="button" class="text-body bg-neutral-secondary-medium box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading focus:ring-4 focus:ring-neutral-tertiary shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">Decline</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<div class="modal hidden" id="confirmModal">
-  <div class="modal-backdrop"></div>
-  
-  <div class="modal-card">
-    <div class="modal-head">
-      <div class="modal-title">Confirmation of Reservation</div>
-      <button class="button close-confirm" type="button">X</button>
-    </div>
-
-    <div class="modal-body">
-      <p class="confirm-text"><b>Venue:</b> <span id="resVenue">—</span></p>
-      <p class="confirm-text"><b>Room:</b> <span id="resRoom">—</span></p>
-      <p class="confirm-text"><b>Date:</b> <span id="resDate">—</span></p>
-      <p class="confirm-text"><b>Time:</b> <span id="resTime">—</span></p>
-      <p class="confirm-text"><b>Chosen Computers:</b> <span id="resSeats">None</span></p>
-
-      <div class="confirm-actions">
-        <label class="anonymous">
-            <input type="checkbox" name="anonymous">
-            Reserve Anonymously
-        </label>
-        <button class="button button-red" id="confirmOkay" type="button">
-          OK
+      <div class="bg-[#1e3a2a] px-6 py-5 flex justify-between items-center">
+        <h3 class="font-bold text-white text-lg tracking-tight">Confirm Reservation</h3>
+        <button type="button" class="close-confirm text-white/70 hover:text-white transition-transform active:scale-90">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
         </button>
       </div>
+
+      <div class="p-6">
+        <div class="grid grid-cols-2 gap-4 mb-6">
+          <div class="space-y-1">
+            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Location</p>
+            <p class="text-sm font-semibold text-slate-800" id="resVenue">Gokongwei Building</p>
+            <p class="text-xs text-slate-500" id="resRoom">Room G201</p>
+          </div>
+          <div class="space-y-1 border-l pl-4 border-slate-100">
+            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Schedule</p>
+            <p class="text-sm font-semibold text-slate-800" id="resDate">March 25, 2026</p>
+            <p class="text-xs text-slate-500" id="resTime">14:00 - 15:00</p>
+          </div>
+        </div>
+
+        <div class="bg-slate-50 rounded-xl p-4 border border-slate-100 mb-6">
+          <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">Selected Computers</p>
+          <div id="resSeats" class="flex flex-wrap gap-2">
+            <span
+              class="px-2 py-1 bg-white border border-slate-200 rounded text-xs font-bold text-[#1e3a2a]">G201-31</span>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-center pt-4 border-t border-slate-100">
+          <button id="confirmOkay" type="button"
+            class="flex items-center bg-[#1e3a2a] hover:bg-[#2d523d] text-white font-bold py-2.5 px-8 rounded-xl transition-all shadow-md hover:shadow-lg active:scale-95">
+            <svg aria-hidden="true" id="loading" class="hidden w-5 h-5 mr-2 animate-spin text-white/20 fill-white" viewBox="0 0 100 101"
+              fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                fill="currentColor" />
+              <path
+                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                fill="currentColor" />
+            </svg>
+            <span id="confirmText">Confirm</span>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
-</div>
 
-<!-- Legend -->
- <div absolute top-[50px]>
-  <div class="inline-flex items-center">
-    <span class="size-2 inline-block bg-surface-4 rounded-full me-2"></span>
-    <span class="text-foreground">Legend indicator</span>
+  {{!-- Success Modal --}}
+  <div id="successModal" tabindex="-1" class="hidden fixed inset-0 z-[9999] flex items-center justify-center p-4">
+    <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm modal-backdrop"></div>
+    <div class="relative p-4 w-full max-w-md max-h-full">
+      <div
+        class="relative z-10 w-full max-w-md bg-white rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] overflow-hidden border border-gray-100">
+        <button type="button" id="closeSuccessModal"
+          class="absolute top-3 end-2.5 text-body bg-transparent hover:bg-neutral-tertiary hover:text-heading rounded-base text-sm w-9 h-9 ms-auto inline-flex justify-center items-center"
+          data-modal-hide="popup-modal">
+          <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+            viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M6 18 17.94 6M18 18 6.06 6" />
+          </svg>
+          <span class="sr-only">Close modal</span>
+        </button>
+        {{!-- Checkmark --}}
+        <div class="p-4 md:p-5 text-center">
+          <svg class="w-12 h-12 mx-auto mb-4 text-green-700" viewBox="0 0 24 24" fill="currentColor"
+            xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd"
+              d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z"
+              clip-rule="evenodd" />
+          </svg>
+          <h3 class="mb-6 text-body">Reservation successful</h3>
+          {{!-- Contents --}}
+          <div class="grid grid-cols-2 gap-4 mb-6">
+            <div class="space-y-1">
+              <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Location</p>
+              <p class="text-sm font-semibold text-slate-800" id="successVenue">Gokongwei Building</p>
+              <p class="text-xs text-slate-500" id="successRoom">Room G201</p>
+            </div>
+            <div class="space-y-1 border-l pl-4 border-slate-100">
+              <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Schedule</p>
+              <p class="text-sm font-semibold text-slate-800" id="successDate">March 25, 2026</p>
+              <p class="text-xs text-slate-500" id="successTime">14:00 - 15:00</p>
+            </div>
+            <div class="w-[370px] bg-slate-50 rounded-xl p-4 border border-slate-100 mb-6">
+              <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">Selected Computers</p>
+              <div id="successSeats" class="flex flex-wrap gap-2">
+                <span
+                  class="px-2 py-1 bg-white border border-slate-200 rounded text-xs font-bold text-[#1e3a2a]">G201-31</span>
+              </div>
+            </div>
+          </div>
+          <div class="flex items-center space-x-4 justify-center">
+            <button id="successConfirm" type="button"
+              class="bg-[#1e3a2a] hover:bg-[#2d523d] text-white font-bold py-2.5 px-8 rounded-xl transition-all shadow-md hover:shadow-lg active:scale-95">
+              Confirm
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
- </div>
 
-<footer>
-  Lab Reservation System by Labron James Group
-</footer>
+  <!-- External JS -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="/scripts/lab/add-reservation.js"></script>
+  </body>
 
-<script src="scripts/add-reservation.js"></script>
-</body>
-</html>
+  </html>

@@ -22,7 +22,7 @@ router.get('/accounts', AdminController.getAllAccounts);
 //checks if the admin logging in is valid
 //req.params: "emailInput", "passwordInput"
 //res.json: true/false
-router.get('/:emailInput/:passwordInput', AdminController.isAdminValid);
+router.get('/verify/:emailInput/:passwordInput', AdminController.isAdminValid);
 
 //POST ROUTES
 
