@@ -124,7 +124,6 @@ $(document).ready(function () {
             seats = [];
             seat_names = [];
             console.log("Selected date:", reservationDate);
-            displayStartTimeInputs()
             $("#time").removeClass("hidden");
             $("#confirmBtn").prop("disabled", true);
 
@@ -290,12 +289,13 @@ $(document).ready(function () {
     $("#startHourInput, #startMinuteInput").on("input", async function () {
         endHourInput.innerHTML = `<option value="" disabled selected>--</option>`
         endMinuteInput.innerHTML = `<option value="" disabled selected>--</option>`
-        
+
     });
 
     $("#venueInput, #roomInput, #dateInput").on("input", async function () {
         startHourInput.innerHTML = `<option value="" disabled selected>--</option>`
         startMinuteInput.innerHTML = `<option value="" disabled selected>--</option>`
+        displayStartTimeInputs()
         endHourInput.innerHTML = `<option value="" disabled selected>--</option>`
         endMinuteInput.innerHTML = `<option value="" disabled selected>--</option>`
     });
@@ -512,7 +512,7 @@ $(document).ready(function () {
             option.innerHTML = `<option value="${firstOption}">${firstOption}</option>`
             endMinuteInput.appendChild(option)
         }
-        else if(startHour != endHour && endHour != 21){
+        else if (startHour != endHour && endHour != 21) {
             let option = document.createElement("option")
             let firstOption = "00"
             option.innerHTML = `<option value="${firstOption}">${firstOption}</option>`
