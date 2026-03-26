@@ -11,7 +11,7 @@ cd Save-My-Lab
 ## 2. Install Dependencies
 
 ```bash
-npm install
+npm install bcrpyt express mongoose hbs
 ```
 
 ## 3. Run for the tables to show up in compass
