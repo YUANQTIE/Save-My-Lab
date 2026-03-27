@@ -1,16 +1,14 @@
-
-// MongoDB Atlas Password: QmrUY1dbH0F7K6ml
-
+const dotenv = require("dotenv").config();
 const mongoose = require("mongoose");
 const express = require('express');
 const exphbs = require('express-handlebars');
 const path = require('path');
 const fileUpload = require('express-fileupload');
 
+
 const app = express(); // Define app FIRST
 const port = process.env.PORT || 3000;
-const url = "mongodb://nigelhenryso_db_user:QmrUY1dbH0F7K6ml@ac-7tknf2d-shard-00-00.cllro3o.mongodb.net:27017,ac-7tknf2d-shard-00-01.cllro3o.mongodb.net:27017,ac-7tknf2d-shard-00-02.cllro3o.mongodb.net:27017/Save-My-Lab?ssl=true&replicaSet=atlas-7l0y2d-shard-0&authSource=admin&appName=SaveMyLab";
-// mongoose.connect('mongodb://localhost/Save-My-Lab')
+const url = process.env.MONGODB_URI;
 
 const adminRoutes = require('./database/routes/AdminRoutes');
 const brokenRoutes = require('./database/routes/BrokenRoutes.js');
@@ -57,4 +55,4 @@ mongoose.connect(url)
   })
   .catch((err) => {
     console.error("Database connection error:", err.message);
-  });
+});
