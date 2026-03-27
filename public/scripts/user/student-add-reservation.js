@@ -432,9 +432,10 @@ $(document).ready(function () {
     });
 
     function displayStartTimeInputs() {
+        startHourInput.innerHTML = `<option value="" disabled selected>--</option>`;
+        startMinuteInput.innerHTML = `<option value="" disabled selected>--</option>`;
         let currentDate = new Date();
         const formattedCurrentDate = currentDate.toLocaleDateString('en-CA')
-        let currentTime = currentDate.toLocaleTimeString('en-US', { hour12: false })
         const currentHour = currentDate.getHours()
         const currentMinutes = currentDate.getMinutes()
         let chosenDate = dateInput.value.trim()
@@ -444,7 +445,7 @@ $(document).ready(function () {
             for (let i = currentHour; i <= 20; i++) {
                 let option = document.createElement("option")
                 let hour = format(i)
-                option.innerHTML = `<option value="${hour}">${i}</option>`
+                option.innerHTML = `<option value="${hour}">${hour}</option>`
                 startHourInput.appendChild(option)
             }
             if (currentMinutes < 30) {
@@ -468,7 +469,7 @@ $(document).ready(function () {
             for (let i = 7; i <= 20; i++) {
                 let option = document.createElement("option")
                 let hour = format(i)
-                option.innerHTML = `<option value="${hour}">${i}</option>`
+                option.innerHTML = `<option value="${hour}">${hour}</option>`
                 startHourInput.appendChild(option)
             }
             let option = document.createElement("option")
@@ -483,6 +484,9 @@ $(document).ready(function () {
     }
 
     function displayEndHourInputs(startHour, startMinute) {
+        if (endHourInput.options.length > 1) return;
+
+        endHourInput.innerHTML = `<option value="" disabled selected>--</option>`;
         console.log("Start Hour:", startHour)
         console.log("Start Minute:", startMinute)
         if (startMinute == "00") {
@@ -490,7 +494,7 @@ $(document).ready(function () {
             for (let i = startHour; i <= 21; i++) {
                 let option = document.createElement("option")
                 let hour = format(i)
-                option.innerHTML = `<option value="${hour}">${i}</option>`
+                option.innerHTML = `<option value="${hour}">${hour}</option>`
                 endHourInput.appendChild(option)
             }
         }
@@ -499,13 +503,16 @@ $(document).ready(function () {
             for (let i = startHour + 1; i <= 21; i++) {
                 let option = document.createElement("option")
                 let hour = format(i)
-                option.innerHTML = `<option value="${hour}">${i}</option>`
+                option.innerHTML = `<option value="${hour}">${hour}</option>`
                 endHourInput.appendChild(option)
             }
         }
     }
 
     function displayEndMinuteInputs(startHour, endHour) {
+        if (endMinuteInput.options.length > 1) return;
+
+        endMinuteInput.innerHTML = `<option value="" disabled selected>--</option>`;
         if (startHour == endHour) {
             let option = document.createElement("option")
             let firstOption = "30"

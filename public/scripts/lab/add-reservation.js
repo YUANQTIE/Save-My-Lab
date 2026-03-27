@@ -135,11 +135,11 @@ $(document).ready(function () {
 
 
     function checkTimeInputs() {
-        if ($("#startHourInput").val() && $("#startMinuteInput").val() && !$("#endHourInput").val() && !$("#endMinuteInput").val()) {
+        if ($("#startHourInput").val() && $("#startMinuteInput").val() && !$("#endHourInput").val()) {
             console.log("CALLED DISPLAYENDHOURS")
             displayEndHourInputs(parseInt($("#startHourInput").val().trim()), $("#startMinuteInput").val().trim())
         }
-        if ($("#startHourInput").val() && $("#endHourInput").val() && !$("#endMinuteInput").val()) {
+        if ($("#startHourInput").val() && $("#startMinuteInput").val() && $("#endHourInput").val() && !$("#endMinuteInput").val()) {
             console.log("CALLED DISPLAYENDMINUTES")
             displayEndMinuteInputs(parseInt($("#startHourInput").val()), parseInt($("#endHourInput").val()))
         }
@@ -312,7 +312,8 @@ $(document).ready(function () {
                 $("#endHourInput, #endMinuteInput").removeClass("border-red-600");
                 $("#confirmBtn").prop("disabled", seats.length === 0);
             } else {
-                $("#endHourInput, #endMinuteInput").addClass("border-red-600").val("");
+                
+                //$("#endHourInput, #endMinuteInput").addClass("border-red-600").val("");
                 $(".seat").addClass("gray").removeClass("cursor-pointer green red blue");
                 $("#confirmBtn").prop("disabled", true);
             }
@@ -432,6 +433,11 @@ $(document).ready(function () {
     });
 
     function displayStartTimeInputs() {
+        if (startHourInput.options.length > 1) return;
+        if(startMinuteInput.options.length > 1) return;
+
+        startHourInput.innerHTML = `<option value="" disabled selected>--</option>`;
+        startMinuteInput.innerHTML = `<option value="" disabled selected>--</option>`;
         let currentDate = new Date();
         const formattedCurrentDate = currentDate.toLocaleDateString('en-CA')
         let currentTime = currentDate.toLocaleTimeString('en-US', { hour12: false })
@@ -444,7 +450,7 @@ $(document).ready(function () {
             for (let i = currentHour; i <= 20; i++) {
                 let option = document.createElement("option")
                 let hour = format(i)
-                option.innerHTML = `<option value="${hour}">${i}</option>`
+                option.innerHTML = `<option value="${hour}">${hour}</option>`
                 startHourInput.appendChild(option)
             }
             if (currentMinutes < 30) {
@@ -468,7 +474,7 @@ $(document).ready(function () {
             for (let i = 7; i <= 20; i++) {
                 let option = document.createElement("option")
                 let hour = format(i)
-                option.innerHTML = `<option value="${hour}">${i}</option>`
+                option.innerHTML = `<option value="${hour}">${hour}</option>`
                 startHourInput.appendChild(option)
             }
             let option = document.createElement("option")
@@ -483,14 +489,15 @@ $(document).ready(function () {
     }
 
     function displayEndHourInputs(startHour, startMinute) {
-        console.log("Start Hour:", startHour)
-        console.log("Start Minute:", startMinute)
+        if (endHourInput.options.length > 1) return;
+
+        endHourInput.innerHTML = `<option value="" disabled selected>--</option>`;
         if (startMinute == "00") {
             console.log("00")
             for (let i = startHour; i <= 21; i++) {
                 let option = document.createElement("option")
                 let hour = format(i)
-                option.innerHTML = `<option value="${hour}">${i}</option>`
+                option.innerHTML = `<option value="${hour}">${hour}</option>`
                 endHourInput.appendChild(option)
             }
         }
@@ -499,13 +506,16 @@ $(document).ready(function () {
             for (let i = startHour + 1; i <= 21; i++) {
                 let option = document.createElement("option")
                 let hour = format(i)
-                option.innerHTML = `<option value="${hour}">${i}</option>`
+                option.innerHTML = `<option value="${hour}">${hour}</option>`
                 endHourInput.appendChild(option)
             }
         }
     }
 
     function displayEndMinuteInputs(startHour, endHour) {
+        if (endMinuteInput.options.length > 1) return;
+
+        endMinuteInput.innerHTML = `<option value="" disabled selected>--</option>`;
         if (startHour == endHour) {
             let option = document.createElement("option")
             let firstOption = "30"
