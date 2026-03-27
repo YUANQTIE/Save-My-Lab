@@ -26,6 +26,8 @@ router.get('/verify/:emailInput/:passwordInput', AdminController.isAdminValid);
 
 router.get('/forgot', AdminController.getIdGivenEmail);
 
+router.get('/emailCheck', AdminController.isAdminEmailInDB)
+
 //req.body: password
 router.put('/edit/password', AdminController.editPassword);
 

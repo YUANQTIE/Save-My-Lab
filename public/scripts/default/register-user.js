@@ -5,6 +5,62 @@ var id_number;
 
 
 $(document).ready(function() {
+
+    $("#backBtn1").on("click", function(e) {
+        e.preventDefault();
+
+        try {
+            window.location.href = `/`
+
+        } catch (err) {
+            console.error("Login Error:", err);
+            alert("An error occurred. Check the F12 console.");
+        }
+    });
+    
+    $("#backBtn2").on("click", function(e) {
+        e.preventDefault();
+
+        try {
+            if (email){
+                $("#emailInput").val(email);
+            }
+
+            if (id_number){
+                $("#idNumberInput").val(id_number);
+            }
+
+
+            $("#first").removeClass("hidden");
+            $("#second").addClass("hidden");
+
+        } catch (err) {
+            console.error("Login Error:", err);
+            alert("An error occurred. Check the F12 console.");
+        }
+    });
+
+    $("#backBtn3").on("click", function(e) {
+        e.preventDefault();
+
+        try {
+            if (pw1){
+                $("#pw1Input").val(pw1);
+            }
+
+            if (pw2){
+                $("#pw2Input").val(pw2);
+            }
+
+            $("#second").removeClass("hidden");
+            $("#third").addClass("hidden");
+
+        } catch (err) {
+            console.error("Login Error:", err);
+            alert("An error occurred. Check the F12 console.");
+        }
+    });
+
     $("#firstBtn").on("click", async function(e) {
         const containsWhitespace = str => /\s/.test(str);
 
@@ -24,10 +80,15 @@ $(document).ready(function() {
         }
 
         const isIdNumberInvalidCheck = await fetch(`/user/idNumberCheck?idNumber=${id_number}`);
-        const isEmailInvalidCheck = await fetch(`/user/emailCheck?email=${email}`);
+
+        const isUser = await fetch(`/user/emailCheck?email=${email}`) 
+        const isAdmin = await fetch(`/admin/emailCheck?email=${email}`)
+
+        const isActuallyUser = await isUser.json();
+        const isActuallyAdmin = await isAdmin.json()
+        const isEmailUsed = isActuallyUser || isActuallyAdmin;
 
         const isIdNumberInvalid = await isIdNumberInvalidCheck.json()
-        const isEmailInvalid = await isEmailInvalidCheck.json()
 
 
         if (containsWhitespace(email) || !email.toLowerCase().endsWith("@dlsu.edu.ph")) {
@@ -36,8 +97,8 @@ $(document).ready(function() {
             return
         }
 
-        if (isEmailInvalid){
-            $("#errMes1").text("User is already registed");
+        if (isEmailUsed){
+            $("#errMes1").text("Email is already registed");
             $("#emailInput").addClass("border-red-500");
             return
         }
@@ -54,6 +115,9 @@ $(document).ready(function() {
             return
         }
         
+        $("#errMes1").text("");
+        $("#emailInput").removeClass("border-red-500");
+        $("#idNumberInput").removeClass("border-red-500");
         $("#first").addClass("hidden");
         $("#second").removeClass("hidden");
     });
@@ -215,6 +279,36 @@ $(document).ready(function() {
         } catch (err) {
             console.error("Registration Error:", err);
         }
+    });
+
+    $("#show_password_btn_1").on("click", async function(e) {
+        e.preventDefault();
+        const eyeIcons = $("#show_password_btn_1").find('path, line, circle');
+        const type = $("#pw1Input").attr('type') === 'password' ? 'text' : 'password';
+        $("#pw1Input").attr('type', type);
+
+        eyeIcons.each(function() {
+            if ($(this).hasClass('hs-password-active:hidden')) {
+                $(this).toggleClass('hidden');
+            } else if ($(this).hasClass('hs-password-active:block')) {
+                $(this).toggleClass('hidden');
+            }
+        });
+    });
+
+    $("#show_password_btn_2").on("click", async function(e) {
+        e.preventDefault();
+        const eyeIcons = $("#show_password_btn_2").find('path, line, circle');
+        const type = $("#pw2Input").attr('type') === 'password' ? 'text' : 'password';
+        $("#pw2Input").attr('type', type);
+
+        eyeIcons.each(function() {
+            if ($(this).hasClass('hs-password-active:hidden')) {
+                $(this).toggleClass('hidden');
+            } else if ($(this).hasClass('hs-password-active:block')) {
+                $(this).toggleClass('hidden');
+            }
+        });
     });
 
 });

@@ -191,7 +191,7 @@ exports.isUserValid = async (req, res) => {
     const user = await User.findOne({ email: emailInput });
 
     if (!user){
-      return res.send("No user found.")
+      return res.json(false);
     }
 
     const match = await bcrypt.compare(passwordInput, user.password)
@@ -202,6 +202,23 @@ exports.isUserValid = async (req, res) => {
       return res.json(true);
     }
     res.json(false);
+  } catch (err) {
+    res.status(500).send('Error');
+  }
+};
+
+exports.isEmailInUse = async (req, res) => {
+  try {
+    const { emailInput } = req.query;
+    const user = await User.findOne({ email: emailInput });
+
+    if (user){
+      return res.json(true);
+    }
+    else{
+      return res.json(false);
+    }
+
   } catch (err) {
     res.status(500).send('Error');
   }

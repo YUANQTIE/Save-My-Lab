@@ -19,8 +19,10 @@
 
     <main id = "first" class="flex items-center justify-center min-h-screen">
         <!-- LOGIN FORM -->
-        <div
-            class="flex flex-col items-center pt-12 px-12 bg-gradient-to-b from-white via-white/70 to-[#265429]/40 rounded-xl shadow-2xl w-full max-w-xl">
+        <div class="flex flex-col items-center pt-12 px-12 bg-gradient-to-b from-white via-white/70 to-[#265429]/40 rounded-xl shadow-2xl w-full max-w-xl">
+            <button id="backBtn1" class=" self-start btn btn-sm bg-[#265429] text-white border-none hover:bg-[#1f4320] rounded-full px-5">
+                    Back
+            </button>
             <img class="w-32 mb-4" src="/images/dlsupng.png">
             <h2 class="text-4xl font-bold text-[#016938] mb-6">Register</h2>
             <span id="errMes1" class=" text-red-600 font-semibold"></span>
@@ -35,15 +37,6 @@
                         class="input input-bordered w-full bg-[#FAFAFA] placeholder:text-[#D9D9D9] focus:ring-2 focus:ring-[#265429]">
                 </div>
 
-                <!-- ID Number -->
-                <div class="form-control">
-                    <label class="label">
-                        <span class="label-text text-[#016938] font-semibold">ID Number</span>
-                    </label>
-                    <input id="idNumberInput" type="email" placeholder="Enter your ID number"
-                        class="input input-bordered w-full bg-[#FAFAFA] placeholder:text-[#D9D9D9] focus:ring-2 focus:ring-[#265429]">
-                </div>
-
                 <!-- ACTIONS -->
                 <div class="flex items-center justify-between pt-4">
                     <button id = "firstBtn" class="btn bg-[#265429] text-white border-none hover:bg-[#1f4320] rounded-full px-8">
@@ -51,7 +44,6 @@
                     </button>
                 </div>
 
-                <!-- FORGOT PASSWORD -->
                 <div class="text-center pt-4">
                     <a href="forgot.html" class="text-[#265429] hover:underline text-sm"></a>
                 </div>
@@ -61,30 +53,67 @@
 
     <main id = "second" class="flex items-center justify-center min-h-screen hidden">
         <!-- LOGIN FORM -->
-        <div
-            class="flex flex-col items-center pt-12 px-12 bg-gradient-to-b from-white via-white/70 to-[#265429]/40 rounded-xl shadow-2xl w-full max-w-xl">
+        <div class="flex flex-col items-center pt-12 px-12 bg-gradient-to-b from-white via-white/70 to-[#265429]/40 rounded-xl shadow-2xl w-full max-w-xl">
+            <button id="backBtn2" class=" self-start btn btn-sm bg-[#265429] text-white border-none hover:bg-[#1f4320] rounded-full px-5">
+                    Back
+            </button>
             <img class="w-32 mb-4" src="/images/dlsupng.png">
             <h2 class="text-4xl font-bold text-[#016938] mb-6">Register</h2>
             <span id="errMes2" class=" text-red-600 font-semibold"></span>
             <div class="w-full space-y-4">
 
 
-                <!-- PASSWORD -->
                 <div class="form-control">
                     <label class="label">
                         <span class="label-text text-[#016938] font-semibold">Password</span>
                     </label>
-                    <input id="pw1Input" type="password" placeholder="Enter your password"
-                        class="input input-bordered w-full bg-[#FAFAFA] placeholder:text-[#D9D9D9] focus:ring-2 focus:ring-[#265429]">
+                    <div class="relative">
+                        <input id="pw1Input" type="password"
+                            class="py-2.5 sm:py-3 ps-4 pe-10 block input input-bordered w-full bg-[#FAFAFA] placeholder:text-[#D9D9D9] border-layer-line rounded-lg sm:text-sm text-foreground placeholder:text-muted-foreground-1 focus:ring-2 focus:ring-[#265429] disabled:opacity-50 disabled:pointer-events-none"
+                            placeholder="Enter password" value="">
+                        <button type="button" id="show_password_btn_1" data-hs-toggle-password='{"target": "#hs-toggle-password"}' class="absolute inset-y-0 end-0 flex items-center z-20 px-3 cursor-pointer text-muted-foreground rounded-e-md focus:outline-hidden focus:text-primary-focus">
+                            <svg class="shrink-0 size-3.5" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path class="hs-password-active:hidden" d="M9.88 9.88a3 3 0 1 0 4.24 4.24" />
+                                <path class="hs-password-active:hidden"
+                                    d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68" />
+                                <path class="hs-password-active:hidden"
+                                    d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61" />
+                                <line class="hs-password-active:hidden" x1="2" x2="22" y1="2" y2="22" />
+                                <path class="hidden hs-password-active:block"
+                                    d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+                                <circle class="hidden hs-password-active:block" cx="12" cy="12" r="3" />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
 
                 <!-- RE-ENTER PASSWORD -->
                 <div class="form-control">
                     <label class="label">
-                        <span class="label-text text-[#016938] font-semibold">Re-enter Password</span>
+                        <span class="label-text text-[#016938] font-semibold">Password</span>
                     </label>
-                    <input id="pw2Input" type="password" placeholder="Re-enter your password"
-                        class="input input-bordered w-full bg-[#FAFAFA] placeholder:text-[#D9D9D9] focus:ring-2 focus:ring-[#265429]">
+                    <div class="relative">
+                        <input id="pw2Input" type="password"
+                            class="py-2.5 sm:py-3 ps-4 pe-10 block input input-bordered w-full bg-[#FAFAFA] placeholder:text-[#D9D9D9] border-layer-line rounded-lg sm:text-sm text-foreground placeholder:text-muted-foreground-1 focus:ring-2 focus:ring-[#265429] disabled:opacity-50 disabled:pointer-events-none"
+                            placeholder="Enter password" value="">
+                        <button type="button" id="show_password_btn_2" data-hs-toggle-password='{"target": "#hs-toggle-password"}' class="absolute inset-y-0 end-0 flex items-center z-20 px-3 cursor-pointer text-muted-foreground rounded-e-md focus:outline-hidden focus:text-primary-focus">
+                            <svg class="shrink-0 size-3.5" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path class="hs-password-active:hidden" d="M9.88 9.88a3 3 0 1 0 4.24 4.24" />
+                                <path class="hs-password-active:hidden"
+                                    d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68" />
+                                <path class="hs-password-active:hidden"
+                                    d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61" />
+                                <line class="hs-password-active:hidden" x1="2" x2="22" y1="2" y2="22" />
+                                <path class="hidden hs-password-active:block"
+                                    d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+                                <circle class="hidden hs-password-active:block" cx="12" cy="12" r="3" />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
 
                 <!-- ACTIONS -->
@@ -94,79 +123,6 @@
                     </button>
                 </div>
 
-                <!-- FORGOT PASSWORD -->
-                <div class="text-center pt-4">
-                    <a href="forgot.html" class="text-[#265429] hover:underline text-sm"></a>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <main id = "third" class="flex items-center justify-center min-h-screen hidden">
-        <!-- LOGIN FORM -->
-        <div
-            class="flex flex-col items-center pt-12 px-12 bg-gradient-to-b from-white via-white/70 to-[#265429]/40 rounded-xl shadow-2xl w-full max-w-xl">
-            <img class="w-32 mb-4" src="/images/dlsupng.png">
-            <h2 class="text-4xl font-bold text-[#016938] mb-6">Register</h2>
-            <span id="errMes3" class=" text-red-600 font-semibold"></span>
-            <div class="w-full space-y-4">
-
-                <!-- PROFILE PICTURE -->
-                <div class="form-control flex flex-col items-center">
-                    <div class="relative inline-block">
-                        <img id="previewImg" src="/images/user.png" class="w-28 h-28 rounded-full object-cover border-2 border-[#265429] mb-2">
-                        
-                        <button id="removePicBtn" type="button" 
-                            class="hidden absolute top-0 right-0 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-700 shadow-md">
-                            ✕
-                        </button>
-                    </div>
-                </div>
-
-                <div class="form-control">
-                    <!-- Label -->
-                    <label class="label text-center">
-                        <span class="label-text text-[#016938] font-semibold">Profile Picture (Optional)</span>
-                    </label>
-
-                    <!-- Hidden file input -->
-                    <input id="profilePicInput" type="file" accept="image/*" class="hidden">
-
-                    <!-- Custom green button -->
-                    <button type="button" id="uploadBtn"
-                        class="bg-[#265429] hover:bg-[#1f4320] text-white font-semibold py-2 px-4 rounded-full">
-                        Choose File
-                    </button>
-                </div>
-
-                <!-- USERNAME -->
-                <div class="form-control">
-                    <label class="label">
-                        <span class="label-text text-[#016938] font-semibold">Username</span>
-                        <span id="unCharCount" class="label-text text-[#f7f7f7] font-semibold">0/20</span>
-                    </label>
-                    <input id="usernameInput" type="email" placeholder="Enter your username"
-                        class="input input-bordered w-full bg-[#FAFAFA] placeholder:text-[#D9D9D9] focus:ring-2 focus:ring-[#265429]">
-                </div>
-
-                <!-- BIO -->
-                <div class="form-control">
-                    <label class="label">
-                        <span class="label-text text-[#016938] font-semibold">Bio (Optional)</span>
-                        <span id="bioCharCount" class="label-text text-[#f7f7f7] font-semibold">0/60</span>
-                    </label>
-                    <input id="bioInput" type="email" placeholder="Enter your bio"
-                        class="input input-bordered w-full bg-[#FAFAFA] placeholder:text-[#D9D9D9] focus:ring-2 focus:ring-[#265429]">
-                </div>
-
-                <!-- ACTIONS -->
-                <div class="flex items-center justify-between pt-4">
-                    <button id = "thirdBtn" class="btn bg-[#265429] text-white border-none hover:bg-[#1f4320] rounded-full px-8">
-                        Confirm
-                    </button>
-                </div>
-
-                <!-- FORGOT PASSWORD -->
                 <div class="text-center pt-4">
                     <a href="forgot.html" class="text-[#265429] hover:underline text-sm"></a>
                 </div>

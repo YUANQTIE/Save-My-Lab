@@ -32,7 +32,7 @@ $(document).ready(function() {
             const data = await response.json(); 
             editPwId = data._id;
 
-            $("#pw1, #pw2, #newPw").removeClass("hidden");
+            $("#pw1Div, #pw2Div, #newPwBtn").removeClass("hidden");
             $("#emailBtn").addClass("hidden");
 
         } catch (err) {
@@ -43,8 +43,8 @@ $(document).ready(function() {
     $("#newPwBtn").on("click", async function(e) {
         e.preventDefault();
 
-        const pw1Input = $("#pw1Input").val().trim();
-        const pw2Input = $("#pw2Input").val().trim();
+        const pw1Input = $("#pw1").val().trim();
+        const pw2Input = $("#pw2").val().trim();
 
         try {
 
@@ -79,5 +79,35 @@ $(document).ready(function() {
         } catch (err) {
             console.error("Login Error:", err);
         }
+    });
+
+    $("#show_password_btn_1").on("click", async function(e) {
+        e.preventDefault();
+        const eyeIcons = $("#show_password_btn_1").find('path, line, circle');
+        const type = $("#pw1").attr('type') === 'password' ? 'text' : 'password';
+        $("#pw1").attr('type', type);
+
+        eyeIcons.each(function() {
+            if ($(this).hasClass('hs-password-active:hidden')) {
+                $(this).toggleClass('hidden');
+            } else if ($(this).hasClass('hs-password-active:block')) {
+                $(this).toggleClass('hidden');
+            }
+        });
+    });
+
+    $("#show_password_btn_2").on("click", async function(e) {
+        e.preventDefault();
+        const eyeIcons = $("#show_password_btn_2").find('path, line, circle');
+        const type = $("#pw2").attr('type') === 'password' ? 'text' : 'password';
+        $("#pw2").attr('type', type);
+
+        eyeIcons.each(function() {
+            if ($(this).hasClass('hs-password-active:hidden')) {
+                $(this).toggleClass('hidden');
+            } else if ($(this).hasClass('hs-password-active:block')) {
+                $(this).toggleClass('hidden');
+            }
+        });
     });
 });

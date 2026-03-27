@@ -19,7 +19,16 @@ $(document).ready(function() {
         console.log("Input Check:", emailInput, passwordInput);
 
         if (!emailInput || !passwordInput) {
-            alert("Please enter both email and password");
+            $("#userEmailInput").addClass("border-red-600")
+            $("#userPasswordInput").addClass("border-red-600")
+            $("#userLoginErr").text("Please enter your credentials")
+            return;
+        }
+
+        if (!emailInput.endsWith("@dlsu.edu.ph")) {
+            $("#userEmailInput").addClass("border-red-600")
+            $("#userPasswordInput").removeClass("border-red-600")
+            $("#userLoginErr").text("Please input a valid DLSU email")
             return;
         }
 
@@ -31,13 +40,17 @@ $(document).ready(function() {
                 const usersRes = await fetch("/user/users");
                 const users = await usersRes.json();
                 const user = users.find(u => u.email === emailInput);
-
+                $("#userEmailInput").removeClass("border-red-600")
+                $("#userPasswordInput").removeClass("border-red-600")
                 window.location.href = `/user/landing?originalId=${user._id}`;
                 return;
             }
 
             else{
-                alert("No valid account found");
+                $("#userEmailInput").addClass("border-red-600")
+                $("#userPasswordInput").addClass("border-red-600")
+                $("#userLoginErr").text("No user account found.")
+                return;
             }
 
         } catch (err) {
@@ -55,25 +68,38 @@ $(document).ready(function() {
         console.log("Input Check:", emailInput, passwordInput);
 
         if (!emailInput || !passwordInput) {
-            alert("Please enter both email and password");
+            $("#adminEmailInput").addClass("border-red-600")
+            $("#adminPasswordInput").addClass("border-red-600")
+            $("#adminLoginErr").text("Please enter your credentials")
+            return;
+        }
+
+        if (!emailInput.endsWith("@dlsu.edu.ph")) {
+            $("#adminEmailInput").addClass("border-red-600")
+            $("#adminPasswordInput").removeClass("border-red-600")
+            $("#adminLoginErr").text("Please input a valid DLSU email")
             return;
         }
 
         try {
             const res2 = await fetch(`/admin/verify/${emailInput}/${passwordInput}`);
+
             const isAdmin = await res2.json();
             if (isAdmin) {
                 const adminsRes = await fetch("/admin/admins");
                 const admins = await adminsRes.json();
                 const admin = admins.find(a => a.email === emailInput);
-
-
+                $("#adminEmailInput").removeClass("border-red-600")
+                $("#adminPasswordInput").removeClass("border-red-600")
                 window.location.href = `/admin/landing?id=${admin._id}`;
                 return;
             }
 
             else{
-                alert("No valid account found");
+                $("#adminEmailInput").addClass("border-red-600")
+                $("#adminPasswordInput").addClass("border-red-600")
+                $("#adminLoginErr").text("No admin account found.")
+                return;
             }
             
         } catch (err) {

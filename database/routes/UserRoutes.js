@@ -44,6 +44,8 @@ router.get('/idNumberCheck', UserController.isUserIdNumberInDB)
 
 router.get('/usernameCheck', UserController.isUsernameInDB)
 
+router.get('/validate-email', UserController.isEmailInUse);
+
 //POST ROUTES
 //req.files: profile_picture
 //req.body: email, username, bio, password, id_number

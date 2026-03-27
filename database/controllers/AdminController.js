@@ -104,7 +104,7 @@ exports.isAdminValid =  async (req, res) => {
     const admin = await Admin.findOne({ email: emailInput });
 
     if (!admin){
-      return res.send("No user found.")
+      return res.json(false);
     }
 
     const match = await bcrypt.compare(passwordInput, admin.password)
@@ -114,6 +114,23 @@ exports.isAdminValid =  async (req, res) => {
     }
     res.json(false);
   } catch (err) {
+    res.status(500).send('Error');
+  }
+};
+
+exports.isAdminEmailInDB = async (req, res) => {
+  try {
+    const email = req.query.email;
+    const admin = await Admin.findOne({ email });
+
+    if (!admin) {
+      return res.json(false);
+    }
+
+    return res.json(true);
+
+  } catch (err) {
+    console.error(err.message);
     res.status(500).send('Error');
   }
 };
@@ -146,10 +163,12 @@ exports.getAllAccounts = async (req, res) => {
 
 exports.addAdmin = async (req, res) => {
   try {
-    const user = await Admin.create({
+    const hashedPassword = await bcrypt.hash(req.body.password, saltCount);
+
+    const admin = await Admin.create({
       email: req.body.email,
       date_created: new Date(Date.now()),
-      password: req.body.password,
+      password: hashedPassword,
     });
 
     res.send("Admin added successfully");
