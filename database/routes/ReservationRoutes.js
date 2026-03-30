@@ -10,6 +10,8 @@ const ReservationController = require("../controllers/ReservationController");
 //res.json: reservation_id, creation_timestamp, reservation_start_timestamp, reservation_end_timestamp, reservedBy, checkedIn, room_name, building, seats: [seat_name]
 router.get('/reservations', ReservationController.getAllReservations);
 
+router.get('/specific-reservation', ReservationController.getReservationById);
+
 //filters for a specific user
 //req.query: creationTimeStart, creationTimeEnd, roomName, building, reservationTimeStart, reservationTimeEnd, seatCount
 //req.params: id

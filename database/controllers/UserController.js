@@ -70,6 +70,16 @@ exports.showUserSearched = async (req, res) => {
   }
 }
 
+exports.showEditReservation = async (req, res) => {
+  try {
+    const userData = await User.findById(req.query.id).lean();
+    res.render('user/view-other-user-profile', { user: userData });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Error');
+  }
+}
+
 // Get and Render Profile of User for Profile Settings
 exports.showProfile = async (req, res) => {
   try {

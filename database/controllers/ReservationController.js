@@ -12,6 +12,40 @@ const Admin = require('../models/Admin.js');
     Description: Get all the fields in the collection (populate seats)
 */
 
+exports.getReservationById = async (req, res) => {
+    try {
+        const reservationId = req.query.resId;
+        const reservation = await Reservation.findById( reservationId ) //joins everything
+            .populate({
+                path: 'seats',
+                populate: {
+                    path: 'room_id'
+                }
+            });
+        
+            console.log("GRAHUIFFSAIDJIASDJIOAS")
+            console.log(reservation)
+
+        const result = {
+            reservation_id: reservation._id,
+            creation_timestamp: reservation.creation_timestamp,
+            reservation_start_timestamp: reservation.reservation_start_timestamp,
+            reservation_end_timestamp: reservation.reservation_end_timestamp,
+            reservedBy: reservation.reservedBy,
+            room_name: reservation.seats[0].room_id.room_name,
+            building: reservation.seats[0].room_id.building,
+            seats: reservation.seats.map(seat => seat._id)
+        };
+
+        res.json(result);
+
+    }
+    catch (err) {
+        console.error(err.message);
+        res.status(500).send('Error');
+    }
+};
+
 exports.getAllReservations = async (req, res) => {
     try {
         const reservations = await Reservation.find() //joins everything
@@ -418,6 +452,20 @@ exports.addUserReservation = async (req, res) => {
 
 exports.editUserReservation = async (req, res) => {
     try {
+
+        const start = new Date(req.body.timeStart + "Z");
+        const end = new Date(req.body.timeEnd + "Z");
+
+        const conflict = await Reservation.findOne({
+            seats: { $in: req.body.seats },
+            reservation_start_timestamp: { $lt: end },
+            reservation_end_timestamp: { $gt: start }
+        });
+
+        if (conflict) {
+            res.status(400).send("One or more seats are already reserved for that time.");
+            return;
+        }
 
         await Reservation.findByIdAndUpdate(
             req.params.reservationId,

@@ -79,7 +79,6 @@ $(document).ready(function () {
             if (res.ok) {
                 alert("Account deleted successfully");
 
-                // redirect after deletion
                 window.location.href = "/";
             } else {
                 alert("Failed to delete account");

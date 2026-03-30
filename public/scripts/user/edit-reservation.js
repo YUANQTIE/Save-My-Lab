@@ -1,380 +1,736 @@
-const venueSelect = document.getElementById("venueSelect");
-const roomSelect  = document.getElementById("roomSelect");
-const dateInput   = document.getElementById("dateInput");
-const startHour   = document.getElementById("startHour");
-const startMinute = document.getElementById("startMinute");
-const endHour     = document.getElementById("endHour");
-const endMinute   = document.getElementById("endMinute");
-const timeBox     = document.getElementById("timeBox");
-const confirmBtn  = document.getElementById("confirmBtn");
-const brokenContainer = document.getElementById("brokenContainer");
-const brokenText      = document.getElementById("brokenText");
-const brokenSeatIds   = new Set();
-const confirmModal    = document.getElementById("confirmModal");
-const closeConfirmBtn = document.querySelector(".close-confirm");
-const confirmOkayBtn  = document.getElementById("confirmOkay");
+const queryString = window.location.search;
+const url = new URLSearchParams(queryString);
+const userId = url.get('originalId');
+const reservationId = url.get('resId');
+const successModal = document.getElementById("successModal")
+const successConfirm = document.getElementById("successConfirm")
+const closeSuccessModal = document.getElementById("closeSuccessModal")
+const dateInput = document.getElementById("dateInput")
+const startHourInput = document.getElementById("startHourInput")
+const startMinuteInput = document.getElementById("startMinuteInput")
+const endHourInput = document.getElementById("endHourInput")
+const endMinuteInput = document.getElementById("endMinuteInput")
+const loading = document.getElementById("loading")
+var building;
+var room;
+var reservationDate;
+var reservationStartMinute;
+var reservationStartHour;
+var reservationEndMinute;
+var reservationEndHour;
+var reservationStartTimeStamp;
+var reservationEndTimeStamp;
+var seats;
+var seat_names = [];
+var isAnonymous = false;
 
-const resVenue = document.getElementById("resVenue");
-const resRoom  = document.getElementById("resRoom");
-const resDate  = document.getElementById("resDate");
-const resTime  = document.getElementById("resTime");
-const resSeats = document.getElementById("resSeats");
+$(document).ready(async function () {
 
-const venueRooms = {
-  "Gokongwei Building": ["G201", "G202", "G203", "G205"],
-  "LS Building": ["LS226", "LS227", "LS228"],
-  "Yuchengco Building": ["Y604", "Y605", "Y606"],
-  "Andrew Building": ["A1902", "A1903", "A1904", "A1905"]
-};
+    async function getCurrentReservationData(){
+        const res = await fetch(`/reservations/specific-reservation?resId=${reservationId}`)
+        const reservation = await res.json()
+        building = reservation.building
+        room = reservation.room_name
+        reservationStartTimeStamp = reservation.reservation_start_timestamp
+        reservationEndTimeStamp = reservation.reservation_end_timestamp
+        seats = reservation.seats
+        getDate(reservationStartTimeStamp)
+        getStartHourAndMinute(reservationStartTimeStamp)
+        getEndHourAndMinute(reservationEndTimeStamp)
 
-function buildingLabelToVenueSelectValue(label) {
-  const x = (label || "").toLowerCase();
+        console.log(seats)
+        console.log(reservationDate)
+        console.log(reservationStartHour)
+        console.log(reservationStartMinute)
+        console.log(reservationEndHour)
+        console.log(reservationEndMinute)
+    }
+    
+    function getDate(s){
+        reservationDate = s.substring(0, 10);
+    }
 
-  if (x.includes("gokongwei")) return "Gokongwei Building";
-  if (x.includes("andrew")) return "Andrew Building";
-  if (x.includes("lasalle") || x.includes("ls")) return "LS Building";
-  if (x.includes("yuchengco")) return "Yuchengco Building";
+    function getStartHourAndMinute(s){
+        reservationStartHour = s.substring(11, 13);
+        reservationStartMinute = s.substring(14, 16);
+    }
 
-  return "";
-}
+    function getEndHourAndMinute(s){
+        reservationEndHour = s.substring(11, 13);
+        reservationEndMinute = s.substring(14, 16);
+    }
 
-function showVenueLayout(venue) {
-  document.querySelectorAll(".venue-layout").forEach(layout => {
-    layout.classList.toggle("hidden", layout.dataset.venue !== venue);
-  });
+    function loadVenueInput(){
+        $("#venueInput").val(building)
+    }
 
-  setSeatsEnabled(true);
-}
+    async function loadRoomInput(){
+        const roomSelect = $("#roomInput");
+        roomSelect.empty();
+        roomSelect.append('<option value="" disabled selected>Input Room...</option>');
 
-function populateRooms(venue) {
-  const rooms = venueRooms[venue] || [];
-  roomSelect.innerHTML = `<option value="" disabled selected>Input Room...</option>`;
-  rooms.forEach(r => {
-    const opt = document.createElement("option");
-    opt.value = r;
-    opt.textContent = r;
-    roomSelect.appendChild(opt);
-  });
-}
+        const roomsInBuildings = await fetch(`/room/building/room-names?buildingName=${building}`);
+        const roomsInBuildingsJ = await roomsInBuildings.json();
 
-function toISODate(str) {
-  const d = new Date(str);
-  if (isNaN(d.getTime())) return "";
-  const yyyy = d.getFullYear();
-  const mm = String(d.getMonth() + 1).padStart(2, "0");
-  const dd = String(d.getDate()).padStart(2, "0");
-  return `${yyyy}-${mm}-${dd}`;
-}
+        roomsInBuildingsJ.forEach(r => {
+            roomSelect.append(`<option value="${r.room_name}">${r.room_name}</option>`);
+        });
 
-function parseOneTime(t) {
-  const m = t.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
-  if (!m) return null;
-  let hh = parseInt(m[1], 10);
-  const mm = m[2];
-  const ap = m[3].toUpperCase();
-  if (ap === "AM") { if (hh === 12) hh = 0; }
-  else { if (hh !== 12) hh += 12; }
-  return { hh: String(hh).padStart(2, "0"), mm };
-}
+        $("#goks, #ls, #yuch, #andrew, #default").addClass("hidden");
 
-function parseTimeRange(rangeStr) {
-  if (!rangeStr || !rangeStr.includes("-")) return null;
-  const [aRaw, bRaw] = rangeStr.split("-").map(s => s.trim());
-  const a = parseOneTime(aRaw);
-  const b = parseOneTime(bRaw);
-  if (!a || !b) return null;
-  return { sh: a.hh, sm: a.mm, eh: b.hh, em: b.mm };
-}
+        if (building === "Gokongwei Building") $("#goks").removeClass("hidden");
+        else if (building === "St. La Salle Hall") $("#ls").removeClass("hidden");
+        else if (building === "Don Enrique T. Yuchengco Hall") $("#yuch").removeClass("hidden");
+        else if (building === "Br. Andrew Gonzales Hall") $("#andrew").removeClass("hidden");
 
-function tagSeatsByOrder() {
-  document.querySelectorAll(".venue-layout").forEach(layout => {
-    layout.querySelectorAll(".seat").forEach((seat, idx) => {
-      seat.dataset.seatNo = String(idx + 1);
+        $("#roomInput").val(room)
+    }
+
+    function loadDateInput(){
+        $("#dateInput").val(reservationDate)
+    }
+
+    function loadStartTimeInputs() {
+        startHourInput.innerHTML = `<option value="" disabled selected>--</option>`;
+        startMinuteInput.innerHTML = `<option value="" disabled selected>--</option>`;
+        let currentDate = new Date();
+        const formattedCurrentDate = currentDate.toLocaleDateString('en-CA')
+        const currentHour = currentDate.getHours()
+        const currentMinutes = currentDate.getMinutes()
+        let chosenDate = dateInput.value.trim()
+        console.log("Chosen Date: ", chosenDate)
+        console.log("Current Date: ", formattedCurrentDate)
+        if (chosenDate == formattedCurrentDate) {
+            for (let i = currentHour; i <= 20; i++) {
+                let option = document.createElement("option")
+                let hour = format(i)
+                option.innerHTML = `<option value="${hour}">${hour}</option>`
+                startHourInput.appendChild(option)
+            }
+            if (currentMinutes < 30) {
+                let option = document.createElement("option")
+                let firstOption = "00"
+                option.innerHTML = `<option value="${firstOption}">${firstOption}</option>`
+                startMinuteInput.appendChild(option)
+                let option2 = document.createElement("option")
+                let secondOption = "30"
+                option2.innerHTML = `<option value="${secondOption}">${secondOption}</option>`
+                startMinuteInput.appendChild(option2)
+            }
+            else {
+                let option = document.createElement("option")
+                let firstOption = "30"
+                option.innerHTML = `<option value="${firstOption}">${firstOption}</option>`
+                startMinuteInput.appendChild(option)
+            }
+        }
+        else {
+            for (let i = 7; i <= 20; i++) {
+                let option = document.createElement("option")
+                let hour = format(i)
+                option.innerHTML = `<option value="${hour}">${hour}</option>`
+                startHourInput.appendChild(option)
+            }
+            let option = document.createElement("option")
+            let firstOption = "00"
+            option.innerHTML = `<option value="${firstOption}">${firstOption}</option>`
+            startMinuteInput.appendChild(option)
+            let option2 = document.createElement("option")
+            let secondOption = "30"
+            option2.innerHTML = `<option value="${secondOption}">${secondOption}</option>`
+            startMinuteInput.appendChild(option2)
+        }
+
+        $("#startHourInput").val(reservationStartHour)
+        $("#startMinuteInput").val(reservationStartMinute)
+    }
+
+    function loadEndHourInputs(startHour, startMinute) {
+        if (endHourInput.options.length > 1) return;
+
+        startHour = parseInt(startHour, 10);
+
+        endHourInput.innerHTML = `<option value="" disabled selected>--</option>`;
+        console.log("Start Hour:", startHour)
+        console.log("Start Minute:", startMinute)
+        if (startMinute == "00") {
+            console.log("00")
+            for (let i = startHour; i <= 21; i++) {
+                let option = document.createElement("option")
+                let hour = format(i)
+                option.innerHTML = `<option value="${hour}">${hour}</option>`
+                endHourInput.appendChild(option)
+            }
+        }
+        else {
+            console.log("30")
+            for (let i = startHour + 1; i <= 21; i++) {
+                let option = document.createElement("option")
+                let hour = format(i)
+                option.innerHTML = `<option value="${hour}">${hour}</option>`
+                endHourInput.appendChild(option)
+            }
+        }
+
+        $("#endHourInput").val(reservationEndHour)
+    }
+
+    function loadEndMinuteInputs(startHour, endHour) {
+        if (endMinuteInput.options.length > 1) return;
+
+        endMinuteInput.innerHTML = `<option value="" disabled selected>--</option>`;
+        if (startHour == endHour) {
+            let option = document.createElement("option")
+            let firstOption = "30"
+            option.innerHTML = `<option value="${firstOption}">${firstOption}</option>`
+            endMinuteInput.appendChild(option)
+        }
+        else if (startHour != endHour && endHour != 21) {
+            let option = document.createElement("option")
+            let firstOption = "00"
+            option.innerHTML = `<option value="${firstOption}">${firstOption}</option>`
+            endMinuteInput.appendChild(option)
+            let option2 = document.createElement("option")
+            let secondOption = "30"
+            option2.innerHTML = `<option value="${secondOption}">${secondOption}</option>`
+            endMinuteInput.appendChild(option2)
+        }
+        else {
+            let option = document.createElement("option")
+            let firstOption = "00"
+            option.innerHTML = `<option value="${firstOption}">${firstOption}</option>`
+            endMinuteInput.appendChild(option)
+        }
+        $("#endMinuteInput").val(reservationEndMinute)
+    }
+
+    function loadPanelInputs(){
+        loadVenueInput()
+        loadRoomInput()
+        loadDateInput()
+        loadStartTimeInputs()
+        loadEndHourInputs(reservationStartHour, reservationStartMinute)
+        loadEndMinuteInputs(reservationStartHour, reservationEndHour)
+    }
+
+    function loadInitialSeats(){
+
+    }
+
+    function showLoader() {
+        loading.style.setProperty('display', 'block', 'important');
+        loading.classList.remove('hidden');
+    }
+
+    function format(hour) {
+        if (hour < 10) {
+            return '0' + hour
+        }
+        else
+            return hour
+    }
+
+    function weekView() {
+        let today = new Date();
+        let nextWk = new Date();
+        nextWk.setDate(today.getDate() + 7);
+        today = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
+        nextWk = `${nextWk.getFullYear()}-${(nextWk.getMonth() + 1).toString().padStart(2, '0')}-${nextWk.getDate().toString().padStart(2, '0')}`;
+
+        console.log(today);
+        console.log(nextWk);
+
+        $("#dateInput").attr('min', today);
+        $("#dateInput").attr('max', nextWk);
+    }
+
+    $(".seat").addClass("gray")
+
+    $("#venueInput").on("change", async function (e) {
+        try {
+
+            $(".seat")
+                .removeClass("red blue green cursor-pointer selected")
+                .addClass("gray")
+                .removeAttr("id")
+                .removeAttr("data-name")
+                .attr("title", "");
+
+            room = "";
+            seats = [];
+            seat_names = [];
+            $("#confirmBtn").prop("disabled", true);
+
+            building = $(this).val().trim();
+            console.log("Building changed to:", building);
+
+
+            const roomSelect = $("#roomInput");
+            roomSelect.empty();
+            roomSelect.append('<option value="" disabled selected>Input Room...</option>');
+
+            const roomsInBuildings = await fetch(`/room/building/room-names?buildingName=${building}`);
+            const roomsInBuildingsJ = await roomsInBuildings.json();
+
+            roomsInBuildingsJ.forEach(r => {
+                roomSelect.append(`<option value="${r.room_name}">${r.room_name}</option>`);
+            });
+
+            $("#goks, #ls, #yuch, #andrew, #default").addClass("hidden");
+
+            if (building === "Gokongwei Building") $("#goks").removeClass("hidden");
+            else if (building === "St. La Salle Hall") $("#ls").removeClass("hidden");
+            else if (building === "Don Enrique T. Yuchengco Hall") $("#yuch").removeClass("hidden");
+            else if (building === "Br. Andrew Gonzales Hall") $("#andrew").removeClass("hidden");
+
+            $("#room").removeClass("hidden");
+            $("#confirmBtn").prop("disabled", true);
+
+        } catch (err) {
+            console.error("Error updating building:", err);
+        }
     });
-  });
-}
 
-function clearGreenSeats() {
-  document.querySelectorAll(".venue-layout .seat").forEach(seat => {
-    seat.classList.remove("green");
-  });
-}
+    $("#roomInput").on("change", async function (e) {
+        $(".seat").removeClass("green selected").addClass("gray");
+        weekView();
+        try {
+            room = $(this).val().trim();
+            seats = [];
+            seat_names = [];
 
-function getVisibleLayout() {
-  return document.querySelector(".venue-layout:not(.hidden)");
-}
+            $("#confirmBtn").prop("disabled", true);
 
-function markSeatsGreenFromList(roomId, seatIdList) {
-  const visibleLayout = getVisibleLayout();
-  if (!visibleLayout) return;
+            console.log("Selected room:", room);
+            $("#date").removeClass("hidden");
+        } catch (err) {
+            console.error("Error:", err);
+        }
+    });
 
-  const prefix = `${roomId}-`;
+    $("#dateInput").on("change", async function (e) {
+        $(".seat").attr("class", "seat");
+        try {
+            reservationDate = $(this).val().trim();
+            seats = [];
+            seat_names = [];
+            console.log("Selected date:", reservationDate);
+            $("#time").removeClass("hidden");
+            $("#confirmBtn").prop("disabled", true);
 
-  (seatIdList || []).forEach(seatId => {
-    if (!seatId || !seatId.startsWith(prefix)) return;
+        } catch (err) {
+            console.error("Error:", err);
+            alert("An error occurred. Check the F12 console.");
+        }
+    });
 
-    const numStr = seatId.split("-").pop();
-    const n = parseInt(numStr, 10);
-    if (!Number.isFinite(n)) return;
+    function displayStartTimeInputs() {
+        startHourInput.innerHTML = `<option value="" disabled selected>--</option>`;
+        startMinuteInput.innerHTML = `<option value="" disabled selected>--</option>`;
+        let currentDate = new Date();
+        const formattedCurrentDate = currentDate.toLocaleDateString('en-CA')
+        const currentHour = currentDate.getHours()
+        const currentMinutes = currentDate.getMinutes()
+        let chosenDate = dateInput.value.trim()
+        console.log("Chosen Date: ", chosenDate)
+        console.log("Current Date: ", formattedCurrentDate)
+        if (chosenDate == formattedCurrentDate) {
+            for (let i = currentHour; i <= 20; i++) {
+                let option = document.createElement("option")
+                let hour = format(i)
+                option.innerHTML = `<option value="${hour}">${hour}</option>`
+                startHourInput.appendChild(option)
+            }
+            if (currentMinutes < 30) {
+                let option = document.createElement("option")
+                let firstOption = "00"
+                option.innerHTML = `<option value="${firstOption}">${firstOption}</option>`
+                startMinuteInput.appendChild(option)
+                let option2 = document.createElement("option")
+                let secondOption = "30"
+                option2.innerHTML = `<option value="${secondOption}">${secondOption}</option>`
+                startMinuteInput.appendChild(option2)
+            }
+            else {
+                let option = document.createElement("option")
+                let firstOption = "30"
+                option.innerHTML = `<option value="${firstOption}">${firstOption}</option>`
+                startMinuteInput.appendChild(option)
+            }
+        }
+        else {
+            for (let i = 7; i <= 20; i++) {
+                let option = document.createElement("option")
+                let hour = format(i)
+                option.innerHTML = `<option value="${hour}">${hour}</option>`
+                startHourInput.appendChild(option)
+            }
+            let option = document.createElement("option")
+            let firstOption = "00"
+            option.innerHTML = `<option value="${firstOption}">${firstOption}</option>`
+            startMinuteInput.appendChild(option)
+            let option2 = document.createElement("option")
+            let secondOption = "30"
+            option2.innerHTML = `<option value="${secondOption}">${secondOption}</option>`
+            startMinuteInput.appendChild(option2)
+        }
+    }
 
-    const seatEl = visibleLayout.querySelector(`.seat[data-seat-no="${n}"]`);
-    if (!seatEl) return;
+    function displayEndHourInputs(startHour, startMinute) {
+        if (endHourInput.options.length > 1) return;
 
-    seatEl.classList.add("green");
-  });
-}
+        endHourInput.innerHTML = `<option value="" disabled selected>--</option>`;
+        console.log("Start Hour:", startHour)
+        console.log("Start Minute:", startMinute)
+        if (startMinute == "00") {
+            console.log("00")
+            for (let i = startHour; i <= 21; i++) {
+                let option = document.createElement("option")
+                let hour = format(i)
+                option.innerHTML = `<option value="${hour}">${hour}</option>`
+                endHourInput.appendChild(option)
+            }
+        }
+        else {
+            console.log("30")
+            for (let i = startHour + 1; i <= 21; i++) {
+                let option = document.createElement("option")
+                let hour = format(i)
+                option.innerHTML = `<option value="${hour}">${hour}</option>`
+                endHourInput.appendChild(option)
+            }
+        }
+    }
 
-function timeToMinutes(hhStr, mmStr) {
-  const hh = parseInt(String(hhStr).trim(), 10);
-  const mm = parseInt(String(mmStr).trim(), 10);
-  if (!Number.isFinite(hh) || !Number.isFinite(mm)) return NaN;
-  return hh * 60 + mm;
-}
+    function displayEndMinuteInputs(startHour, endHour) {
+        if (endMinuteInput.options.length > 1) return;
 
-function getTimeRangeValue() {
-  const sh = startHour.value.trim();
-  const sm = startMinute.value.trim();
-  const eh = endHour.value.trim();
-  const em = endMinute.value.trim();
-  if (!sh || !sm || !eh || !em) return "";
-  return `${sh}:${sm} - ${eh}:${em}`;
-}
+        endMinuteInput.innerHTML = `<option value="" disabled selected>--</option>`;
+        if (startHour == endHour) {
+            let option = document.createElement("option")
+            let firstOption = "30"
+            option.innerHTML = `<option value="${firstOption}">${firstOption}</option>`
+            endMinuteInput.appendChild(option)
+        }
+        else if (startHour != endHour && endHour != 21) {
+            let option = document.createElement("option")
+            let firstOption = "00"
+            option.innerHTML = `<option value="${firstOption}">${firstOption}</option>`
+            endMinuteInput.appendChild(option)
+            let option2 = document.createElement("option")
+            let secondOption = "30"
+            option2.innerHTML = `<option value="${secondOption}">${secondOption}</option>`
+            endMinuteInput.appendChild(option2)
+        }
+        else {
+            let option = document.createElement("option")
+            let firstOption = "00"
+            option.innerHTML = `<option value="${firstOption}">${firstOption}</option>`
+            endMinuteInput.appendChild(option)
+        }
+    }
 
-function isTimeRangeValid() {
-  const start = timeToMinutes(startHour.value, startMinute.value);
-  const end   = timeToMinutes(endHour.value, endMinute.value);
 
-  if (!Number.isFinite(start) || !Number.isFinite(end)) {
-    timeBox.classList.add("invalid");
-    return false;
-  }
+    function checkTimeInputs() {
+        if ($("#startHourInput").val() && $("#startMinuteInput").val() && !$("#endHourInput").val() && !$("#endMinuteInput").val()) {
+            console.log("CALLED DISPLAYENDHOURS")
+            displayEndHourInputs(parseInt($("#startHourInput").val().trim()), $("#startMinuteInput").val().trim())
+        }
+        if ($("#startHourInput").val() && $("#endHourInput").val() && !$("#endMinuteInput").val()) {
+            console.log("CALLED DISPLAYENDMINUTES")
+            displayEndMinuteInputs(parseInt($("#startHourInput").val()), parseInt($("#endHourInput").val()))
+        }
+        if ($("#startHourInput").val() && $("#startMinuteInput").val() && $("#endHourInput").val() && $("#endMinuteInput").val()) {
+            reservationStartHour = $("#startHourInput").val().trim();
+            reservationStartMinute = $("#startMinuteInput").val().trim();
+            reservationEndHour = $("#endHourInput").val().trim();
+            reservationEndMinute = $("#endMinuteInput").val().trim();
 
-  const startH = startHour.value.trim();
-  const startM = startMinute.value.trim();
-  const endH   = endHour.value.trim();
-  const endM   = endMinute.value.trim();
+            seats = [];
+            seat_names = [];
 
-  const valid =
-    end > start &&
-    !(endH === "21" && endM === "30") &&
-    !(endH === startH && endM === startM);
+            console.log(reservationStartHour, ":", reservationStartMinute, reservationEndHour, ":", reservationEndMinute)
 
-  timeBox.classList.toggle("invalid", !valid);
-  return valid;
-}
+            $(".seat").removeClass("gray")
 
-function setSeatsEnabled(enabled) {
-  document.querySelectorAll(".venue-layout").forEach(layout => {
-    const isVisible = !layout.classList.contains("hidden");
-    layout.classList.toggle("seats-enabled", enabled && isVisible);
-  });
-}
+            reservationStartTimeStamp = reservationDate + "T" + reservationStartHour + ":" + reservationStartMinute + ":00.000";
+            reservationEndTimeStamp = reservationDate + "T" + reservationEndHour + ":" + reservationEndMinute + ":00.000";
+        }
+    }
 
-function setListBox(boxEl, textEl, setObj) {
-  const list = Array.from(setObj);
+    function assignSeatIds(seatArray) {
+        $(".seat").removeClass("gray red blue blue-500 red-500 green cursor-pointer selected").attr("title", "").removeAttr("id").removeAttr("data-name");
+        $(".room-wrapper").addClass("seats-enabled");
+        if (building === "Gokongwei Building") {
+            $("#goks .seat").each(function (index) {
+                const seatInfo = seatArray[index];
 
-  if (list.length === 0) {
-    boxEl.classList.add("hidden");
-    textEl.textContent = "None";
-    return;
-  }
+                console.log(this, seatInfo)
 
-  list.sort((a, b) => {
-    const an = parseInt(a.split("-").pop(), 10);
-    const bn = parseInt(b.split("-").pop(), 10);
-    if (Number.isFinite(an) && Number.isFinite(bn)) return an - bn;
-    return a.localeCompare(b);
-  });
+                if (seatInfo) {
+                    $(this).attr("id", seatInfo._id);
+                    $(this).attr("data-name", seatInfo.seat_name);
+                    if (seatInfo.reservedBy) {
+                        $(this).attr("title", `Seat ${seatInfo.seat_name}; reserved by ${seatInfo.reservedBy}`);
+                    }
+                    else {
+                        $(this).attr("title", `Seat ${seatInfo.seat_name}`);
+                    }
 
-  boxEl.classList.remove("hidden");
-  textEl.textContent = list.join(", ");
-}
+                    if (seatInfo.status === "reserved") {
+                        $(this).addClass("red")
+                    }
+                    else if (seatInfo.status === "broken") {
+                        $(this).addClass("blue")
+                    }
+                    else {
+                        $(this).addClass("cursor-pointer")
+                    }
 
-function updateStatusUI() {
-  setListBox(brokenContainer, brokenText, brokenSeatIds);
-}
+                }
+            });
+        }
 
-function seatKey(roomId, seatNo) {
-  return `${roomId}-${seatNo}`;
-}
+        if (building === "St. La Salle Hall") {
+            $("#ls .seat").each(function (index) {
+                const seatInfo = seatArray[index];
 
-function syncBrokenSeatIdsFromGreen() {
-  brokenSeatIds.clear();
+                console.log(this, seatInfo)
 
-  const roomId = roomSelect.value;
-  if (!roomId) {
-    updateStatusUI();
-    updateConfirmButton();
-    return;
-  }
+                if (seatInfo) {
+                    $(this).attr("id", seatInfo._id);
+                    $(this).attr("data-name", seatInfo.seat_name);
+                    if (seatInfo.reservedBy) {
+                        $(this).attr("title", `Seat ${seatInfo.seat_name}; reserved by ${seatInfo.reservedBy}`);
+                    }
+                    else {
+                        $(this).attr("title", `Seat ${seatInfo.seat_name}`);
+                    }
 
-  const visibleLayout = getVisibleLayout();
-  if (!visibleLayout) {
-    updateStatusUI();
-    updateConfirmButton();
-    return;
-  }
+                    if (seatInfo.status === "reserved") {
+                        $(this).addClass("red")
+                    }
+                    else if (seatInfo.status === "broken") {
+                        $(this).addClass("blue")
+                    }
+                    else {
+                        $(this).addClass("cursor-pointer")
+                    }
 
-  visibleLayout.querySelectorAll(".seat.green").forEach(seatEl => {
-    const seatNo = seatEl.dataset.seatNo;
-    if (seatNo) brokenSeatIds.add(seatKey(roomId, seatNo));
-  });
+                }
+            });
+        }
 
-  updateStatusUI();
-  updateConfirmButton();
-}
+        if (building === "Don Enrique T. Yuchengco Hall") {
+            $("#yuch .seat").each(function (index) {
+                const seatInfo = seatArray[index];
 
-function updateConfirmButton() {
-  const timeOk = Boolean(getTimeRangeValue()) && isTimeRangeValid();
+                console.log(this, seatInfo)
 
-  const ready = Boolean(
-    venueSelect.value &&
-    roomSelect.value &&
-    dateInput.value &&
-    timeOk &&
-    brokenSeatIds.size > 0
-  );
+                if (seatInfo) {
+                    $(this).attr("id", seatInfo._id);
+                    $(this).attr("data-name", seatInfo.seat_name);
+                    if (seatInfo.reservedBy) {
+                        $(this).attr("title", `Seat ${seatInfo.seat_name}; reserved by ${seatInfo.reservedBy}`);
+                    }
+                    else {
+                        $(this).attr("title", `Seat ${seatInfo.seat_name}`);
+                    }
 
-  confirmBtn.disabled = !ready;
-}
+                    if (seatInfo.status === "reserved") {
+                        $(this).addClass("red")
+                    }
+                    else if (seatInfo.status === "broken") {
+                        $(this).addClass("blue")
+                    }
+                    else {
+                        $(this).addClass("cursor-pointer")
+                    }
 
-function validateTimeBoxAndFlow() {
-  const timeOk = Boolean(getTimeRangeValue()) && isTimeRangeValid();
-  setSeatsEnabled(true); 
-  updateConfirmButton();
-  return timeOk;
-}
+                }
+            });
+        }
 
-function openConfirmModal() {
-  confirmModal.classList.remove("hidden");
-}
+        if (building === "Br. Andrew Gonzales Hall") {
+            $("#andrew .seat").each(function (index) {
+                const seatInfo = seatArray[index];
 
-function closeConfirmModal() {
-  confirmModal.classList.add("hidden");
-}
+                console.log(this, seatInfo)
 
-function fillModalDetails() {
-  resVenue.textContent = venueSelect.value || "—";
-  resRoom.textContent  = roomSelect.value || "—";
-  resDate.textContent  = dateInput.value || "—";
-  resTime.textContent  = getTimeRangeValue() || "—";
+                if (seatInfo) {
+                    $(this).attr("id", seatInfo._id);
+                    $(this).attr("data-name", seatInfo.seat_name);
+                    if (seatInfo.reservedBy) {
+                        $(this).attr("title", `Seat ${seatInfo.seat_name}; reserved by ${seatInfo.reservedBy}`);
+                    }
+                    else {
+                        $(this).attr("title", `Seat ${seatInfo.seat_name}`);
+                    }
 
-  syncBrokenSeatIdsFromGreen();
-  const seatsList = Array.from(brokenSeatIds);
-  resSeats.textContent = seatsList.length ? seatsList.join(", ") : "None";
-}
+                    if (seatInfo.status === "reserved") {
+                        $(this).addClass("red")
+                    }
+                    else if (seatInfo.status === "broken") {
+                        $(this).addClass("blue")
+                    }
+                    else {
+                        $(this).addClass("cursor-pointer")
+                    }
 
-function getRecordToEdit() {
-  const raw = localStorage.getItem("editReservation");
-  if (raw) {
-    try { return JSON.parse(raw); } catch {}
-  }
-  return (typeof contents !== "undefined" && contents[0]) ? contents[0] : null;
-}
+                }
+            });
+        }
 
-function fillUI(r) {
-  if (!r) 
-    return;
+    }
 
-  const venueVal = buildingLabelToVenueSelectValue(r.building);
-  venueSelect.value = venueVal;
+    $("#startHourInput, #startMinuteInput").on("input", async function () {
+        endHourInput.innerHTML = `<option value="" disabled selected>--</option>`
+        endMinuteInput.innerHTML = `<option value="" disabled selected>--</option>`
 
-  showVenueLayout(venueVal);
-  populateRooms(venueVal);
+    });
 
-  roomSelect.value = r.room || "";
-  dateInput.value = toISODate(r.date);
+    $("#venueInput, #roomInput, #dateInput").on("input", async function () {
+        startHourInput.innerHTML = `<option value="" disabled selected>--</option>`
+        startMinuteInput.innerHTML = `<option value="" disabled selected>--</option>`
+        displayStartTimeInputs()
+        endHourInput.innerHTML = `<option value="" disabled selected>--</option>`
+        endMinuteInput.innerHTML = `<option value="" disabled selected>--</option>`
+    });
 
-  const tr = parseTimeRange(r.time);
-  if (tr) {
-    startHour.value = tr.sh;
-    startMinute.value = tr.sm;
-    endHour.value = tr.eh;
-    endMinute.value = tr.em;
-  } else {
-    startHour.value = "";
-    startMinute.value = "";
-    endHour.value = "";
-    endMinute.value = "";
-  }
+    $("#venueInput, #roomInput, #dateInput, #startHourInput, #startMinuteInput, #endHourInput, #endMinuteInput").on("input", async function () {
+        checkTimeInputs();
+        if (reservationStartTimeStamp && reservationEndTimeStamp && building && room) {
+            if (reservationEndTimeStamp > reservationStartTimeStamp) {
+                const seatStatuses = await fetch(`/room/seat-status?timeStart=${reservationStartTimeStamp}&timeEnd=${reservationEndTimeStamp}&roomName=${room}`);
+                const seatStatusesJson = await seatStatuses.json();
 
-  clearGreenSeats();
-  markSeatsGreenFromList(r.room, r.seats);
+                assignSeatIds(seatStatusesJson);
 
-  validateTimeBoxAndFlow();
-  syncBrokenSeatIdsFromGreen();
-}
+                $("#endHourInput, #endMinuteInput").removeClass("border-red-600");
+                $("#confirmBtn").prop("disabled", seats.length === 0);
+            } else {
+                $("#endHourInput, #endMinuteInput").addClass("border-red-600").val("");
+                $(".seat").addClass("gray").removeClass("cursor-pointer green red blue");
+                $("#confirmBtn").prop("disabled", true);
+            }
+        } else {
+            $(".seat").addClass("gray").removeClass("cursor-pointer green red blue");
+            $("#confirmBtn").prop("disabled", true);
+        }
+    });
 
-[startHour, startMinute, endHour, endMinute].forEach(el => {
-  el.addEventListener("change", validateTimeBoxAndFlow);
-});
+    $(document).on("click", ".seat.cursor-pointer", function () {
+        $(this).toggleClass("green");
+        const seatId = $(this).attr("id");
+        const seatName = $(this).attr("data-name") || seatId;
 
-document.addEventListener("click", (e) => {
-  const seat = e.target.closest(".seat");
-  if (!seat) return;
+        if ($(this).hasClass("green")) {
+            seats.push(seatId);
+            seat_names.push({ id: seatId, seat_name: seatName });
+            console.log("Selected:", seatName);
+        }
+        else {
+            seats = seats.filter(id => id !== seatId);
+            seat_names = seat_names.filter(s => s.id !== seatId);
+            console.log("Deselected:", seatName);
+        }
+        seat_names.sort((a, b) => {
+            return a.seat_name.localeCompare(b.seat_name, undefined, {
+                numeric: true,
+                sensitivity: 'base'
+            });
+        });
 
-  const v = getVisibleLayout();
-  if (!v) return;
+        $("#confirmBtn").prop("disabled", seats.length === 0);
+    });
 
-  seat.classList.toggle("green");
-  syncBrokenSeatIdsFromGreen();
-});
+    $("#confirmBtn").on("click", function (e) {
+        e.preventDefault();
 
-venueSelect.addEventListener("change", () => {
-  showVenueLayout(venueSelect.value);
-  populateRooms(venueSelect.value);
+        console.log(seats)
 
-  clearGreenSeats();
-  syncBrokenSeatIdsFromGreen();
+        var seatsString = seat_names.map(seat => seat.seat_name).join(', ');
 
-  validateTimeBoxAndFlow();
-});
+        console.log(building, room, reservationDate, reservationStartHour, seatsString)
 
-roomSelect.addEventListener("change", () => {
-  clearGreenSeats();
-  syncBrokenSeatIdsFromGreen();
-  validateTimeBoxAndFlow();
-});
+        $('#resVenue').text(building);
+        $('#resRoom').text(room);
+        $('#resDate').text(reservationDate);
+        $('#resTime').text(`${reservationStartHour}:${reservationStartMinute} - ${reservationEndHour}:${reservationEndMinute}`);
+        $('#resSeats').text(seatsString);
+        $("#confirmModal").removeClass("hidden");
+    });
 
-dateInput.addEventListener("change", () => {
-  validateTimeBoxAndFlow();
-});
+    $(".close-confirm").on("click", function () {
+        $("#confirmModal").addClass("hidden");
+    });
 
-confirmBtn.addEventListener("click", () => {
-  validateTimeBoxAndFlow();
+    $("#anon").on("click", function () {
+        const isChecked = $(this).is(":checked");
 
-  fillModalDetails();
-  openConfirmModal();
-});
+        if (isChecked) {
+            anonymous = true;
+        } else {
+            anonymous = false;
+        }
+    });
 
-if (closeConfirmBtn) {
-  closeConfirmBtn.addEventListener("click", closeConfirmModal);
-}
+    $("#confirmOkay").on("click", async function () {
+        const $btn = $(this);
+        const isAnonymous = $("input[name='anonymous']").is(":checked");
+        console.log("New classes:", loading.className);
+        $("#confirmText").text("Processing...");
+        showLoader()
 
-if (confirmOkayBtn) {
-  confirmOkayBtn.addEventListener("click", () => {
-    closeConfirmModal();
 
-    const updated = {
-      building: venueSelect.value,
-      room: roomSelect.value,
-      date: dateInput.value,
-      time: getTimeRangeValue(),
-      seats: Array.from(brokenSeatIds)
-    };
-    localStorage.setItem("editReservation", JSON.stringify(updated));
+        try {
+            const jason = {
+                timeStart: reservationStartTimeStamp,
+                timeEnd: reservationEndTimeStamp,
+                seats: seats,
+                anonymous: isAnonymous
+            };
 
-    window.location.href = "user-profile.html";
-  });
-}
+            const res = await fetch(`/reservations/${userId}/add-user`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(jason)
+            });
 
-const backdrop = document.querySelector("#confirmModal .modal-backdrop");
-if (backdrop) {
-  backdrop.addEventListener("click", closeConfirmModal);
-}
+            if (res.ok) {
+                setTimeout(() => {
+                    var seatsString = seat_names.map(seat => seat.seat_name).join(', ');
+                    $("#confirmModal").addClass("hidden");
+                    $('#successVenue').text(building);
+                    $('#successRoom').text(room);
+                    $('#successDate').text(reservationDate);
+                    $('#successTime').text(`${reservationStartHour}:${reservationStartMinute} - ${reservationEndHour}:${reservationEndMinute}`);
+                    $('#successSeats').text(seatsString);
+                    successModal.classList.remove("hidden")
+                }, 3000);
+            }
+            else {
+                const errorText = await res.text();
+                alert("Error: " + errorText);
+                $btn.prop("disabled", false).text("OK");
+            }
+        } catch (err) {
+            console.error("Fetch Error:", err);
+            $btn.prop("disabled", false).text("OK");
+        }
+    });
+    closeSuccessModal.addEventListener('click', function (event) {
+        successModal.classList.add("hidden")
+    });
+    successConfirm.addEventListener('click', function (event) {
+        successModal.classList.add("hidden")
 
-tagSeatsByOrder();
-fillUI(getRecordToEdit());
-updateStatusUI();
-updateConfirmButton();
-setSeatsEnabled(true);
+        window.location.href = `/user/landing?originalId=${userId}`
+    });
+
+    await getCurrentReservationData()
+    loadPanelInputs()
+
+})

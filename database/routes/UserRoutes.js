@@ -89,5 +89,9 @@ router.get("/view-reservations", (req,res) => {
 })
 router.get("/view-other-user-profile", UserController.showUserSearched);
 
+router.get("/edit-reservation", (req,res) => {
+    res.render('user/edit-reservation', {id: req.query.resId})
+})
+
 
 module.exports = router
