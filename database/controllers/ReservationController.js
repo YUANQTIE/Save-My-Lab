@@ -340,16 +340,32 @@ exports.isReservationEditable = async (req, res) => {
 
 exports.addAdminReservation = async (req, res) => {
     try {
+        const start = new Date(req.body.timeStart + "Z");
+        const end = new Date(req.body.timeEnd + "Z");
+
+        const conflict = await Reservation.findOne({
+            seats: { $in: req.body.seats },
+            reservation_start_timestamp: { $lt: end },
+            reservation_end_timestamp: { $gt: start }
+        });
+
+        if (conflict) {
+            res.status(400).send("One or more seats are already reserved for that time.");
+            return;
+        }
+
         await Reservation.create({
-            creation_timestamp: new Date(Date.now()),
-            reservation_start_timestamp: req.body.timeStart + "Z",
-            reservation_end_timestamp: req.body.timeEnd + "Z",
+            creation_timestamp: new Date(),
+            reservation_start_timestamp: start,
+            reservation_end_timestamp: end,
             reservedBy: req.params.adminId,
             reservedByModel: "Admin",
-            seats: req.body.seats
+            seats: req.body.seats,
+            anonymous: true
         });
 
         res.send("Reservation added successfully");
+
     } catch (err) {
         console.error(err);
         res.status(500).send("Error");
@@ -362,10 +378,24 @@ exports.addAdminReservation = async (req, res) => {
 
 exports.addUserReservation = async (req, res) => {
     try {
+        const start = new Date(req.body.timeStart + "Z");
+        const end = new Date(req.body.timeEnd + "Z");
+
+        const conflict = await Reservation.findOne({
+            seats: { $in: req.body.seats },
+            reservation_start_timestamp: { $lt: end },
+            reservation_end_timestamp: { $gt: start }
+        });
+
+        if (conflict) {
+            res.status(400).send("One or more seats are already reserved for that time.");
+            return;
+        }
+
         await Reservation.create({
-            creation_timestamp: new Date(Date.now()),
-            reservation_start_timestamp: req.body.timeStart + "Z",
-            reservation_end_timestamp: req.body.timeEnd + "Z",
+            creation_timestamp: new Date(),
+            reservation_start_timestamp: start,
+            reservation_end_timestamp: end,
             reservedBy: req.params.userId,
             reservedByModel: "User",
             seats: req.body.seats,
@@ -373,6 +403,7 @@ exports.addUserReservation = async (req, res) => {
         });
 
         res.send("Reservation added successfully");
+
     } catch (err) {
         console.error(err);
         res.status(500).send("Error");

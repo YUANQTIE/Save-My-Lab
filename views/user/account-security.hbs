@@ -153,11 +153,62 @@
             Save Changes
           </button>
         </div>
+
+      </div>
+    </main>
+
+    <!-- Right Side -->
+    <main class="flex-1 p-8 md:p-16">
+
+      <div class="bg-white border px-4 py-8 rounded-xl border-gray-200 shadow-sm">
+        <div class="space-y-6">
+          <h1 class="text-3xl font-bold text-slate-800 font-sans">
+            Account Deletion
+          </h1>
+
+          <button id="deleteBtn"
+            class="px-5 py-3 rounded-lg text-white bg-red-600 font-semibold shadow-lg shadow-red-600/20 hover:bg-red-600 hover:-translate-y-0.5 transition-all active:scale-95">
+            Delete Account
+          </button>
+        </div>
       </div>
     </main>
 
   </div>
+
+  <div id="deleteModal"
+    class="fixed inset-0 bg-black/40 flex items-center justify-center hidden z-50">
+
+    <div class="bg-white rounded-xl shadow-lg p-6 w-full max-w-md space-y-5">
+
+      <h2 class="text-xl font-bold text-slate-800">
+        Delete Account
+      </h2>
+
+      <p class="text-sm text-slate-600">
+        Are you sure you want to delete your account?  
+        This action cannot be undone.
+      </p>
+
+      <div class="flex justify-end space-x-3">
+
+        <button id="cancelDelete"
+          class="px-4 py-2 rounded-lg border border-slate-300 text-slate-700 hover:bg-slate-100 transition">
+          Cancel
+        </button>
+
+        <button id="confirmDelete"
+          class="px-4 py-2 rounded-lg text-white bg-red-600 hover:bg-red-700 transition">
+          Yes, Delete
+        </button>
+
+      </div>
+
+    </div>
+  </div>
+
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="/scripts/user/account-security.js"></script>
+
 
 </body>

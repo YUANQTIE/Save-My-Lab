@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const User = require('../models/User.js'); // Import User model
+const Reservation = require('../models/Reservation.js'); // Import User model
 const bcrypt = require('bcrypt')
 const saltCount = 10;
 
@@ -403,12 +404,17 @@ exports.addUser = async (req, res) => {
 
 exports.deleteUser = async (req, res) => {
   try {
-    await User.findByIdAndDelete(req.params.id);
+    const userId = req.params.id;
 
-    res.send("User deleted successfully");
+    console.log(userId)
+
+    await Reservation.deleteMany({ reservedBy: userId, reservedByModel: "User" });
+
+    await User.findByIdAndDelete(userId);
+
+    res.send("User and all reservations deleted successfully");
   } catch (err) {
     console.error(err);
     res.status(500).send("Error");
   }
 };
-

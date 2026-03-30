@@ -60,6 +60,36 @@ $(document).ready(function () {
             alert("An error occurred. Check the F12 console.");
         }
     });
+
+    $("#deleteBtn").on("click", function (e) {
+        e.preventDefault();
+        $("#deleteModal").removeClass("hidden");
+    });
+
+    $("#cancelDelete").on("click", function () {
+        $("#deleteModal").addClass("hidden");
+    });
+
+    $("#confirmDelete").on("click", async function () {
+        try {
+            const res = await fetch(`/user/${userId}/delete`, {
+                method: "DELETE"
+            });
+
+            if (res.ok) {
+                alert("Account deleted successfully");
+
+                // redirect after deletion
+                window.location.href = "/";
+            } else {
+                alert("Failed to delete account");
+            }
+
+        } catch (err) {
+            console.error("Delete Error:", err);
+            alert("An error occurred. Check the F12 console.");
+        }
+    });
 })
 
 async function getCurPassword() {
