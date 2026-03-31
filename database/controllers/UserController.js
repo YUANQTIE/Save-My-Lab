@@ -8,6 +8,31 @@ const saltCount = 10;
 
 // GET ROUTES 
 
+exports.validatePassword = async (req, res) => {
+  try {
+    const pwInput = req.query.currPw;
+    const userId = req.params.userId;
+
+    const user = await User.findById(userId);
+
+    if (!user){
+      return res.json(false);
+    }
+
+    console.log("inptu", pwInput)
+    console.log(user.password)
+    const match = await bcrypt.compare(pwInput, user.password)
+
+    if (match) {
+      return res.json(true);
+    }
+
+    res.json(false);
+  } catch (err) {
+    res.status(500).send('Error');
+  }
+};
+
 exports.isUsernameInDB = async (req, res) => {
   try {
     const username = req.query.username;
@@ -154,6 +179,8 @@ exports.getRecommendedUsers = async (req, res) => {
     const users = await User.find({
       username: { $regex: usernameSearched, $options: 'i'}
     });
+
+    console.log(users)
 
     res.json(users);
   } catch (err) {
@@ -343,15 +370,15 @@ exports.editPassword = async (req, res) => {
     const pw = req.body.password;
 
     const hashedPassword = await bcrypt.hash(pw, saltCount);
-    // if (pw.length < 8) {
-    //   return res.send("Password must have minimum 8 characters")
-    // }
-    // if (containsWhitespace(pw)) {
-    //   return res.send("Password must not have whitespaces")
-    // }
-    // if (pw === user.password) {
-    //   return res.send("Password must not be the same from previous password.")
-    // }
+    if (pw.length < 8) 
+      return res.send("Password must have minimum 8 characters")
+    if (containsWhitespace(pw)) 
+      return res.send("Password must not have whitespaces")
+
+    if (pw === user.password)
+      return res.send("Password must not be the same from previous password.")
+
+    console.log("YES GALING")
 
     await User.findByIdAndUpdate(id, { password: hashedPassword });
 

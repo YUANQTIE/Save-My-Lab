@@ -301,28 +301,38 @@ function changePicture() {
 
 async function getUserSearchSuggestions(input) {
     if (input.trim().length === 0) {
-        userDropdownMenu.innerHTML = ''; // Clear suggestions
-        return; // Don't even call the database
+        userDropdownMenu.innerHTML = '';
+        return;
     }
-    const response = await fetch(`/user/searchRecommended?username=${input}`)
-    const users = await response.json()
-    if(users.length == 0) {
-        const li = document.createElement('li')
+    const response = await fetch(`/user/searchRecommended?username=${input}`);
+    const users = await response.json();
+    userDropdownMenu.innerHTML = '';
+
+    if (users.length === 0) {
+        const li = document.createElement('li');
         li.className = "px-4 py-2 text-slate-600 text-sm";
-        li.innerHTML = "No User Found"
-        userDropdownMenu.appendChild(li)
+        li.textContent = "No User Found";
+        userDropdownMenu.appendChild(li);
     }
-    console.log("Users: ", users)
+
     for (let i = 0; i < 5 && i < users.length; i++) {
-        let searchedUserId = users[i]._id
-        if(userId == searchedUserId) {
-            return
+        let searchedUserId = users[i]._id;
+        if (userId == searchedUserId) {
+            continue; 
         }
-        const li = document.createElement('li')
+        const li = document.createElement('li');
         li.setAttribute('data-id', searchedUserId);
-        li.className = "userSuggestion px-4 py-2 text-slate-600 hover:bg-slate-50 text-sm cursor-pointer";
-        li.innerHTML = `${users[i].username}`
-        userDropdownMenu.appendChild(li)
+        li.className = "userSuggestion px-4 py-2 text-slate-600 hover:bg-slate-50 text-sm cursor-pointer flex items-center gap-2";
+        const img = document.createElement('img');
+        console.log(users[i].profile_picture);
+        img.src = users[i].profile_picture;
+        img.alt = `${users[i].username}'s profile picture`;
+        img.className = "w-6 h-6 rounded-full object-cover";
+        const usernameSpan = document.createElement('span');
+        usernameSpan.textContent = users[i].username;
+        li.appendChild(img);
+        li.appendChild(usernameSpan);
+        userDropdownMenu.appendChild(li);
     }
 }
 
