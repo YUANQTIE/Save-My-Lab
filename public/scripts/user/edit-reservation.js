@@ -1,6 +1,6 @@
 const queryString = window.location.search;
 const url = new URLSearchParams(queryString);
-const userId = url.get('originalId');
+
 const reservationId = url.get('resId');
 const successModal = document.getElementById("successModal")
 const successConfirm = document.getElementById("successConfirm")
@@ -684,7 +684,7 @@ $(document).ready(async function () {
     successConfirm.addEventListener('click', function (event) {
         successModal.classList.add("hidden")
 
-        window.location.href = `/user/landing?originalId=${userId}`
+        window.location.href = `/user/landing`
     });
 
     function displayStartTimeInputs() {

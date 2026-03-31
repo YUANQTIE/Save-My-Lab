@@ -8,6 +8,7 @@ const UserSchema = new mongoose.Schema({
     date_created: {type: Date, required: true},
     password: {type: String, required: true},
     last_login: {type: Date},
+    remember_me: {type: Boolean, default: false},
     id_number: {type: Number, required: true, unique: true}
 }, { collection: 'users' })
 

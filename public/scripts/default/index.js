@@ -42,7 +42,7 @@ $(document).ready(function() {
                 const user = users.find(u => u.email === emailInput);
                 $("#userEmailInput").removeClass("border-red-600")
                 $("#userPasswordInput").removeClass("border-red-600")
-                window.location.href = `/user/landing?originalId=${user._id}`;
+                window.location.href = `/user/landing`;
                 return;
             }
 
@@ -91,7 +91,7 @@ $(document).ready(function() {
                 const admin = admins.find(a => a.email === emailInput);
                 $("#adminEmailInput").removeClass("border-red-600")
                 $("#adminPasswordInput").removeClass("border-red-600")
-                window.location.href = `/admin/landing?id=${admin._id}`;
+                window.location.href = `/admin/landing`;
                 return;
             }
 

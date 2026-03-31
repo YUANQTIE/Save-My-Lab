@@ -46,7 +46,7 @@ router.get('/usernameCheck', UserController.isUsernameInDB)
 
 router.get('/validate-email', UserController.isEmailInUse);
 
-router.get('/validatePw/:userId', UserController.validatePassword);
+router.get('/validatePw', UserController.validatePassword);
 
 //POST ROUTES
 //req.files: profile_picture
@@ -57,29 +57,32 @@ router.post("/add", UserController.addUser);
 
 //req.params: id
 //req.body: bio
-router.put('/:id/edit/bio', UserController.editBiography);
+router.put('/edit/bio', UserController.editBiography);
 
 //req.params: id
 //req.files: profile_picture
-router.put("/:id/edit/profile-picture", UserController.editProfilePicture);
+router.put("/edit/profile-picture", UserController.editProfilePicture);
 
 //req.params: id
-router.put("/:id/edit/profile-picture-default", UserController.removeProfilePicture);
+router.put("/edit/profile-picture-default", UserController.removeProfilePicture);
 
 //req.params: id
 //req.body: username
-router.put('/:id/edit/username', UserController.editUsername);
+router.put('/edit/username', UserController.editUsername);
 
 //req.body: password
 router.put('/edit/password', UserController.editPassword);
 
 //DELETE ROUTES
 //req.params: id
-router.delete("/:id/delete", UserController.deleteUser);
+router.delete("/delete", UserController.deleteUser);
 
 
 router.get("/landing", (req, res) => {
-    res.render('user/homepage2', {id: req.query.id})
+    const userId = req.session.userId;
+    res.render('user/homepage2', {
+        id: userId
+    });
 });
 
 router.get("/profile-settings", UserController.showProfile);
@@ -87,12 +90,15 @@ router.get("/account-security", UserController.showProfileAccountSecurity);
 router.get("/add-reservation", UserController.addReservation);
 router.get("/account-reserve", UserController.showProfileReservations);
 router.get("/view-reservations", (req,res) => {
-    res.render('user/view-reservations', {id: req.query.id})
-})
+    const userId = req.session.userId;
+    res.render('user/view-reservations', { id: userId });
+});
+
 router.get("/view-other-user-profile", UserController.showUserSearched);
 
 router.get("/edit-reservation", (req,res) => {
-    res.render('user/edit-reservation', {id: req.query.resId})
+    const userId = req.session.userId;
+    res.render('user/edit-reservation', { id: userId });
 })
 
 

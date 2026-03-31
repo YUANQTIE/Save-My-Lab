@@ -23,7 +23,6 @@ const building_filter = document.getElementById("building_filter")
 const room_filter = document.getElementById("room_filter")
 const date_filter = document.getElementById("date_filter")
 const url = new URLSearchParams(window.location.search);
-const userId = url.get('originalId');
 let reservations;
 let listOfReservations = []
 class reservation {
@@ -138,7 +137,7 @@ $(document).ready(async function () {
     }
 
     async function getReservations() {
-        const response = await fetch(`/reservations/api/list/${userId}`);
+        const response = await fetch(`/reservations/api/list`);
         if (!response.ok) {
             console.error("Server error:", response.status);
             return [];
@@ -148,7 +147,7 @@ $(document).ready(async function () {
     }
 
     async function getReservationsByBuilding(building) {
-        const response = await fetch(`/reservations/api/list/${userId}?building=${building}`);
+        const response = await fetch(`/reservations/api/list?building=${building}`);
 
         const data = await response.json(); // Save it to a variable first
         return data;
@@ -156,7 +155,7 @@ $(document).ready(async function () {
 
     async function getReservationsByRoom(room) {
 
-        const response = await fetch(`/reservations/api/list/${userId}?roomName=${room}`);
+        const response = await fetch(`/reservations/api/list?roomName=${room}`);
 
         const data = await response.json(); // Save it to a variable first
         return data;
@@ -170,7 +169,7 @@ $(document).ready(async function () {
         console.log(formatted_start_time)
         const formatted_end_time = endDateObj.toISOString();
         console.log(formatted_end_time)
-        const response = await fetch(`/reservations/api/list/${userId}?reservationTimeStart=${formatted_start_time}&reservationTimeEnd=${formatted_end_time}`);
+        const response = await fetch(`/reservations/api/list?reservationTimeStart=${formatted_start_time}&reservationTimeEnd=${formatted_end_time}`);
 
         const data = await response.json();
         return data;
@@ -259,7 +258,7 @@ $(document).ready(async function () {
     $("#view_reservations").on("click", async function (e) {
       e.preventDefault();
       try {
-        window.location.href = `/user/view-reservations?originalId=${userId}`
+        window.location.href = `/user/view-reservations`
       } catch (err) {
         console.error("Login Error:", err);
         alert("An error occurred. Check the F12 console.");
@@ -271,7 +270,7 @@ $(document).ready(async function () {
 
         const row = $(this).closest("tr");
         const reservationId = row.data("id");
-        window.location.href = `/user/edit-reservation?originalId=${userId}&resId=${reservationId}`;
+        window.location.href = `/user/edit-reservation?resId=${reservationId}`;
     });
 
     async function viewRow(e) {

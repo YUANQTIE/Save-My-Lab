@@ -61,12 +61,10 @@
 <script>
   $(document).ready(function () {
     console.log("Navbar Script running");
-    const url = new URLSearchParams(window.location.search);
-    const adminId = url.get('id');
     $("#reserve").on("click", async function (e) {
       e.preventDefault();
       try {
-        window.location.href = `/admin/edit-computer-status?id=${adminId}`
+        window.location.href = `/admin/edit-computer-status`
       } catch (err) {
         console.error("Login Error:", err);
         alert("An error occurred. Check the F12 console.");
@@ -76,7 +74,7 @@
     $("#profile").on("click", async function (e) {
       e.preventDefault();
       try {
-        window.location.href = `/admin/landing?id=${adminId}`
+        window.location.href = `/admin/landing`
       } catch (err) {
         console.error("Login Error:", err);
         alert("An error occurred. Check the F12 console.");
@@ -86,7 +84,7 @@
     $("#home").on("click", async function (e) {
       e.preventDefault();
       try {
-        window.location.href = `/admin/add-reservation?id=${adminId}`
+        window.location.href = `/admin/add-reservation`
       } catch (err) {
         console.error("Login Error:", err);
         alert("An error occurred. Check the F12 console.");

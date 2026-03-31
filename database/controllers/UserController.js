@@ -11,7 +11,7 @@ const saltCount = 10;
 exports.validatePassword = async (req, res) => {
   try {
     const pwInput = req.query.currPw;
-    const userId = req.params.userId;
+    const userId = req.session.userId;
 
     const user = await User.findById(userId);
 
@@ -19,8 +19,6 @@ exports.validatePassword = async (req, res) => {
       return res.json(false);
     }
 
-    console.log("inptu", pwInput)
-    console.log(user.password)
     const match = await bcrypt.compare(pwInput, user.password)
 
     if (match) {
@@ -95,20 +93,10 @@ exports.showUserSearched = async (req, res) => {
   }
 }
 
-exports.showEditReservation = async (req, res) => {
-  try {
-    const userData = await User.findById(req.query.id).lean();
-    res.render('user/view-other-user-profile', { user: userData });
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Error');
-  }
-}
-
 // Get and Render Profile of User for Profile Settings
 exports.showProfile = async (req, res) => {
   try {
-    const userData = await User.findById(req.query.originalId).lean();
+    const userData = await User.findById(req.session.userId).lean();
     res.render('user/profile-settings', { user: userData });
   } catch (err) {
     console.error(err.message);
@@ -119,7 +107,7 @@ exports.showProfile = async (req, res) => {
 // Get and Render Profile of User for Account Security
 exports.showProfileAccountSecurity = async (req, res) => {
   try {
-    const userData = await User.findById(req.query.originalId).lean();
+    const userData = await User.findById(req.session.userId).lean();
     res.render('user/account-security', { user: userData });
   } catch (err) {
     console.error(err.message);
@@ -130,7 +118,7 @@ exports.showProfileAccountSecurity = async (req, res) => {
 // Get and Render Profile of User for Reservations
 exports.showProfileReservations = async (req, res) => {
   try {
-    const userData = await User.findById(req.query.originalId).lean();
+    const userData = await User.findById(req.session.userId).lean();
     res.render('user/account-reservations', { user: userData });
   } catch (err) {
     console.error(err.message);
@@ -140,7 +128,7 @@ exports.showProfileReservations = async (req, res) => {
 
 exports.addReservation = async (req, res) => {
   try {
-    const userData = await User.findById(req.query.originalId).lean();
+    const userData = await User.findById(req.session.userId).lean();
     console.log(userData)
     res.render('user/student-add-reservation', { user: userData });
   } catch (err) {
@@ -196,7 +184,7 @@ exports.getRecommendedUsers = async (req, res) => {
 
 exports.getUserById = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
+    const user = await User.findById(req.session.userId);
     res.json(user);
   } catch (err) {
     console.error(err.message);
@@ -236,6 +224,7 @@ exports.isUserValid = async (req, res) => {
     console.log("DB RESULT:", user);
     if (match) {
       user.last_login = new Date();
+      req.session.userId = user._id
       await user.save();
       return res.json(true);
     }
@@ -272,7 +261,7 @@ exports.isEmailInUse = async (req, res) => {
 exports.editBiography = async (req, res) => {
   try {
     await User.findByIdAndUpdate(
-      req.params.id,
+      req.session.userId,
       { bio: req.body.bio }
     );
 
@@ -297,14 +286,14 @@ exports.editProfilePicture = async (req, res) => {
 
     const file = req.files.profile_picture;
 
-    const fileName = `${req.params.id}.jpg`;
+    const fileName = `${req.session.userId}.jpg`;
     const uploadDir = path.join(__dirname, '..', '..', 'public', 'profile_pictures');
     console.log("FULL SYSTEM PATH:", uploadDir);
     const savePath = path.join(uploadDir, fileName);
     console.log(file)
     await file.mv(savePath);
 
-    await User.findByIdAndUpdate(req.params.id, {
+    await User.findByIdAndUpdate(req.session.userId, {
       profile_picture: `/profile_pictures/${fileName}`
     });
     return res.status(200).json({ message: "Profile picture updated successfully" });
@@ -322,7 +311,7 @@ exports.editProfilePicture = async (req, res) => {
 exports.removeProfilePicture = async (req, res) => {
   try {
     await User.findByIdAndUpdate(
-      req.params.id,
+      req.session.userId,
       { profile_picture: "/images/blank_picture.png" }
     );
 
@@ -340,7 +329,7 @@ exports.removeProfilePicture = async (req, res) => {
 exports.editUsername = async (req, res) => {
   try {
     await User.findByIdAndUpdate(
-      req.params.id,
+      req.session.userId,
       { username: req.body.username }
     );
 
@@ -358,7 +347,7 @@ exports.editUsername = async (req, res) => {
 exports.editPassword = async (req, res) => {
   try {
     console.log("im here")
-    const id = req.query.originalId
+    const id = req.session.userId
     const containsWhitespace = str => /\s/.test(str);
 
     const user = await User.findById(id);
@@ -441,7 +430,7 @@ exports.addUser = async (req, res) => {
 
 exports.deleteUser = async (req, res) => {
   try {
-    const userId = req.params.id;
+    const userId = req.session.userId;
 
     console.log(userId)
 

@@ -91,7 +91,7 @@ exports.getUserReservations = async (req, res) => {
         const reservationTimeEnd = req.query.reservationTimeEnd;
         const seatCount = req.query.seatCount;
 
-        let firstStage = { reservedBy: req.params.id }; //filters by username
+        let firstStage = { reservedBy: req.session.userId }; //filters by username
 
         if (creationTimeStart && creationTimeEnd) {
             firstStage.creation_timestamp = {
@@ -392,7 +392,7 @@ exports.addAdminReservation = async (req, res) => {
             creation_timestamp: new Date(),
             reservation_start_timestamp: start,
             reservation_end_timestamp: end,
-            reservedBy: req.params.adminId,
+            reservedBy: req.session.adminId,
             reservedByModel: "Admin",
             seats: req.body.seats,
             anonymous: true
@@ -430,7 +430,7 @@ exports.addUserReservation = async (req, res) => {
             creation_timestamp: new Date(),
             reservation_start_timestamp: start,
             reservation_end_timestamp: end,
-            reservedBy: req.params.userId,
+            reservedBy: req.session.userId,
             reservedByModel: "User",
             seats: req.body.seats,
             anonymous: req.body.anonymous

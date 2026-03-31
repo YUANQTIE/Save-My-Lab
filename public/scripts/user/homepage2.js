@@ -9,7 +9,7 @@ $(document).ready(function() {
         e.preventDefault();
 
         try {
-            window.location.href = `/user/landing?originalId=${currentId}`
+            window.location.href = `/user/landing`
 
         } catch (err) {
             console.error("Login Error:", err);
@@ -21,7 +21,7 @@ $(document).ready(function() {
         e.preventDefault();
 
         try {
-            window.location.href = `/user/profile?originalId=${currentId}`
+            window.location.href = `/user/profile`
 
         } catch (err) {
             console.error("Login Error:", err);
@@ -33,7 +33,7 @@ $(document).ready(function() {
         e.preventDefault();
 
         try {
-            window.location.href = `/user/reserve?originalId=${currentId}`
+            window.location.href = `/user/reserve`
         } catch (err) {
             console.error("Login Error:", err);
             alert("An error occurred. Check the F12 console.");

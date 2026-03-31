@@ -17,7 +17,8 @@
       </form>
 
       {{!-- User Dropdown Searches --}}
-      <div class="absolute top-44 left-6 w-[270px] overflow-hidden bg-white rounded-md shadow-lg z-10">
+      <div
+        class="absolute top-44 left-6 w-[270px] overflow-hidden bg-white rounded-md shadow-lg z-10">
         <ul id="userDropdownMenu">
         </ul>
       </div>
@@ -46,27 +47,29 @@
 
       <!-- Profile Settings -->
       <nav class="w-full flex flex-col space-y-2">
-        <a href="" id="profile-settings"
+        <a href="/user/profile-settings" id="profile-settings"
           class="flex items-center justify-start px-4 py-3 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors space-x-3">
-          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path
-              d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+            <path fill-rule="evenodd"
+              d="M7.5 6a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM3.751 20.105a8.25 8.25 0 0 1 16.498 0 .75.75 0 0 1-.437.695A18.683 18.683 0 0 1 12 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 0 1-.437-.695Z"
+              clip-rule="evenodd" />
           </svg>
-          <span class="text-md">Profile Settings</span>
+          <span class="text-md font-bold">Profile Settings</span>
         </a>
 
         <!-- Reservations -->
-        <a href="" id="reservations"
+        <a href="/user/account-reservations" id="reservations"
           class="flex items-center justify-start px-4 py-3 rounded-xl bg-green-900 hover:bg-green-800 text-white shadow-md space-x-3">
-          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-            <path
-              d="M12 11.993a.75.75 0 0 0-.75.75v.006c0 .414.336.75.75.75h.006a.75.75 0 0 0 .75-.75v-.006a.75.75 0 0 0-.75-.75H12ZM18 2.993a.75.75 0 0 0-1.5 0v1.5h-9V2.994a.75.75 0 1 0-1.5 0v1.497h-.752a3 3 0 0 0-3 3v11.252a3 3 0 0 0 3 3h13.5a3 3 0 0 0 3-3V7.492a3 3 0 0 0-3-3H18V2.993Z" />
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+            stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5m-9-6h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 3h.008v.008H12V18Zm-3-6h.008v.008H9v-.008ZM9 15h.008v.008H9V15Zm0 3h.008v.008H9V18Zm6-6h.008v.008H15v-.008ZM15 15h.008v.008H15V15Zm0 3h.008v.008H15V18Z" />
           </svg>
-          <span class="text-md font-bold">Reservations</span>
+          <span class="text-md">Reservations</span>
         </a>
 
         <!-- Account Security -->
-        <a href="" id="account-security"
+        <a href="/user/account-security" id="account-security"
           class="flex items-center justify-start px-4 py-3 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors space-x-3">
           <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path

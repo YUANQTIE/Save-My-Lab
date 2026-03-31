@@ -19,7 +19,6 @@ const userDropdownMenu = document.getElementById("userDropdownMenu")
 const search = document.getElementById("search")
 const noReservations = document.getElementById("noReservations")
 const url = new URLSearchParams(window.location.search);
-const userId = url.get('originalId');
 let reservations;
 let listOfReservations = []
 class reservation {
@@ -39,14 +38,13 @@ $(document).ready(async function () {
 
         const row = $(this).closest("tr");
         const reservationId = row.data("id");
-        window.location.href = `/user/edit-reservation?originalId=${userId}&resId=${reservationId}`;
+        window.location.href = `/user/edit-reservation?resId=${reservationId}`;
     });
     
-    console.log("Profile-Settings Script running");
     $("#profile-settings").on("click", async function (e) {
         e.preventDefault();
         try {
-            window.location.href = `/user/profile-settings?originalId=${userId}`
+            window.location.href = `/user/profile-settings`
         } catch (err) {
             console.error("Login Error:", err);
             alert("An error occurred. Check the F12 console.");
@@ -56,7 +54,7 @@ $(document).ready(async function () {
     $("#account-security").on("click", async function (e) {
         e.preventDefault();
         try {
-            window.location.href = `/user/account-security?originalId=${userId}`
+            window.location.href = `/user/account-security`
         } catch (err) {
             console.error("Login Error:", err);
             alert("An error occurred. Check the F12 console.");
@@ -66,7 +64,7 @@ $(document).ready(async function () {
     $("#reservations").on("click", async function (e) {
         e.preventDefault();
         try {
-            window.location.href = `/user/account-reserve?originalId=${userId}`
+            window.location.href = `/user/account-reserve`
         } catch (err) {
             console.error("Login Error:", err);
             alert("An error occurred. Check the F12 console.");
@@ -189,7 +187,7 @@ function convertDate(date) {
 }
 
 async function getReservations() {
-    const response = await fetch(`/reservations/api/list/${userId}`);
+    const response = await fetch(`/reservations/api/list`);
     if (!response.ok) {
         console.error("Server error:", response.status);
         return [];
@@ -317,9 +315,7 @@ async function getUserSearchSuggestions(input) {
 
     for (let i = 0; i < 5 && i < users.length; i++) {
         let searchedUserId = users[i]._id;
-        if (userId == searchedUserId) {
-            continue; 
-        }
+
         const li = document.createElement('li');
         li.setAttribute('data-id', searchedUserId);
         li.className = "userSuggestion px-4 py-2 text-slate-600 hover:bg-slate-50 text-sm cursor-pointer flex items-center gap-2";
@@ -343,7 +339,7 @@ async function viewUser(e) {
     const searchedUserId = user.getAttribute('data-id')
     search.value = ""
     userDropdownMenu.innerHTML = '';
-    window.location.href = `/user/view-other-user-profile?id=${searchedUserId}&originalId=${userId}`
+    window.location.href = `/user/view-other-user-profile?id=${searchedUserId}`
 }
 
 search.addEventListener('input', (e) => {
@@ -372,7 +368,7 @@ search.addEventListener('keydown', async (e) => {
     }
     else if(user.length == 1) {
         const searchedUserId = user[0]._id
-        window.location.href = `/user/view-other-user-profile?id=${searchedUserId}&originalId=${userId}`
+        window.location.href = `/user/view-other-user-profile?id=${searchedUserId}`
     }
     else {
         return

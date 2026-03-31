@@ -4,7 +4,7 @@ const express = require('express');
 const exphbs = require('express-handlebars');
 const path = require('path');
 const fileUpload = require('express-fileupload');
-
+const session = require("express-session");
 
 const app = express(); // Define app FIRST
 const port = process.env.PORT || 3000;
@@ -32,6 +32,17 @@ app.use(express.static('public')) // we'll add a static directory named "public"
 //app.use('/views', express.static(path.join(__dirname, 'views')));
 app.use(fileUpload()) // for fileuploads
 app.use(express.static(path.join(__dirname, ''))); // serve everything in project folder
+
+app.use(session({
+    secret: "secret",
+
+    resave: false,
+    saveUninitialized: false,
+
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 24
+    }
+}));
 
 app.use('/admin', adminRoutes)
 app.use('/broken', brokenRoutes)
