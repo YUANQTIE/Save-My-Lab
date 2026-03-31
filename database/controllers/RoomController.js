@@ -1,4 +1,6 @@
 const express = require('express');
+require('../models/User.js'); // Import Room model
+require('../models/Admin.js'); // Import Seat model
 const Room = require('../models/Room.js'); // Import Room model
 const Seat = require('../models/Seat.js'); // Import Seat model
 const Broken = require('../models/Broken.js'); // Import Broken model
@@ -63,6 +65,10 @@ exports.getSeatStatus = async (req, res) => {
 
         const room = await Room.findOne({ room_name: req.query.roomName });
 
+        console.log(req.query.roomName)
+
+        console.log(room)
+
         const allSeats = await Seat.find({ room_id: room._id }).sort({ seat_number: 1 });
 
         const reservedSeats = await Reservation.find({
@@ -119,6 +125,237 @@ exports.getSeatStatus = async (req, res) => {
         res.status(500).send('Error');
     }
 };
+
+// 
+exports.getEditSeatStatus = async (req, res) => {
+    try {
+        const timeStart = new Date(req.query.timeStart + "Z");
+        const timeEnd = new Date(req.query.timeEnd + "Z");
+
+        let selectedSeats = req.query.selectedSeats || [];
+
+        if (typeof selectedSeats === "string") {
+            selectedSeats = selectedSeats.split(",");
+        }
+
+        selectedSeats = selectedSeats.map(id =>
+            id.toString().trim()
+        );
+
+        const room = await Room.findOne({ room_name: req.query.roomName });
+
+        const allSeats = await Seat.find({ room_id: room._id }).sort({ seat_number: 1 });
+
+        const reservedSeats = await Reservation.find({
+            reservation_start_timestamp: {
+                $lte: timeEnd
+            },
+            reservation_end_timestamp: {
+                $gte: timeStart
+            }
+        }).populate({ path: "reservedBy", select: "email"})
+        .select(
+            "reservedBy reservedByModel seats reservation_start_timestamp reservation_end_timestamp anonymous"
+        );
+
+        const brokenSeats = await Broken.find({
+            broken_start_timestamp: {
+                $lte: timeEnd
+            }
+        }).select("seats");
+
+        const reservedSeatMap = {};
+
+        reservedSeats.forEach(resv => {
+
+            resv.seats.forEach(seatId => {
+
+                let ownerDisplay = "Unknown";
+
+                if (resv.reservedByModel === "Admin") {
+                    ownerDisplay = "Anonymous";
+                }
+
+                else if (resv.reservedByModel === "User") {
+                    ownerDisplay =
+                        resv.reservedBy?.email || "Unknown";
+                }
+
+                if (resv.anonymous === true) {
+                    ownerDisplay = "Anonymous";
+                }
+
+                reservedSeatMap[seatId.toString()] = {
+                    email: ownerDisplay,
+                    reservationStart:
+                        resv.reservation_start_timestamp,
+                    reservationEnd:
+                        resv.reservation_end_timestamp
+                };
+
+            });
+
+        });
+
+        const brokenSeatIds = brokenSeats.flatMap(doc => doc.seats.map(s =>
+                s.toString()
+            )
+        );
+
+        const seatsWithStatus =
+            allSeats.map(seat => {
+                const id =
+                    seat._id.toString();
+
+                let seatData = {
+                    _id: seat._id,
+                    seat_name: seat.seat_name,
+                    status: "available"
+                };
+
+                if (selectedSeats.includes(id)) {
+                    seatData.status = "selected";
+                }
+
+                else if (reservedSeatMap[id]) {
+                    seatData.status = "reserved";
+                    seatData.reservedBy = reservedSeatMap[id].email;
+                    seatData.reservationStart = reservedSeatMap[id].reservationStart;
+                    seatData.reservationEnd = reservedSeatMap[id].reservationEnd;
+                }
+
+                else if ( brokenSeatIds.includes(id)) {
+                    seatData.status = "broken";
+                }
+
+                return seatData;
+
+            });
+
+        res.json(seatsWithStatus);
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error");
+    }
+};
+
+exports.getEditSeatStatus2 = async (req, res) => {
+    try {
+        const timeStart = new Date(req.query.timeStart + "Z");
+        const timeEnd = new Date(req.query.timeEnd + "Z");
+
+        const resId = req.query.resId;
+
+        const initialReservation = await Reservation.findById(resId);
+
+        const room = await Room.findOne({ room_name: req.query.roomName });
+
+        const allSeats = await Seat.find({ room_id: room._id });
+
+        const selectedSeats =
+            initialReservation.seats.map(s =>
+                s.toString()
+            );
+
+        const reservedSeats = await Reservation.find({
+            _id: { $ne: resId },
+            reservation_start_timestamp: {
+                $lte: timeEnd
+            },
+            reservation_end_timestamp: {
+                $gte: timeStart
+            }
+        }).select("reservedBy reservedByModel seats reservation_start_timestamp reservation_end_timestamp anonymous")
+        .populate({ path: "reservedBy", select: "email" });
+
+        const brokenSeats = await Broken.find({
+            broken_start_timestamp: {
+                $lte: timeEnd
+            }
+        }).select("seats");
+
+        const reservedSeatMap = {};
+
+        reservedSeats.forEach(resv => {
+
+            resv.seats.forEach(seatId => {
+
+                let ownerDisplay = "Unknown";
+
+                if (resv.reservedByModel === "Admin") {
+                    ownerDisplay = "Anonymous";
+                }
+
+                else if (resv.reservedByModel === "User") {
+                    ownerDisplay =
+                        resv.reservedBy?.email || "Unknown";
+                }
+
+                if (resv.anonymous === true) {
+                    ownerDisplay = "Anonymous";
+                }
+
+                reservedSeatMap[seatId.toString()] = {
+                    email: ownerDisplay,
+                    reservationStart: resv.reservation_start_timestamp,
+                    reservationEnd: resv.reservation_end_timestamp
+                };
+            });
+
+        });
+
+        const brokenSeatIds = brokenSeats.flatMap(doc =>
+            doc.seats.map(s =>
+                s.toString()
+            )
+        );
+
+        const seatsWithStatus = allSeats.map(seat => {
+            const id = seat._id.toString();
+
+            let seatData = {
+                _id: seat._id,
+                seat_name: seat.seat_name,
+                status: "available"
+            };
+
+            if (reservedSeatMap[id]) {
+                seatData.status = "reserved";
+                seatData.reservedBy = reservedSeatMap[id].email;
+                seatData.reservationStart = reservedSeatMap[id].reservationStart;
+                seatData.reservationEnd = reservedSeatMap[id].reservationEnd;
+            }
+
+            else if (brokenSeatIds.includes(id)) {
+                seatData.status = "broken";
+            }
+
+            else if (selectedSeats.includes(id)) {
+                seatData.status = "selected";
+            }
+
+            return seatData;
+        });
+
+        seatsWithStatus.sort((a, b) =>a.seat_name.localeCompare(
+                b.seat_name,
+                undefined,
+                {
+                    numeric: true,
+                    sensitivity: "base"
+                }
+            )
+        );
+
+        res.json(seatsWithStatus);
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error");
+    }
+};
+
 /* 
     Purpose: getting the counts and labels of seats
     Should require for the current room name, time-start, and time end to first appear

@@ -20,30 +20,217 @@ var reservationEndMinute;
 var reservationEndHour;
 var reservationStartTimeStamp;
 var reservationEndTimeStamp;
-var seats;
-var seat_names = [];
+var selectedSeats;
+var selectedSeatNames;
+
+var newBuilding;
+var newRoom;
+var newReservationDate;
+var newReservationStartMinute;
+var newReservationStartHour;
+var newReservationEndMinute;
+var newReservationEndHour;
+var newReservationStartTimeStamp;
+var newReservationEndTimeStamp;
+var currSeats;
+var currSeatNames;
+
 var isAnonymous = false;
 
 $(document).ready(async function () {
 
-    async function getCurrentReservationData(){
-        const res = await fetch(`/reservations/specific-reservation?resId=${reservationId}`)
-        const reservation = await res.json()
-        building = reservation.building
-        room = reservation.room_name
-        reservationStartTimeStamp = reservation.reservation_start_timestamp
-        reservationEndTimeStamp = reservation.reservation_end_timestamp
-        seats = reservation.seats
-        getDate(reservationStartTimeStamp)
-        getStartHourAndMinute(reservationStartTimeStamp)
-        getEndHourAndMinute(reservationEndTimeStamp)
+    function setCurrSeatsToDefault(){
+        currSeats = selectedSeats
+        currSeatNames = selectedSeatNames
+    }
 
-        console.log(seats)
-        console.log(reservationDate)
-        console.log(reservationStartHour)
-        console.log(reservationStartMinute)
-        console.log(reservationEndHour)
-        console.log(reservationEndMinute)
+    function setCurrSeatsToSelecteds(seats, seat_names){
+        currSeats = seats
+        currSeatNames = seat_names
+    }
+
+    function weekView() {
+        let today = new Date();
+        let nextWk = new Date();
+        nextWk.setDate(today.getDate() + 7);
+        today = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
+        nextWk = `${nextWk.getFullYear()}-${(nextWk.getMonth() + 1).toString().padStart(2, '0')}-${nextWk.getDate().toString().padStart(2, '0')}`;
+
+
+        $("#dateInput").attr('min', today);
+        $("#dateInput").attr('max', nextWk);
+    }
+
+    function setInitialTimeStamps(){
+        reservationStartTimeStamp = reservationDate + "T" + reservationStartHour + ":" + reservationStartMinute + ":00.000";
+        reservationEndTimeStamp = reservationDate + "T" + reservationEndHour + ":" + reservationEndMinute + ":00.000";
+
+        newReservationStartTimeStamp = reservationStartTimeStamp
+        newReservationEndTimeStamp = reservationEndTimeStamp
+
+
+    }
+
+    function showLoader() {
+        loading.style.setProperty('display', 'block', 'important');
+        loading.classList.remove('hidden');
+    }
+
+    function format(hour) {
+        if (hour < 10) {
+            return '0' + hour
+        }
+        else
+            return hour
+    }
+
+    function checkTimeInputs() {
+        if ($("#startHourInput").val() && $("#startMinuteInput").val() && !$("#endHourInput").val() && !$("#endMinuteInput").val()) {
+            displayEndHourInputs(parseInt($("#startHourInput").val().trim()), $("#startMinuteInput").val().trim())
+        }
+        if ($("#startHourInput").val() && $("#endHourInput").val() && !$("#endMinuteInput").val()) {
+            displayEndMinuteInputs(parseInt($("#startHourInput").val()), parseInt($("#endHourInput").val()))
+        }
+        if ($("#startHourInput").val() && $("#startMinuteInput").val() && $("#endHourInput").val() && $("#endMinuteInput").val()) {
+            newReservationStartHour = $("#startHourInput").val().trim();
+            newReservationStartMinute = $("#startMinuteInput").val().trim();
+            newReservationEndHour = $("#endHourInput").val().trim();
+            newReservationEndMinute = $("#endMinuteInput").val().trim();
+
+            $(".seat").removeClass("gray")
+
+            newReservationStartTimeStamp = $("#dateInput").val() + "T" + $("#startHourInput").val() + ":" + $("#startMinuteInput").val() + ":00.000";
+            newReservationEndTimeStamp = $("#dateInput").val() + "T" +  $("#endHourInput").val() + ":" + $("#endMinuteInput").val() + ":00.000";
+        }
+    }
+
+    function assignSeatIds(seatArray) {
+        $(".seat").removeClass("gray red blue blue-500 red-500 green cursor-pointer selected").attr("title", "").removeAttr("id").removeAttr("data-name");
+        $(".room-wrapper").addClass("seats-enabled");
+        if (building === "Gokongwei Building") {
+            $("#goks .seat").each(function (index) {
+                const seatInfo = seatArray[index];
+
+                if (seatInfo) {
+                    $(this).attr("id", seatInfo._id);
+                    $(this).attr("data-name", seatInfo.seat_name);
+                    if (seatInfo.reservedBy) {
+                        $(this).attr("title", `Seat ${seatInfo.seat_name}; reserved by ${seatInfo.reservedBy}`);
+                    }
+                    else {
+                        $(this).attr("title", `Seat ${seatInfo.seat_name}`);
+                    }
+
+                    if (seatInfo.status === "reserved") {
+                        $(this).addClass("red")
+                    }
+                    else if (seatInfo.status === "broken") {
+                        $(this).addClass("blue")
+                    }
+                    else if (seatInfo.status === "selected") {
+                        $(this).addClass("green cursor-pointer selected")
+                    }
+                    else {
+                        $(this).addClass("cursor-pointer")
+                    }
+
+                }
+            });
+        }
+
+        if (building === "St. La Salle Hall") {
+            $("#ls .seat").each(function (index) {
+                const seatInfo = seatArray[index];
+
+                if (seatInfo) {
+                    $(this).attr("id", seatInfo._id);
+                    $(this).attr("data-name", seatInfo.seat_name);
+                    if (seatInfo.reservedBy) {
+                        $(this).attr("title", `Seat ${seatInfo.seat_name}; reserved by ${seatInfo.reservedBy}`);
+                    }
+                    else {
+                        $(this).attr("title", `Seat ${seatInfo.seat_name}`);
+                    }
+
+                    if (seatInfo.status === "reserved") {
+                        $(this).addClass("red")
+                    }
+                    else if (seatInfo.status === "broken") {
+                        $(this).addClass("blue")
+                    }
+                    else if (seatInfo.status === "selected") {
+                        $(this).addClass("green cursor-pointer selected")
+                    }
+                    else {
+                        $(this).addClass("cursor-pointer")
+                    }
+
+                }
+            });
+        }
+
+        if (building === "Don Enrique T. Yuchengco Hall") {
+            $("#yuch .seat").each(function (index) {
+                const seatInfo = seatArray[index];
+
+                if (seatInfo) {
+                    $(this).attr("id", seatInfo._id);
+                    $(this).attr("data-name", seatInfo.seat_name);
+                    if (seatInfo.reservedBy) {
+                        $(this).attr("title", `Seat ${seatInfo.seat_name}; reserved by ${seatInfo.reservedBy}`);
+                    }
+                    else {
+                        $(this).attr("title", `Seat ${seatInfo.seat_name}`);
+                    }
+
+                    if (seatInfo.status === "reserved") {
+                        $(this).addClass("red")
+                    }
+                    else if (seatInfo.status === "broken") {
+                        $(this).addClass("blue")
+                    }
+                    else if (seatInfo.status === "selected") {
+                        $(this).addClass("green cursor-pointer selected")
+                    }
+                    else {
+                        $(this).addClass("cursor-pointer")
+                    }
+
+                }
+            });
+        }
+
+        if (building === "Br. Andrew Gonzales Hall") {
+            $("#andrew .seat").each(function (index) {
+                const seatInfo = seatArray[index];
+
+                if (seatInfo) {
+                    $(this).attr("id", seatInfo._id);
+                    $(this).attr("data-name", seatInfo.seat_name);
+                    if (seatInfo.reservedBy) {
+                        $(this).attr("title", `Seat ${seatInfo.seat_name}; reserved by ${seatInfo.reservedBy}`);
+                    }
+                    else {
+                        $(this).attr("title", `Seat ${seatInfo.seat_name}`);
+                    }
+
+                    if (seatInfo.status === "reserved") {
+                        $(this).addClass("red")
+                    }
+                    else if (seatInfo.status === "broken") {
+                        $(this).addClass("blue")
+                    }
+                    else if (seatInfo.status === "selected") {
+                        $(this).addClass("green cursor-pointer selected")
+                    }
+                    else {
+                        $(this).addClass("cursor-pointer")
+                    }
+
+                }
+            });
+        }
+
     }
     
     function getDate(s){
@@ -64,28 +251,6 @@ $(document).ready(async function () {
         $("#venueInput").val(building)
     }
 
-    async function loadRoomInput(){
-        const roomSelect = $("#roomInput");
-        roomSelect.empty();
-        roomSelect.append('<option value="" disabled selected>Input Room...</option>');
-
-        const roomsInBuildings = await fetch(`/room/building/room-names?buildingName=${building}`);
-        const roomsInBuildingsJ = await roomsInBuildings.json();
-
-        roomsInBuildingsJ.forEach(r => {
-            roomSelect.append(`<option value="${r.room_name}">${r.room_name}</option>`);
-        });
-
-        $("#goks, #ls, #yuch, #andrew, #default").addClass("hidden");
-
-        if (building === "Gokongwei Building") $("#goks").removeClass("hidden");
-        else if (building === "St. La Salle Hall") $("#ls").removeClass("hidden");
-        else if (building === "Don Enrique T. Yuchengco Hall") $("#yuch").removeClass("hidden");
-        else if (building === "Br. Andrew Gonzales Hall") $("#andrew").removeClass("hidden");
-
-        $("#roomInput").val(room)
-    }
-
     function loadDateInput(){
         $("#dateInput").val(reservationDate)
     }
@@ -98,8 +263,6 @@ $(document).ready(async function () {
         const currentHour = currentDate.getHours()
         const currentMinutes = currentDate.getMinutes()
         let chosenDate = dateInput.value.trim()
-        console.log("Chosen Date: ", chosenDate)
-        console.log("Current Date: ", formattedCurrentDate)
         if (chosenDate == formattedCurrentDate) {
             for (let i = currentHour; i <= 20; i++) {
                 let option = document.createElement("option")
@@ -148,13 +311,10 @@ $(document).ready(async function () {
     function loadEndHourInputs(startHour, startMinute) {
         if (endHourInput.options.length > 1) return;
 
-        startHour = parseInt(startHour, 10);
+        startHour = parseInt(startHour, 10);     
 
         endHourInput.innerHTML = `<option value="" disabled selected>--</option>`;
-        console.log("Start Hour:", startHour)
-        console.log("Start Minute:", startMinute)
         if (startMinute == "00") {
-            console.log("00")
             for (let i = startHour; i <= 21; i++) {
                 let option = document.createElement("option")
                 let hour = format(i)
@@ -163,7 +323,6 @@ $(document).ready(async function () {
             }
         }
         else {
-            console.log("30")
             for (let i = startHour + 1; i <= 21; i++) {
                 let option = document.createElement("option")
                 let hour = format(i)
@@ -171,7 +330,6 @@ $(document).ready(async function () {
                 endHourInput.appendChild(option)
             }
         }
-
         $("#endHourInput").val(reservationEndHour)
     }
 
@@ -203,48 +361,94 @@ $(document).ready(async function () {
         }
         $("#endMinuteInput").val(reservationEndMinute)
     }
+    
+    async function loadRoomInput(){
+        const roomSelect = $("#roomInput");
+        roomSelect.empty();
+        roomSelect.append('<option value="" disabled selected>Input Room...</option>');
 
-    function loadPanelInputs(){
+        const roomsInBuildings = await fetch(`/room/building/room-names?buildingName=${building}`);
+        const roomsInBuildingsJ = await roomsInBuildings.json();
+
+        roomsInBuildingsJ.forEach(r => {
+            roomSelect.append(`<option value="${r.room_name}">${r.room_name}</option>`);
+        });
+
+        $("#goks, #ls, #yuch, #andrew, #default").addClass("hidden");
+
+        if (building === "Gokongwei Building") $("#goks").removeClass("hidden");
+        else if (building === "St. La Salle Hall") $("#ls").removeClass("hidden");
+        else if (building === "Don Enrique T. Yuchengco Hall") $("#yuch").removeClass("hidden");
+        else if (building === "Br. Andrew Gonzales Hall") $("#andrew").removeClass("hidden");
+
+        $("#roomInput").val(room)
+    }
+
+    async function getCurrentReservationData(){
+        const res = await fetch(`/reservations/specific-reservation?resId=${reservationId}`)
+        const reservation = await res.json()
+        building = reservation.building
+        room = reservation.room_name
+        reservationStartTimeStamp = reservation.reservation_start_timestamp
+        reservationEndTimeStamp = reservation.reservation_end_timestamp
+        selectedSeats = reservation.seats
+        selectedSeatNames = reservation.seat_names
+        getDate(reservationStartTimeStamp)
+        getStartHourAndMinute(reservationStartTimeStamp)
+        getEndHourAndMinute(reservationEndTimeStamp)
+    }
+
+    async function loadPanelInputs(){
         loadVenueInput()
-        loadRoomInput()
+        await loadRoomInput()
         loadDateInput()
         loadStartTimeInputs()
         loadEndHourInputs(reservationStartHour, reservationStartMinute)
         loadEndMinuteInputs(reservationStartHour, reservationEndHour)
+        setCurrSeatsToDefault()
     }
 
-    function loadInitialSeats(){
+    async function loadInitialSeats(){
+        setInitialTimeStamps()
+        if ($("#startHourInput").val() && $("#startMinuteInput").val() && $("#endHourInput").val() && $("#endMinuteInput").val() && $("#dateInput").val() && $("#venueInput").val() && $("#roomInput").val()) {
+            if (reservationEndTimeStamp > reservationStartTimeStamp) {
+                const seatStatuses = await fetch(`/room/edit-seat-status?timeStart=${reservationStartTimeStamp}&timeEnd=${reservationEndTimeStamp}&roomName=${room}&selectedSeats=${selectedSeats}`);
+                const seatStatusesJson = await seatStatuses.json();
 
-    }
+                seatStatusesJson.sort((a, b) => {
+                    return a.seat_name.localeCompare(b.seat_name);
+                });
 
-    function showLoader() {
-        loading.style.setProperty('display', 'block', 'important');
-        loading.classList.remove('hidden');
-    }
+                assignSeatIds(seatStatusesJson);
 
-    function format(hour) {
-        if (hour < 10) {
-            return '0' + hour
+                $("#endHourInput, #endMinuteInput").removeClass("border-red-600");
+            } else {
+                $("#endHourInput, #endMinuteInput").addClass("border-red-600").val("");
+                $(".seat").addClass("gray").removeClass("cursor-pointer green red blue");
+            }
+        } else {
+            $(".seat").addClass("gray").removeClass("cursor-pointer green red blue");
         }
-        else
-            return hour
     }
 
-    function weekView() {
-        let today = new Date();
-        let nextWk = new Date();
-        nextWk.setDate(today.getDate() + 7);
-        today = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
-        nextWk = `${nextWk.getFullYear()}-${(nextWk.getMonth() + 1).toString().padStart(2, '0')}-${nextWk.getDate().toString().padStart(2, '0')}`;
+    $(document).on("click", ".seat.cursor-pointer", function () {
+        $(this).toggleClass("green");
+        const seatId = $(this).attr("id");
+        const seatName = $(this).attr("data-name") || seatId;
 
-        console.log(today);
-        console.log(nextWk);
+        if ($(this).hasClass("green")) {
+            currSeats.push(seatId);
+            currSeatNames.push(seatName);
+        }
+        else {
+            currSeats = currSeats.filter(id => id !== seatId);
+            currSeatNames = currSeatNames.filter(name => name !== seatName);
+        }
 
-        $("#dateInput").attr('min', today);
-        $("#dateInput").attr('max', nextWk);
-    }
+        console.log(currSeatNames)
 
-    $(".seat").addClass("gray")
+        $("#confirmBtn").prop("disabled", currSeats.length === 0);
+    });
 
     $("#venueInput").on("change", async function (e) {
         try {
@@ -257,19 +461,17 @@ $(document).ready(async function () {
                 .attr("title", "");
 
             room = "";
-            seats = [];
-            seat_names = [];
+
             $("#confirmBtn").prop("disabled", true);
 
-            building = $(this).val().trim();
-            console.log("Building changed to:", building);
-
+            newBuilding = $(this).val().trim();
+            building = newBuilding
 
             const roomSelect = $("#roomInput");
             roomSelect.empty();
             roomSelect.append('<option value="" disabled selected>Input Room...</option>');
 
-            const roomsInBuildings = await fetch(`/room/building/room-names?buildingName=${building}`);
+            const roomsInBuildings = await fetch(`/room/building/room-names?buildingName=${newBuilding}`);
             const roomsInBuildingsJ = await roomsInBuildings.json();
 
             roomsInBuildingsJ.forEach(r => {
@@ -278,13 +480,13 @@ $(document).ready(async function () {
 
             $("#goks, #ls, #yuch, #andrew, #default").addClass("hidden");
 
-            if (building === "Gokongwei Building") $("#goks").removeClass("hidden");
-            else if (building === "St. La Salle Hall") $("#ls").removeClass("hidden");
-            else if (building === "Don Enrique T. Yuchengco Hall") $("#yuch").removeClass("hidden");
-            else if (building === "Br. Andrew Gonzales Hall") $("#andrew").removeClass("hidden");
+            if (newBuilding === "Gokongwei Building") $("#goks").removeClass("hidden");
+            else if (newBuilding === "St. La Salle Hall") $("#ls").removeClass("hidden");
+            else if (newBuilding === "Don Enrique T. Yuchengco Hall") $("#yuch").removeClass("hidden");
+            else if (newBuilding === "Br. Andrew Gonzales Hall") $("#andrew").removeClass("hidden");
 
-            $("#room").removeClass("hidden");
-            $("#confirmBtn").prop("disabled", true);
+            currSeats = []
+            currSeatNames = []
 
         } catch (err) {
             console.error("Error updating building:", err);
@@ -295,14 +497,10 @@ $(document).ready(async function () {
         $(".seat").removeClass("green selected").addClass("gray");
         weekView();
         try {
-            room = $(this).val().trim();
-            seats = [];
-            seat_names = [];
+            newRoom = $(this).val().trim();
+            currSeats = []
+            currSeatNames = []
 
-            $("#confirmBtn").prop("disabled", true);
-
-            console.log("Selected room:", room);
-            $("#date").removeClass("hidden");
         } catch (err) {
             console.error("Error:", err);
         }
@@ -311,17 +509,182 @@ $(document).ready(async function () {
     $("#dateInput").on("change", async function (e) {
         $(".seat").attr("class", "seat");
         try {
-            reservationDate = $(this).val().trim();
-            seats = [];
-            seat_names = [];
-            console.log("Selected date:", reservationDate);
-            $("#time").removeClass("hidden");
-            $("#confirmBtn").prop("disabled", true);
+            newReservationDate = $(this).val().trim();
+            currSeats = []
+            currSeatNames = []
 
         } catch (err) {
             console.error("Error:", err);
             alert("An error occurred. Check the F12 console.");
         }
+    });
+
+    $("#startHourInput, #startMinuteInput, #endHourInput, #endMinuteInput").on("change", async function (e) {
+        try {
+            currSeats = []
+            currSeatNames = []
+
+        } catch (err) {
+            console.error("Error:", err);
+            alert("An error occurred. Check the F12 console.");
+        }
+    });
+
+    $("#startHourInput, #startMinuteInput").on("input", async function () {
+        endHourInput.innerHTML = `<option value="" disabled selected>--</option>`
+        endMinuteInput.innerHTML = `<option value="" disabled selected>--</option>`
+    });
+
+    $("#venueInput, #roomInput, #dateInput").on("input", async function () {
+        startHourInput.innerHTML = `<option value="" disabled selected>--</option>`
+        startMinuteInput.innerHTML = `<option value="" disabled selected>--</option>`
+        displayStartTimeInputs()
+        endHourInput.innerHTML = `<option value="" disabled selected>--</option>`
+        endMinuteInput.innerHTML = `<option value="" disabled selected>--</option>`
+    });
+
+    $("#venueInput, #roomInput, #dateInput, #startHourInput, #startMinuteInput, #endHourInput, #endMinuteInput").on("change", async function () {
+        checkTimeInputs();
+
+        if ($("#startHourInput").val() && $("#startMinuteInput").val() && $("#endHourInput").val() && $("#endMinuteInput").val() && $("#dateInput").val() && $("#venueInput").val() && $("#roomInput").val()) {
+            if (newReservationEndTimeStamp > newReservationStartTimeStamp) {
+                var seatStatuses;
+                var flag = false;
+                if ($("#roomInput").val() === room && $("#dateInput").val() === reservationDate){
+                    if ($("#startHourInput").val() === reservationStartHour && $("#startMinuteInput").val() === reservationStartMinute && $("#endHourInput").val() === reservationEndHour && $("#endMinuteInput").val() === reservationEndMinute){
+                        setCurrSeatsToDefault()
+                        seatStatuses = await fetch(`/room/edit-seat-status?timeStart=${newReservationStartTimeStamp}&timeEnd=${newReservationEndTimeStamp}&roomName=${room}&selectedSeats=${selectedSeats}`);
+                    }
+                    else{
+                        seatStatuses = await fetch(`/room/edit-seat-status-2?timeStart=${newReservationStartTimeStamp}&timeEnd=${newReservationEndTimeStamp}&roomName=${room}&resId=${reservationId}`);
+                        flag = true;
+                        
+                        //route for getting selected seats but the reserved seats should have priority. kapag may time na may reservation, yung reserved dapat di siya magiging
+                        //set curr seats to the seats from the route
+                    }
+                }
+
+                else{
+                    seatStatuses = await fetch(`/room/seat-status?timeStart=${newReservationStartTimeStamp}&timeEnd=${newReservationEndTimeStamp}&roomName=${$("#roomInput").val()}`);
+                }
+
+                const seatStatusesJson = await seatStatuses.json();
+
+                if (flag){
+                    const seatIds = seatStatusesJson
+                        .filter(seat => seat.status === "selected")
+                        .map(seat => seat._id);
+
+                    const seatNames = seatStatusesJson
+                        .filter(seat => seat.status === "selected")
+                        .map(seat => seat.seat_name);
+
+                    console.log(seatIds, seatNames)
+                    setCurrSeatsToSelecteds(seatIds, seatNames)
+                }
+
+                seatStatusesJson.sort((a, b) => {
+                    return a.seat_name.localeCompare(b.seat_name);
+                });
+                
+                assignSeatIds(seatStatusesJson);
+
+                $("#endHourInput, #endMinuteInput").removeClass("border-red-600");
+            } 
+            
+            else {
+                $("#endHourInput, #endMinuteInput").addClass("border-red-600").val("");
+                $(".seat").addClass("gray").removeClass("cursor-pointer green red blue");
+            }
+        } 
+        else {
+            $(".seat").addClass("gray").removeClass("cursor-pointer green red blue");
+        }
+
+        console.log(currSeatNames)
+    });
+
+    $("#confirmBtn").on("click", function (e) {
+        e.preventDefault();
+
+        var seatsString = currSeatNames.join(', ');
+
+        console.log(newBuilding, newRoom, newReservationDate, seatsString)
+
+        $('#resVenue').text($("#venueInput").val());
+        $('#resRoom').text($("#roomInput").val());
+        $('#resDate').text($("#dateInput").val());
+        $('#resTime').text(`${$("#startHourInput").val()}:${$("#startMinuteInput").val()} - ${$("#endHourInput").val()}:${$("#endMinuteInput").val()}`);
+        $('#resSeats').text(seatsString);
+        $("#confirmModal").removeClass("hidden");
+    });
+
+    $(".close-confirm").on("click", function () {
+        $("#confirmModal").addClass("hidden");
+    });
+
+    $("#anon").on("click", function () {
+        const isChecked = $(this).is(":checked");
+
+        if (isChecked) {
+            anonymous = true;
+        } else {
+            anonymous = false;
+        }
+    });
+
+    $("#confirmOkay").on("click", async function () {
+        const $btn = $(this);
+        const isAnonymous = $("input[name='anonymous']").is(":checked");
+        $("#confirmText").text("Processing...");
+        showLoader()
+
+        try {
+            const jason = {
+                timeStart: newReservationStartTimeStamp,
+                timeEnd: newReservationEndTimeStamp,
+                seats: currSeats,
+                anonymous: isAnonymous
+            };
+
+            const res = await fetch(`/reservations/${reservationId}/edit`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(jason)
+            });
+
+            if (res.ok) {
+                setTimeout(() => {
+                    var seatsString = currSeatNames.join(', ');
+                    $("#confirmModal").addClass("hidden");
+                    $('#successVenue').text($("#venueInput").val());
+                    $('#successRoom').text($("#roomInput").val());
+                    $('#successDate').text($("#dateInput").val());
+                    $('#successTime').text(`${$("#startHourInput").val()}:${$("#startMinuteInput").val()} - ${$("#endHourInput").val()}:${$("#endMinuteInput").val()}`);
+                    $('#successSeats').text(seatsString);
+                    successModal.classList.remove("hidden")
+                }, 3000);
+            }
+            else {
+                const errorText = await res.text();
+                alert("Error: " + errorText);
+                $btn.prop("disabled", false).text("OK");
+            }
+        } catch (err) {
+            console.error("Fetch Error:", err);
+            $btn.prop("disabled", false).text("OK");
+        }
+    });
+    
+    closeSuccessModal.addEventListener('click', function (event) {
+        successModal.classList.add("hidden")
+    });
+    successConfirm.addEventListener('click', function (event) {
+        successModal.classList.add("hidden")
+
+        window.location.href = `/user/landing?originalId=${userId}`
     });
 
     function displayStartTimeInputs() {
@@ -332,8 +695,7 @@ $(document).ready(async function () {
         const currentHour = currentDate.getHours()
         const currentMinutes = currentDate.getMinutes()
         let chosenDate = dateInput.value.trim()
-        console.log("Chosen Date: ", chosenDate)
-        console.log("Current Date: ", formattedCurrentDate)
+
         if (chosenDate == formattedCurrentDate) {
             for (let i = currentHour; i <= 20; i++) {
                 let option = document.createElement("option")
@@ -380,10 +742,8 @@ $(document).ready(async function () {
         if (endHourInput.options.length > 1) return;
 
         endHourInput.innerHTML = `<option value="" disabled selected>--</option>`;
-        console.log("Start Hour:", startHour)
-        console.log("Start Minute:", startMinute)
+
         if (startMinute == "00") {
-            console.log("00")
             for (let i = startHour; i <= 21; i++) {
                 let option = document.createElement("option")
                 let hour = format(i)
@@ -392,7 +752,6 @@ $(document).ready(async function () {
             }
         }
         else {
-            console.log("30")
             for (let i = startHour + 1; i <= 21; i++) {
                 let option = document.createElement("option")
                 let hour = format(i)
@@ -430,307 +789,8 @@ $(document).ready(async function () {
         }
     }
 
-
-    function checkTimeInputs() {
-        if ($("#startHourInput").val() && $("#startMinuteInput").val() && !$("#endHourInput").val() && !$("#endMinuteInput").val()) {
-            console.log("CALLED DISPLAYENDHOURS")
-            displayEndHourInputs(parseInt($("#startHourInput").val().trim()), $("#startMinuteInput").val().trim())
-        }
-        if ($("#startHourInput").val() && $("#endHourInput").val() && !$("#endMinuteInput").val()) {
-            console.log("CALLED DISPLAYENDMINUTES")
-            displayEndMinuteInputs(parseInt($("#startHourInput").val()), parseInt($("#endHourInput").val()))
-        }
-        if ($("#startHourInput").val() && $("#startMinuteInput").val() && $("#endHourInput").val() && $("#endMinuteInput").val()) {
-            reservationStartHour = $("#startHourInput").val().trim();
-            reservationStartMinute = $("#startMinuteInput").val().trim();
-            reservationEndHour = $("#endHourInput").val().trim();
-            reservationEndMinute = $("#endMinuteInput").val().trim();
-
-            seats = [];
-            seat_names = [];
-
-            console.log(reservationStartHour, ":", reservationStartMinute, reservationEndHour, ":", reservationEndMinute)
-
-            $(".seat").removeClass("gray")
-
-            reservationStartTimeStamp = reservationDate + "T" + reservationStartHour + ":" + reservationStartMinute + ":00.000";
-            reservationEndTimeStamp = reservationDate + "T" + reservationEndHour + ":" + reservationEndMinute + ":00.000";
-        }
-    }
-
-    function assignSeatIds(seatArray) {
-        $(".seat").removeClass("gray red blue blue-500 red-500 green cursor-pointer selected").attr("title", "").removeAttr("id").removeAttr("data-name");
-        $(".room-wrapper").addClass("seats-enabled");
-        if (building === "Gokongwei Building") {
-            $("#goks .seat").each(function (index) {
-                const seatInfo = seatArray[index];
-
-                console.log(this, seatInfo)
-
-                if (seatInfo) {
-                    $(this).attr("id", seatInfo._id);
-                    $(this).attr("data-name", seatInfo.seat_name);
-                    if (seatInfo.reservedBy) {
-                        $(this).attr("title", `Seat ${seatInfo.seat_name}; reserved by ${seatInfo.reservedBy}`);
-                    }
-                    else {
-                        $(this).attr("title", `Seat ${seatInfo.seat_name}`);
-                    }
-
-                    if (seatInfo.status === "reserved") {
-                        $(this).addClass("red")
-                    }
-                    else if (seatInfo.status === "broken") {
-                        $(this).addClass("blue")
-                    }
-                    else {
-                        $(this).addClass("cursor-pointer")
-                    }
-
-                }
-            });
-        }
-
-        if (building === "St. La Salle Hall") {
-            $("#ls .seat").each(function (index) {
-                const seatInfo = seatArray[index];
-
-                console.log(this, seatInfo)
-
-                if (seatInfo) {
-                    $(this).attr("id", seatInfo._id);
-                    $(this).attr("data-name", seatInfo.seat_name);
-                    if (seatInfo.reservedBy) {
-                        $(this).attr("title", `Seat ${seatInfo.seat_name}; reserved by ${seatInfo.reservedBy}`);
-                    }
-                    else {
-                        $(this).attr("title", `Seat ${seatInfo.seat_name}`);
-                    }
-
-                    if (seatInfo.status === "reserved") {
-                        $(this).addClass("red")
-                    }
-                    else if (seatInfo.status === "broken") {
-                        $(this).addClass("blue")
-                    }
-                    else {
-                        $(this).addClass("cursor-pointer")
-                    }
-
-                }
-            });
-        }
-
-        if (building === "Don Enrique T. Yuchengco Hall") {
-            $("#yuch .seat").each(function (index) {
-                const seatInfo = seatArray[index];
-
-                console.log(this, seatInfo)
-
-                if (seatInfo) {
-                    $(this).attr("id", seatInfo._id);
-                    $(this).attr("data-name", seatInfo.seat_name);
-                    if (seatInfo.reservedBy) {
-                        $(this).attr("title", `Seat ${seatInfo.seat_name}; reserved by ${seatInfo.reservedBy}`);
-                    }
-                    else {
-                        $(this).attr("title", `Seat ${seatInfo.seat_name}`);
-                    }
-
-                    if (seatInfo.status === "reserved") {
-                        $(this).addClass("red")
-                    }
-                    else if (seatInfo.status === "broken") {
-                        $(this).addClass("blue")
-                    }
-                    else {
-                        $(this).addClass("cursor-pointer")
-                    }
-
-                }
-            });
-        }
-
-        if (building === "Br. Andrew Gonzales Hall") {
-            $("#andrew .seat").each(function (index) {
-                const seatInfo = seatArray[index];
-
-                console.log(this, seatInfo)
-
-                if (seatInfo) {
-                    $(this).attr("id", seatInfo._id);
-                    $(this).attr("data-name", seatInfo.seat_name);
-                    if (seatInfo.reservedBy) {
-                        $(this).attr("title", `Seat ${seatInfo.seat_name}; reserved by ${seatInfo.reservedBy}`);
-                    }
-                    else {
-                        $(this).attr("title", `Seat ${seatInfo.seat_name}`);
-                    }
-
-                    if (seatInfo.status === "reserved") {
-                        $(this).addClass("red")
-                    }
-                    else if (seatInfo.status === "broken") {
-                        $(this).addClass("blue")
-                    }
-                    else {
-                        $(this).addClass("cursor-pointer")
-                    }
-
-                }
-            });
-        }
-
-    }
-
-    $("#startHourInput, #startMinuteInput").on("input", async function () {
-        endHourInput.innerHTML = `<option value="" disabled selected>--</option>`
-        endMinuteInput.innerHTML = `<option value="" disabled selected>--</option>`
-
-    });
-
-    $("#venueInput, #roomInput, #dateInput").on("input", async function () {
-        startHourInput.innerHTML = `<option value="" disabled selected>--</option>`
-        startMinuteInput.innerHTML = `<option value="" disabled selected>--</option>`
-        displayStartTimeInputs()
-        endHourInput.innerHTML = `<option value="" disabled selected>--</option>`
-        endMinuteInput.innerHTML = `<option value="" disabled selected>--</option>`
-    });
-
-    $("#venueInput, #roomInput, #dateInput, #startHourInput, #startMinuteInput, #endHourInput, #endMinuteInput").on("input", async function () {
-        checkTimeInputs();
-        if (reservationStartTimeStamp && reservationEndTimeStamp && building && room) {
-            if (reservationEndTimeStamp > reservationStartTimeStamp) {
-                const seatStatuses = await fetch(`/room/seat-status?timeStart=${reservationStartTimeStamp}&timeEnd=${reservationEndTimeStamp}&roomName=${room}`);
-                const seatStatusesJson = await seatStatuses.json();
-
-                assignSeatIds(seatStatusesJson);
-
-                $("#endHourInput, #endMinuteInput").removeClass("border-red-600");
-                $("#confirmBtn").prop("disabled", seats.length === 0);
-            } else {
-                $("#endHourInput, #endMinuteInput").addClass("border-red-600").val("");
-                $(".seat").addClass("gray").removeClass("cursor-pointer green red blue");
-                $("#confirmBtn").prop("disabled", true);
-            }
-        } else {
-            $(".seat").addClass("gray").removeClass("cursor-pointer green red blue");
-            $("#confirmBtn").prop("disabled", true);
-        }
-    });
-
-    $(document).on("click", ".seat.cursor-pointer", function () {
-        $(this).toggleClass("green");
-        const seatId = $(this).attr("id");
-        const seatName = $(this).attr("data-name") || seatId;
-
-        if ($(this).hasClass("green")) {
-            seats.push(seatId);
-            seat_names.push({ id: seatId, seat_name: seatName });
-            console.log("Selected:", seatName);
-        }
-        else {
-            seats = seats.filter(id => id !== seatId);
-            seat_names = seat_names.filter(s => s.id !== seatId);
-            console.log("Deselected:", seatName);
-        }
-        seat_names.sort((a, b) => {
-            return a.seat_name.localeCompare(b.seat_name, undefined, {
-                numeric: true,
-                sensitivity: 'base'
-            });
-        });
-
-        $("#confirmBtn").prop("disabled", seats.length === 0);
-    });
-
-    $("#confirmBtn").on("click", function (e) {
-        e.preventDefault();
-
-        console.log(seats)
-
-        var seatsString = seat_names.map(seat => seat.seat_name).join(', ');
-
-        console.log(building, room, reservationDate, reservationStartHour, seatsString)
-
-        $('#resVenue').text(building);
-        $('#resRoom').text(room);
-        $('#resDate').text(reservationDate);
-        $('#resTime').text(`${reservationStartHour}:${reservationStartMinute} - ${reservationEndHour}:${reservationEndMinute}`);
-        $('#resSeats').text(seatsString);
-        $("#confirmModal").removeClass("hidden");
-    });
-
-    $(".close-confirm").on("click", function () {
-        $("#confirmModal").addClass("hidden");
-    });
-
-    $("#anon").on("click", function () {
-        const isChecked = $(this).is(":checked");
-
-        if (isChecked) {
-            anonymous = true;
-        } else {
-            anonymous = false;
-        }
-    });
-
-    $("#confirmOkay").on("click", async function () {
-        const $btn = $(this);
-        const isAnonymous = $("input[name='anonymous']").is(":checked");
-        console.log("New classes:", loading.className);
-        $("#confirmText").text("Processing...");
-        showLoader()
-
-
-        try {
-            const jason = {
-                timeStart: reservationStartTimeStamp,
-                timeEnd: reservationEndTimeStamp,
-                seats: seats,
-                anonymous: isAnonymous
-            };
-
-            const res = await fetch(`/reservations/${userId}/add-user`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(jason)
-            });
-
-            if (res.ok) {
-                setTimeout(() => {
-                    var seatsString = seat_names.map(seat => seat.seat_name).join(', ');
-                    $("#confirmModal").addClass("hidden");
-                    $('#successVenue').text(building);
-                    $('#successRoom').text(room);
-                    $('#successDate').text(reservationDate);
-                    $('#successTime').text(`${reservationStartHour}:${reservationStartMinute} - ${reservationEndHour}:${reservationEndMinute}`);
-                    $('#successSeats').text(seatsString);
-                    successModal.classList.remove("hidden")
-                }, 3000);
-            }
-            else {
-                const errorText = await res.text();
-                alert("Error: " + errorText);
-                $btn.prop("disabled", false).text("OK");
-            }
-        } catch (err) {
-            console.error("Fetch Error:", err);
-            $btn.prop("disabled", false).text("OK");
-        }
-    });
-    closeSuccessModal.addEventListener('click', function (event) {
-        successModal.classList.add("hidden")
-    });
-    successConfirm.addEventListener('click', function (event) {
-        successModal.classList.add("hidden")
-
-        window.location.href = `/user/landing?originalId=${userId}`
-    });
-
     await getCurrentReservationData()
-    loadPanelInputs()
+    await loadPanelInputs()
+    await loadInitialSeats()
 
 })

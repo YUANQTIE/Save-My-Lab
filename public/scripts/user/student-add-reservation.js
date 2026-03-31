@@ -46,8 +46,6 @@ $(document).ready(function () {
         today = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
         nextWk = `${nextWk.getFullYear()}-${(nextWk.getMonth() + 1).toString().padStart(2, '0')}-${nextWk.getDate().toString().padStart(2, '0')}`;
 
-        console.log(today);
-        console.log(nextWk);
 
         $("#dateInput").attr('min', today);
         $("#dateInput").attr('max', nextWk);
@@ -71,7 +69,6 @@ $(document).ready(function () {
             $("#confirmBtn").prop("disabled", true);
 
             building = $(this).val().trim();
-            console.log("Building changed to:", building);
 
 
             const roomSelect = $("#roomInput");
@@ -93,6 +90,7 @@ $(document).ready(function () {
             else if (building === "Br. Andrew Gonzales Hall") $("#andrew").removeClass("hidden");
 
             $("#room").removeClass("hidden");
+            $(".seat").addClass("gray").removeClass("cursor-pointer green red blue");
             $("#confirmBtn").prop("disabled", true);
 
         } catch (err) {
@@ -109,8 +107,7 @@ $(document).ready(function () {
             seat_names = [];
 
             $("#confirmBtn").prop("disabled", true);
-
-            console.log("Selected room:", room);
+            $(".seat").addClass("gray").removeClass("cursor-pointer green red blue");
             $("#date").removeClass("hidden");
         } catch (err) {
             console.error("Error:", err);
@@ -123,8 +120,8 @@ $(document).ready(function () {
             reservationDate = $(this).val().trim();
             seats = [];
             seat_names = [];
-            console.log("Selected date:", reservationDate);
             $("#time").removeClass("hidden");
+            $(".seat").addClass("gray").removeClass("cursor-pointer green red blue");
             $("#confirmBtn").prop("disabled", true);
 
         } catch (err) {
@@ -136,11 +133,9 @@ $(document).ready(function () {
 
     function checkTimeInputs() {
         if ($("#startHourInput").val() && $("#startMinuteInput").val() && !$("#endHourInput").val() && !$("#endMinuteInput").val()) {
-            console.log("CALLED DISPLAYENDHOURS")
             displayEndHourInputs(parseInt($("#startHourInput").val().trim()), $("#startMinuteInput").val().trim())
         }
         if ($("#startHourInput").val() && $("#endHourInput").val() && !$("#endMinuteInput").val()) {
-            console.log("CALLED DISPLAYENDMINUTES")
             displayEndMinuteInputs(parseInt($("#startHourInput").val()), parseInt($("#endHourInput").val()))
         }
         if ($("#startHourInput").val() && $("#startMinuteInput").val() && $("#endHourInput").val() && $("#endMinuteInput").val()) {
@@ -151,8 +146,6 @@ $(document).ready(function () {
 
             seats = [];
             seat_names = [];
-
-            console.log(reservationStartHour, ":", reservationStartMinute, reservationEndHour, ":", reservationEndMinute)
 
             $(".seat").removeClass("gray")
 
@@ -167,8 +160,6 @@ $(document).ready(function () {
         if (building === "Gokongwei Building") {
             $("#goks .seat").each(function (index) {
                 const seatInfo = seatArray[index];
-
-                console.log(this, seatInfo)
 
                 if (seatInfo) {
                     $(this).attr("id", seatInfo._id);
@@ -197,8 +188,7 @@ $(document).ready(function () {
         if (building === "St. La Salle Hall") {
             $("#ls .seat").each(function (index) {
                 const seatInfo = seatArray[index];
-
-                console.log(this, seatInfo)
+                console.log(seatInfo)
 
                 if (seatInfo) {
                     $(this).attr("id", seatInfo._id);
@@ -228,8 +218,6 @@ $(document).ready(function () {
             $("#yuch .seat").each(function (index) {
                 const seatInfo = seatArray[index];
 
-                console.log(this, seatInfo)
-
                 if (seatInfo) {
                     $(this).attr("id", seatInfo._id);
                     $(this).attr("data-name", seatInfo.seat_name);
@@ -257,8 +245,6 @@ $(document).ready(function () {
         if (building === "Br. Andrew Gonzales Hall") {
             $("#andrew .seat").each(function (index) {
                 const seatInfo = seatArray[index];
-
-                console.log(this, seatInfo)
 
                 if (seatInfo) {
                     $(this).attr("id", seatInfo._id);
@@ -302,10 +288,14 @@ $(document).ready(function () {
 
     $("#venueInput, #roomInput, #dateInput, #startHourInput, #startMinuteInput, #endHourInput, #endMinuteInput").on("input", async function () {
         checkTimeInputs();
-        if (reservationStartTimeStamp && reservationEndTimeStamp && building && room) {
+        if ($("#startHourInput").val() && $("#startMinuteInput").val() && $("#endHourInput").val() && $("#endMinuteInput").val() && $("#dateInput").val() && $("#venueInput").val() && $("#roomInput").val()) {
             if (reservationEndTimeStamp > reservationStartTimeStamp) {
                 const seatStatuses = await fetch(`/room/seat-status?timeStart=${reservationStartTimeStamp}&timeEnd=${reservationEndTimeStamp}&roomName=${room}`);
                 const seatStatusesJson = await seatStatuses.json();
+
+                seatStatusesJson.sort((a, b) => {
+                    return a.seat_name.localeCompare(b.seat_name);
+                });
 
                 assignSeatIds(seatStatusesJson);
 
@@ -322,6 +312,7 @@ $(document).ready(function () {
         }
     });
 
+
     $(document).on("click", ".seat.cursor-pointer", function () {
         $(this).toggleClass("green");
         const seatId = $(this).attr("id");
@@ -330,12 +321,10 @@ $(document).ready(function () {
         if ($(this).hasClass("green")) {
             seats.push(seatId);
             seat_names.push({ id: seatId, seat_name: seatName });
-            console.log("Selected:", seatName);
         }
         else {
             seats = seats.filter(id => id !== seatId);
             seat_names = seat_names.filter(s => s.id !== seatId);
-            console.log("Deselected:", seatName);
         }
         seat_names.sort((a, b) => {
             return a.seat_name.localeCompare(b.seat_name, undefined, {
@@ -350,11 +339,8 @@ $(document).ready(function () {
     $("#confirmBtn").on("click", function (e) {
         e.preventDefault();
 
-        console.log(seats)
 
         var seatsString = seat_names.map(seat => seat.seat_name).join(', ');
-
-        console.log(building, room, reservationDate, reservationStartHour, seatsString)
 
         $('#resVenue').text(building);
         $('#resRoom').text(room);
@@ -381,7 +367,6 @@ $(document).ready(function () {
     $("#confirmOkay").on("click", async function () {
         const $btn = $(this);
         const isAnonymous = $("input[name='anonymous']").is(":checked");
-        console.log("New classes:", loading.className);
         $("#confirmText").text("Processing...");
         showLoader()
 
@@ -424,6 +409,7 @@ $(document).ready(function () {
             $btn.prop("disabled", false).text("OK");
         }
     });
+    
     closeSuccessModal.addEventListener('click', function (event) {
         successModal.classList.add("hidden")
     });
@@ -441,8 +427,7 @@ $(document).ready(function () {
         const currentHour = currentDate.getHours()
         const currentMinutes = currentDate.getMinutes()
         let chosenDate = dateInput.value.trim()
-        console.log("Chosen Date: ", chosenDate)
-        console.log("Current Date: ", formattedCurrentDate)
+
         if (chosenDate == formattedCurrentDate) {
             for (let i = currentHour; i <= 20; i++) {
                 let option = document.createElement("option")
@@ -489,10 +474,8 @@ $(document).ready(function () {
         if (endHourInput.options.length > 1) return;
 
         endHourInput.innerHTML = `<option value="" disabled selected>--</option>`;
-        console.log("Start Hour:", startHour)
-        console.log("Start Minute:", startMinute)
+
         if (startMinute == "00") {
-            console.log("00")
             for (let i = startHour; i <= 21; i++) {
                 let option = document.createElement("option")
                 let hour = format(i)
@@ -501,7 +484,6 @@ $(document).ready(function () {
             }
         }
         else {
-            console.log("30")
             for (let i = startHour + 1; i <= 21; i++) {
                 let option = document.createElement("option")
                 let hour = format(i)

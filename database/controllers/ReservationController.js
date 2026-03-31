@@ -34,9 +34,9 @@ exports.getReservationById = async (req, res) => {
             reservedBy: reservation.reservedBy,
             room_name: reservation.seats[0].room_id.room_name,
             building: reservation.seats[0].room_id.building,
-            seats: reservation.seats.map(seat => seat._id)
+            seats: reservation.seats.map(seat => seat._id),
+            seat_names: reservation.seats.map(seat => seat.seat_name)
         };
-
         res.json(result);
 
     }
@@ -456,12 +456,16 @@ exports.editUserReservation = async (req, res) => {
         const start = new Date(req.body.timeStart + "Z");
         const end = new Date(req.body.timeEnd + "Z");
 
+        console.log(start, end)
+
         const conflict = await Reservation.findOne({
+            _id: { $ne: req.params.reservationId },
+
             seats: { $in: req.body.seats },
+
             reservation_start_timestamp: { $lt: end },
             reservation_end_timestamp: { $gt: start }
         });
-
         if (conflict) {
             res.status(400).send("One or more seats are already reserved for that time.");
             return;
@@ -470,8 +474,8 @@ exports.editUserReservation = async (req, res) => {
         await Reservation.findByIdAndUpdate(
             req.params.reservationId,
             {
-                reservation_start_timestamp: new Date(req.body.timeStart),
-                reservation_end_timestamp: new Date(req.body.timeEnd),
+                reservation_start_timestamp: start,
+                reservation_end_timestamp: end,
                 creation_timestamp: new Date(Date.now()),
                 seats: req.body.seats,
                 anonymous: req.body.anonymous

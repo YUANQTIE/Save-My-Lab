@@ -24,6 +24,10 @@ router.get('/building/room-names', RoomController.getRoomInBuilding);
 //res.json: _id, seat_name, status, (if reserved, also has reservedBy, reservationStart, reservationEnd properties)
 router.get('/seat-status', RoomController.getSeatStatus);
 
+router.get('/edit-seat-status', RoomController.getEditSeatStatus);
+
+router.get('/edit-seat-status-2', RoomController.getEditSeatStatus2);
+
 //gets the count per status
 //req.query: timeStart, timeEnd, roomName
 //res.json: available, reserved, broken
