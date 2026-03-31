@@ -33,6 +33,15 @@ class reservation {
     }
 }
 $(document).ready(async function () {
+
+    $(document).on("click", ".edit_button_class", function(e) {
+        e.preventDefault();
+
+        const row = $(this).closest("tr");
+        const reservationId = row.data("id");
+        window.location.href = `/user/edit-reservation?originalId=${userId}&resId=${reservationId}`;
+    });
+    
     console.log("Profile-Settings Script running");
     $("#profile-settings").on("click", async function (e) {
         e.preventDefault();
