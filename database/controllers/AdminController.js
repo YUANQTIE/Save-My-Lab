@@ -30,13 +30,10 @@ exports.getIdGivenEmail = async (req, res) => {
   }
 };
 
-exports.showAdmin = async(req, res) => {
+exports.showReservations = async(req, res) => {
   try {
-    const adminData = await Admin.findById(req.query.id).lean();
-    res.render('lab/see-reservations', {
-      admin: adminData, 
-      isAdmin: true 
-    });
+    const adminData = await Admin.findById(req.session.adminId).lean();
+    res.render('lab/see-reservations', { admin: adminData, isAdmin: true });
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Error');
@@ -48,7 +45,7 @@ exports.showAdmin = async(req, res) => {
 // Get and Render Profile of User for Profile Settings
 exports.showEditComputerStatus = async(req, res) => {
   try {
-    const adminData = await Admin.findById(req.query.id).lean();
+    const adminData = await Admin.findById(req.session.adminId).lean();
     res.render('lab/edit-computer-status', {admin: adminData, isAdmin: true });
   } catch (err) {
     console.error(err.message);
@@ -59,7 +56,7 @@ exports.showEditComputerStatus = async(req, res) => {
 // Get and Render Profile of User for Account Security
 exports.showAddReservation = async(req, res) => {
   try {
-    const adminData = await Admin.findById(req.query.id).lean();
+    const adminData = await Admin.findById(req.session.adminId).lean();
     res.render('lab/add-reservation', {admin: adminData, isAdmin: true });
   } catch (err) {
     console.error(err.message);
@@ -112,6 +109,7 @@ exports.isAdminValid =  async (req, res) => {
     const match = await bcrypt.compare(passwordInput, admin.password)
 
     if (match) {
+      req.session.userId = null
       req.session.adminId = admin._id
       await admin.save();
 

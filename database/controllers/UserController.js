@@ -223,6 +223,7 @@ exports.isUserValid = async (req, res) => {
     const match = await bcrypt.compare(passwordInput, user.password)
     if (match) {
       user.last_login = new Date();
+      req.session.adminId = null
       req.session.userId = user._id
       await user.save();
 

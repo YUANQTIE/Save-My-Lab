@@ -54,7 +54,7 @@ app.use('/user', userRoutes)
 app.use('/aux', auxRoutes)
 
 app.get('/', (req, res) => {
-  if (req.session.userId && !req.session.userId) {
+  if (req.session.userId && !req.session.adminId) {
     return res.redirect('/user/landing');
   }
   else if (!req.session.userId && req.session.adminId) {

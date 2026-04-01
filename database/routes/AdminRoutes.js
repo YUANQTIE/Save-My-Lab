@@ -50,12 +50,10 @@ router.get("/landing", (req, res) => {
     }
     
     const adminId = req.session.adminId;
-    res.render('lab/homepage', {
-        id: adminId,
-        isAdmin: true
-    });
+    res.render('lab/homepage', { id: adminId, isAdmin: true });
 });
 
+router.get("/see-reservations", AdminController.showReservations);
 router.get("/edit-computer-status", AdminController.showEditComputerStatus);
 router.get("/add-reservation", AdminController.showAddReservation);
 
