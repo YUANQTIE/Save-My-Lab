@@ -10,7 +10,18 @@
         <!-- primary nav -->
         <div class="flex items-center space-x-5 text-gray-700">
           <!-- Reserve -->
-          <a href="" id="home" class="flex py-4 px-4 text-white">
+
+          <a href="" id="home" class="flex py-4 px-4">
+            <svg class="w-5 dark:text-gray-100" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+              stroke-width="1.5" stroke="currentColor" class="size-6">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+            </svg>
+
+            <span class="ml-1 font-bold text-white">Home</span>
+          </a>
+
+          <a href="" id="reserve" class="flex py-4 px-4 text-white">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
               stroke="currentColor" class="size-6">
               <path stroke-linecap="round" stroke-linejoin="round"
@@ -21,7 +32,7 @@
           </a>
 
           <!-- All Reservations -->
-          <a href="" id="profile" class="flex py-4 px-4 text-white">
+          <a href="" id="reservations_list" class="flex py-4 px-4 text-white">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
               stroke="currentColor" class="size-6">
               <path stroke-linecap="round" stroke-linejoin="round"
@@ -31,7 +42,7 @@
           </a>
 
           <!-- Edit Computer Status -->
-          <a href="" id="reserve" class="flex py-4 px-4 text-white">
+          <a href="" id="edit_computer_status" class="flex py-4 px-4 text-white">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
               stroke="currentColor" class="size-6">
               <path stroke-linecap="round" stroke-linejoin="round"
@@ -43,7 +54,7 @@
       </div>
       <!-- secondary nav -->
       <div class="flex items-center space-x-5 text-gray-700 absolute top-[25px] right-[10px]">
-        <a href="/" class="flex mr-6">
+        <a href="/" id="logoutBtn" class="flex mr-6">
           <svg class="w-5 dark:text-gray-100" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
             stroke-width="1.5" stroke="currentColor" class="size-6">
             <path stroke-linecap="round" stroke-linejoin="round"
@@ -61,17 +72,8 @@
 <script>
   $(document).ready(function () {
     console.log("Navbar Script running");
-    $("#reserve").on("click", async function (e) {
-      e.preventDefault();
-      try {
-        window.location.href = `/admin/edit-computer-status`
-      } catch (err) {
-        console.error("Login Error:", err);
-        alert("An error occurred. Check the F12 console.");
-      }
-    });
 
-    $("#profile").on("click", async function (e) {
+    $("#home").on("click", async function (e) {
       e.preventDefault();
       try {
         window.location.href = `/admin/landing`
@@ -81,7 +83,7 @@
       }
     });
 
-    $("#home").on("click", async function (e) {
+    $("#reserve").on("click", async function (e) {
       e.preventDefault();
       try {
         window.location.href = `/admin/add-reservation`
@@ -89,6 +91,38 @@
         console.error("Login Error:", err);
         alert("An error occurred. Check the F12 console.");
       }
+    });
+
+    $("#reservations_list").on("click", async function (e) {
+      e.preventDefault();
+      try {
+        window.location.href = `/admin/see-reservations`
+      } catch (err) {
+        console.error("Login Error:", err);
+        alert("An error occurred. Check the F12 console.");
+      }
+    });
+
+    $("#edit_computer_status").on("click", async function (e) {
+      e.preventDefault();
+      try {
+        window.location.href = `/admin/edit-computer-status`
+      } catch (err) {
+        console.error("Login Error:", err);
+        alert("An error occurred. Check the F12 console.");
+      }
+    });
+
+    $("#logoutBtn").on("click", async function (e) {
+      e.preventDefault();
+      try {
+        const res = await fetch("/admin/logout");
+            if (res.ok) {
+                window.location.href = "/";
+            }
+        } catch (err) {
+            console.error("Logout failed:", err);
+        }
     });
   })
 </script>

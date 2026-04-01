@@ -17,10 +17,6 @@ $(document).ready(function() {
         const passwordInput = $("#userPasswordInput").val().trim();
         const rememberMe = $("#rememberMeUser").is(":checked");
 
-        console.log(emailInput, passwordInput, rememberMe)
-
-        console.log("Input Check:", emailInput, passwordInput);
-
         if (!emailInput || !passwordInput) {
             $("#userEmailInput").addClass("border-red-600")
             $("#userPasswordInput").addClass("border-red-600")
@@ -78,6 +74,9 @@ $(document).ready(function() {
 
         const emailInput = $("#adminEmailInput").val().trim();
         const passwordInput = $("#adminPasswordInput").val().trim();
+        const rememberMe = $("#rememberMeAdmin").is(":checked");
+
+        console.log(emailInput, passwordInput, rememberMe)
 
         console.log("Input Check:", emailInput, passwordInput);
 
@@ -96,15 +95,27 @@ $(document).ready(function() {
         }
 
         try {
-            const res2 = await fetch(`/admin/verify/${emailInput}/${passwordInput}`);
+            const res2 = await fetch("/admin/verify", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    emailInput: emailInput,
+                    passwordInput: passwordInput,
+                    rememberMe: rememberMe
+                })
+            });
 
             const isAdmin = await res2.json();
+
             if (isAdmin) {
                 const adminsRes = await fetch("/admin/admins");
                 const admins = await adminsRes.json();
                 const admin = admins.find(a => a.email === emailInput);
                 $("#adminEmailInput").removeClass("border-red-600")
                 $("#adminPasswordInput").removeClass("border-red-600")
+                console.log("NAKAABOT AKO DITO")
                 window.location.href = `/admin/landing`;
                 return;
             }

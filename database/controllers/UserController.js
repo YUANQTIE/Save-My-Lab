@@ -213,7 +213,6 @@ exports.getAllUsers = async (req, res) => {
 */
 exports.isUserValid = async (req, res) => {
   try {
-    console.log("what the fuck")
     const { emailInput, passwordInput, rememberMe } = req.body;
     const user = await User.findOne({ email: emailInput });
 
@@ -222,7 +221,6 @@ exports.isUserValid = async (req, res) => {
     }
 
     const match = await bcrypt.compare(passwordInput, user.password)
-    console.log("DB RESULT:", user);
     if (match) {
       user.last_login = new Date();
       req.session.userId = user._id

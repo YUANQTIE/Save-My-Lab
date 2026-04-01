@@ -19,11 +19,6 @@ router.get('/:id/info', AdminController.getAdminFields);
 //res.json: "_id", "email"
 router.get('/accounts', AdminController.getAllAccounts);
 
-//checks if the admin logging in is valid
-//req.params: "emailInput", "passwordInput"
-//res.json: true/false
-router.get('/verify/:emailInput/:passwordInput', AdminController.isAdminValid);
-
 router.get('/forgot', AdminController.getIdGivenEmail);
 
 router.get('/emailCheck', AdminController.isAdminEmailInDB)
@@ -31,6 +26,7 @@ router.get('/emailCheck', AdminController.isAdminEmailInDB)
 //req.body: password
 router.put('/edit/password', AdminController.editPassword);
 
+router.get("/logout", AdminController.adminLogout);
 
 //POST ROUTES
 
@@ -38,13 +34,26 @@ router.put('/edit/password', AdminController.editPassword);
 //req.body: "email", "password"
 router.post('/add', AdminController.addAdmin);
 
+//checks if the admin logging in is valid
+//req.params: "emailInput", "passwordInput"
+//res.json: true/false
+router.post('/verify', AdminController.isAdminValid);
+
 //PUT ROUTE
 
 //req.body: password
 router.put('/edit/password/:id', AdminController.editPassword);
 
 router.get("/landing", (req, res) => {
-    res.render('lab/see-reservations', {id: req.query.id, isAdmin: true})
+    if (!req.session.adminId) {
+        return res.redirect("/");
+    }
+    
+    const adminId = req.session.adminId;
+    res.render('lab/homepage', {
+        id: adminId,
+        isAdmin: true
+    });
 });
 
 router.get("/edit-computer-status", AdminController.showEditComputerStatus);

@@ -100,19 +100,46 @@ exports.getAdminFields = async (req, res) => {
 
 exports.isAdminValid =  async (req, res) => {
   try {
-    const { emailInput, passwordInput } = req.params;
+    const { emailInput, passwordInput, rememberMe } = req.body;
     const admin = await Admin.findOne({ email: emailInput });
+
+    console.log(emailInput, passwordInput, rememberMe)
 
     if (!admin){
       return res.json(false);
     }
 
     const match = await bcrypt.compare(passwordInput, admin.password)
+
     if (match) {
+      req.session.adminId = admin._id
       await admin.save();
+
+      if (rememberMe === true) {
+        req.session.cookie.maxAge = 21 * 24 * 60 * 60 * 1000;
+      } else {
+        req.session.cookie.expires = false;
+        req.session.cookie.maxAge = null;
+      }
+
       return res.json(true);
     }
     res.json(false);
+  } catch (err) {
+    res.status(500).send('Error');
+  }
+};
+
+exports.adminLogout = async (req, res) => {
+  try {
+    req.session.destroy(err => {
+      if (err) {
+          console.error("Session destroy error:", err);
+          return res.status(500).send("Could not log out");
+      }
+      res.clearCookie("connect.sid"); 
+      res.redirect("/"); 
+    });
   } catch (err) {
     res.status(500).send('Error');
   }

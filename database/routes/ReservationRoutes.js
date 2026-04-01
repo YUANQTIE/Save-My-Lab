@@ -40,7 +40,7 @@ router.get('/:reservationId/checkEditable', ReservationController.isReservationE
 
 //req.params: adminId
 //req.body: timeStart, timeEnd, seats
-router.post('/:adminId/add-admin', ReservationController.addAdminReservation);
+router.post('/add-admin', ReservationController.addAdminReservation);
 
 //req.params: userId
 //req.body: timeStart, timeEnd, seats, anonymous

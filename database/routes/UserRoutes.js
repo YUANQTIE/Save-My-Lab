@@ -84,10 +84,11 @@ router.get("/landing", (req, res) => {
     if (!req.session.userId) {
         return res.redirect("/");
     }
-    
+    console.log("i got here somehow")
     const userId = req.session.userId;
     res.render('user/homepage2', {
-        id: userId
+        id: userId,
+        isAdmin: false
     });
 });
 
@@ -97,7 +98,7 @@ router.get("/add-reservation", UserController.addReservation);
 router.get("/account-reserve", UserController.showProfileReservations);
 router.get("/view-reservations", (req,res) => {
     const userId = req.session.userId;
-    res.render('user/view-reservations', { id: userId });
+    res.render('user/view-reservations', { id: userId, isAdmin: false });
 });
 
 router.get("/view-other-user-profile", UserController.showUserSearched);
@@ -113,10 +114,9 @@ router.post("/edit-reservation", (req, res) => {
 router.get("/edit-reservation", (req, res) => {
     const userId = req.session.userId;
 
-    console.log("Session on GET:", req.session.resId);
-
     res.render("user/edit-reservation", {
-        id: userId
+        id: userId,
+        isAdmin: false
     });
 });
 
