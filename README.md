@@ -11,7 +11,7 @@ cd Save-My-Lab
 ## 2. Install Dependencies
 
 ```bash
-npm install bcrpyt express mongoose hbs dotenv
+npm install bcrpyt express mongoose hbs dotenv express-sesssion
 ```
 
 ## 3. Make a .env file and input your username and password

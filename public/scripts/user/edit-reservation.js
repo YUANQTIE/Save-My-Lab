@@ -385,7 +385,7 @@ $(document).ready(async function () {
     }
 
     async function getCurrentReservationData(){
-        const res = await fetch(`/reservations/specific-reservation?resId=${reservationId}`)
+        const res = await fetch(`/reservations/specific-reservation`)
         const reservation = await res.json()
         building = reservation.building
         room = reservation.room_name

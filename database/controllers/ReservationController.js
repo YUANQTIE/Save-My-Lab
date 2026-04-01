@@ -14,7 +14,9 @@ const Admin = require('../models/Admin.js');
 
 exports.getReservationById = async (req, res) => {
     try {
-        const reservationId = req.query.resId;
+        const reservationId = req.session.resId;
+
+        console.log(reservationId)
         const reservation = await Reservation.findById( reservationId ) //joins everything
             .populate({
                 path: 'seats',
@@ -459,7 +461,7 @@ exports.editUserReservation = async (req, res) => {
         console.log(start, end)
 
         const conflict = await Reservation.findOne({
-            _id: { $ne: req.params.reservationId },
+            _id: { $ne: req.session.resId },
 
             seats: { $in: req.body.seats },
 
@@ -472,7 +474,7 @@ exports.editUserReservation = async (req, res) => {
         }
 
         await Reservation.findByIdAndUpdate(
-            req.params.reservationId,
+            req.session.resId,
             {
                 reservation_start_timestamp: start,
                 reservation_end_timestamp: end,

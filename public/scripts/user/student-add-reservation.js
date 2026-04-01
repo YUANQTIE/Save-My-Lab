@@ -379,7 +379,7 @@ $(document).ready(function () {
                 anonymous: isAnonymous
             };
 
-            const res = await fetch(`/reservations/${userId}/add-user`, {
+            const res = await fetch(`/reservations/add-user`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

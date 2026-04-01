@@ -96,10 +96,22 @@ router.get("/view-reservations", (req,res) => {
 
 router.get("/view-other-user-profile", UserController.showUserSearched);
 
-router.get("/edit-reservation", (req,res) => {
-    const userId = req.session.userId;
-    res.render('user/edit-reservation', { id: userId });
-})
+router.post("/edit-reservation", (req, res) => {
+    req.session.resId = req.body.resId;
 
+    console.log("Session set to:", req.session.resId);
+
+    res.sendStatus(200);
+});
+
+router.get("/edit-reservation", (req, res) => {
+    const userId = req.session.userId;
+
+    console.log("Session on GET:", req.session.resId);
+
+    res.render("user/edit-reservation", {
+        id: userId
+    });
+});
 
 module.exports = router

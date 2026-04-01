@@ -44,7 +44,7 @@ router.post('/:adminId/add-admin', ReservationController.addAdminReservation);
 
 //req.params: userId
 //req.body: timeStart, timeEnd, seats, anonymous
-router.post('/:userId/add-user', ReservationController.addUserReservation);
+router.post('/add-user', ReservationController.addUserReservation);
 
 //PUT ROUTES
 

@@ -270,7 +270,11 @@ $(document).ready(async function () {
 
         const row = $(this).closest("tr");
         const reservationId = row.data("id");
-        window.location.href = `/user/edit-reservation?resId=${reservationId}`;
+        $.post("/user/edit-reservation", {
+            resId: reservationId
+        }).done(function () {
+            window.location.href = "/user/edit-reservation";
+        });
     });
 
     async function viewRow(e) {

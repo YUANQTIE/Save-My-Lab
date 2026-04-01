@@ -245,7 +245,7 @@ exports.getEditSeatStatus2 = async (req, res) => {
         const timeStart = new Date(req.query.timeStart + "Z");
         const timeEnd = new Date(req.query.timeEnd + "Z");
 
-        const resId = req.query.resId;
+        const resId = req.session.resId;
 
         const initialReservation = await Reservation.findById(resId);
 
