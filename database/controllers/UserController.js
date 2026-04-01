@@ -213,7 +213,8 @@ exports.getAllUsers = async (req, res) => {
 */
 exports.isUserValid = async (req, res) => {
   try {
-    const { emailInput, passwordInput } = req.params;
+    console.log("what the fuck")
+    const { emailInput, passwordInput, rememberMe } = req.body;
     const user = await User.findOne({ email: emailInput });
 
     if (!user){
@@ -226,9 +227,34 @@ exports.isUserValid = async (req, res) => {
       user.last_login = new Date();
       req.session.userId = user._id
       await user.save();
+
+      console.log(rememberMe)
+
+      if (rememberMe === true) {
+        req.session.cookie.maxAge = 21 * 24 * 60 * 60 * 1000;
+      } else {
+        req.session.cookie.expires = false;
+        req.session.cookie.maxAge = null;
+      }
+
       return res.json(true);
     }
     res.json(false);
+  } catch (err) {
+    res.status(500).send('Error');
+  }
+};
+
+exports.userLogout = async (req, res) => {
+  try {
+    req.session.destroy(err => {
+      if (err) {
+          console.error("Session destroy error:", err);
+          return res.status(500).send("Could not log out");
+      }
+      res.clearCookie("connect.sid"); 
+      res.redirect("/"); 
+    });
   } catch (err) {
     res.status(500).send('Error');
   }

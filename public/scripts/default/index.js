@@ -15,6 +15,9 @@ $(document).ready(function() {
 
         const emailInput = $("#userEmailInput").val().trim();
         const passwordInput = $("#userPasswordInput").val().trim();
+        const rememberMe = $("#rememberMeUser").is(":checked");
+
+        console.log(emailInput, passwordInput, rememberMe)
 
         console.log("Input Check:", emailInput, passwordInput);
 
@@ -33,7 +36,18 @@ $(document).ready(function() {
         }
 
         try {
-            const res1 = await fetch(`/user/verify/${emailInput}/${passwordInput}`);
+            console.log("what the fuck")
+            const res1 = await fetch("/user/verify", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    emailInput: emailInput,
+                    passwordInput: passwordInput,
+                    rememberMe: rememberMe
+                })
+            });
             const isUser = await res1.json();
 
             if (isUser) {

@@ -114,16 +114,13 @@
     $("#logoutBtn").on("click", async function (e) {
       e.preventDefault();
       try {
-        //const res = await fetch("/user/logout", { method: "POST" });
-        //const result = await res.json();
-
-        //localStorage.removeItem("rememberedEmail");
-
-        window.location.href = "/";
-      } catch (err) {
-        console.error("Logout Error:", err);
-        alert("An error occurred while logging out. Check console.");
-      }
+        const res = await fetch("/user/logout");
+            if (res.ok) {
+                window.location.href = "/";
+            }
+        } catch (err) {
+            console.error("Logout failed:", err);
+        }
     });
   })
 </script>

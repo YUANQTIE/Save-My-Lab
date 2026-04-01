@@ -5,6 +5,7 @@ const exphbs = require('express-handlebars');
 const path = require('path');
 const fileUpload = require('express-fileupload');
 const session = require("express-session");
+const FileStore = require('session-file-store')(session);
 
 const app = express(); // Define app FIRST
 const port = process.env.PORT || 3000;
@@ -34,13 +35,13 @@ app.use(fileUpload()) // for fileuploads
 app.use(express.static(path.join(__dirname, ''))); // serve everything in project folder
 
 app.use(session({
-    secret: "secret",
-
+    store: new FileStore({ path: './sessions', reapInterval: 3600 }),
+    secret: 'secret',
     resave: false,
     saveUninitialized: false,
-
     cookie: {
-        maxAge: 1000 * 60 * 60 * 24
+        httpOnly: true,
+        maxAge: null  
     }
 }));
 
@@ -53,9 +54,12 @@ app.use('/user', userRoutes)
 app.use('/aux', auxRoutes)
 
 app.get('/', (req, res) => {
+  if (req.session.userId) {
+    return res.redirect('/user/landing');
+  }
+
   res.sendFile(path.join(__dirname, 'views/default/index.html'));
 });
-
 
 mongoose.connect(url)
   .then(() => {

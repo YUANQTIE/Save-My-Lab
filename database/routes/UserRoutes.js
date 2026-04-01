@@ -31,7 +31,7 @@ router.get('/users', UserController.getAllUsers);
 //checks if user can log in
 //req.params: emailInput, passwordInput
 //res.json: true/false
-router.get('/verify/:emailInput/:passwordInput', UserController.isUserValid);
+router.post('/verify', UserController.isUserValid);
 
 //checks if user can log in
 //req.params: emailInput, passwordInput
@@ -77,8 +77,14 @@ router.put('/edit/password', UserController.editPassword);
 //req.params: id
 router.delete("/delete", UserController.deleteUser);
 
+router.get("/logout", UserController.userLogout);
+
 
 router.get("/landing", (req, res) => {
+    if (!req.session.userId) {
+        return res.redirect("/");
+    }
+    
     const userId = req.session.userId;
     res.render('user/homepage2', {
         id: userId
