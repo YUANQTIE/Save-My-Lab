@@ -122,6 +122,12 @@ h2 {
   cursor: pointer;
 }
 
+.seat.grey {
+  background-image: url("../../../images/computer-gray.svg");
+  pointer-events: auto;
+  cursor: pointer;
+}
+
 /* LEFT PANEL */
 
 .controls {

@@ -28,6 +28,8 @@ router.get('/edit-seat-status', RoomController.getEditSeatStatus);
 
 router.get('/edit-seat-status-2', RoomController.getEditSeatStatus2);
 
+router.get('/resolve', RoomController.getBrokensInARoom);
+
 //gets the count per status
 //req.query: timeStart, timeEnd, roomName
 //res.json: available, reserved, broken

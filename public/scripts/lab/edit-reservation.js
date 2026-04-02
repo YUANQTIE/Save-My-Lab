@@ -684,7 +684,7 @@ $(document).ready(async function () {
     successConfirm.addEventListener('click', function (event) {
         successModal.classList.add("hidden")
 
-        window.location.href = `/user/landing`
+        window.location.href = `/admin/landing`
     });
 
     function displayStartTimeInputs() {

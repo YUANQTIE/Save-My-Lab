@@ -70,6 +70,23 @@ router.get("/edit-reservation", (req, res) => {
     });
 });
 
+router.post("/resolve-computer", (req, res) => {
+    req.session.brokenId = req.body.brokenId;
+
+    console.log("Session set to:", req.session.brokenId);
+
+    res.sendStatus(200);
+});
+
+router.get("/resolve-computer", (req, res) => {
+    const adminId = req.session.adminId;
+
+    res.render("lab/resolve-computer", {
+        id: adminId,
+        isAdmin: true
+    });
+});
+
 router.get("/see-broken-computers", AdminController.showBrokenComputers);
 router.get("/see-reservations", AdminController.showReservations);
 router.get("/edit-computer-status", AdminController.showEditComputerStatus);

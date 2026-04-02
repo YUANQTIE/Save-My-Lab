@@ -209,6 +209,19 @@ $(document).ready(function () {
         }
     });
 
+    $(document).on("click", ".resolve", function(e) {
+        e.preventDefault();
+
+        const row = $(this).closest("tr");
+        const brokenId = row.data("id");
+
+        $.post("/admin/resolve-computer", {
+            brokenId: brokenId
+        }).done(function () {
+            window.location.href = "/admin/resolve-computer";
+        });
+    });
+
     $(document).on("click", ".seatBtn", async function (e) {
         try {
             const brokenId = $(this).closest("tr").data("id");

@@ -240,6 +240,51 @@ exports.getEditSeatStatus = async (req, res) => {
     }
 };
 
+exports.getBrokensInARoom = async (req, res) => {
+    try {
+        let brokenSeats = req.query.brokenSeats || [];
+
+        if (typeof brokenSeats === "string") {
+            brokenSeats = brokenSeats.split(",");
+        }
+
+        brokenSeats = brokenSeats.map(id => id.toString().trim());
+
+        const room = await Room.findOne({ room_name: req.query.roomName });
+        if (!room) 
+            return res.status(404).json({ msg: "Room not found" });
+
+        const allSeats = await Seat.find({ room_id: room._id }).sort({ seat_number: 1 });
+
+        const seatsWithStatus = allSeats.map(seat => {
+            return {
+                seat_id: seat._id,
+                seat_name: seat.seat_name,
+                status: brokenSeats.includes(seat._id.toString()) ? "selected" : "unselected"
+            };
+        });
+
+        seatsWithStatus.sort((a, b) =>a.seat_name.localeCompare(
+                b.seat_name,
+                undefined,
+                {
+                    numeric: true,
+                    sensitivity: "base"
+                }
+            )
+        );
+
+        res.json({
+            room_name: room.room_name,
+            building: room.building,
+            seats: seatsWithStatus
+        });
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error");
+    }
+};
 exports.getEditSeatStatus2 = async (req, res) => {
     try {
         const timeStart = new Date(req.query.timeStart + "Z");

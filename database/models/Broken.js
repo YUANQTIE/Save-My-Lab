@@ -6,7 +6,11 @@ const BrokenSchema = new mongoose.Schema({
         ref: "Seat"
     }],
     broken_start_timestamp: { type: Date, required: true },
-    reason: { type: String, required: true }
+    reason: { type: String, required: true },
+    administered_by: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Admin"
+    },
 });
 
 const Broken = mongoose.model("Broken", BrokenSchema);

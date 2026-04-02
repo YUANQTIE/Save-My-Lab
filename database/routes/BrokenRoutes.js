@@ -17,6 +17,9 @@ router.get('/brokens', BrokenController.getAllBrokens);
 //gets all seats from one reservation
 router.get('/:brokenId/seats', BrokenController.getSeats);
 
+//gets all seats from one reservation
+router.get('/broken-info', BrokenController.getBrokenDocument);
+
 router.get('/brokens/filter', BrokenController.getFilteredBrokens);
 
 //POST ROUTES
@@ -25,10 +28,10 @@ router.post('/add', BrokenController.addBroken);
 
 //PUT ROUTES
 //req.body: brokenTimeStart, seats
-router.put('/edit/:id', BrokenController.editBroken);
+router.put('/edit', BrokenController.editBroken);
 
 //DELETE ROUTES
 //req.params: id
-router.delete('/delete/:id', BrokenController.deleteBroken);
+router.delete('/delete', BrokenController.deleteBroken);
 
 module.exports = router

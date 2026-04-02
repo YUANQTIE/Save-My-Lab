@@ -124,6 +124,42 @@ exports.getSeats = async (req, res) => {
     }
 };
 
+exports.getBrokenDocument = async (req, res) => {
+    try {
+        const brokenId = req.session.brokenId;
+
+        const broken = await Broken.findById(brokenId)
+        .populate({
+            path: 'seats',
+            populate: {
+                path: 'room_id'
+            }
+        });
+
+        if (!broken) {
+            return res.status(404).json({ msg: 'Broken not found' });
+        }
+
+        const result = {
+            broken_id: broken._id,
+            broken_start_timestamp: broken.broken_start_timestamp,
+            reason: broken.reason,
+            room_name: broken.seats[0].room_id.room_name,
+            building: broken.seats[0].room_id.building,
+            seats: broken.seats.map(seat => seat._id),
+            seat_names: broken.seats.map(seat => seat.seat_name)
+        };
+
+        console.log(result);
+
+        res.json(result);
+    }
+    catch (err) {
+        console.error(err.message);
+        res.status(500).send('Error');
+    }
+};
+
 
 
 // POST ROUTES
@@ -159,11 +195,10 @@ exports.addBroken = async (req, res) =>{
 exports.editBroken = async (req, res) =>{
   try {
     await Broken.findByIdAndUpdate( 
-        req.params.id,
+        req.session.brokenId,
         {
-            creation_timestamp: new Date(Date.now()),
-            broken_start_timestamp: new Date(req.body.brokenTimeStart),
-            seats: req.body.seats
+            seats: req.body.seats,
+            administered_by: req.session.adminId
         }
     );
 
@@ -183,7 +218,7 @@ exports.editBroken = async (req, res) =>{
 
 exports.deleteBroken = async (req, res) =>{
   try {
-    await Broken.findByIdAndDelete( req.params.id );
+    await Broken.findByIdAndDelete( req.session.brokenId );
 
     res.send("Broken Computer(s) successfully deleted");
   } catch (err) {
