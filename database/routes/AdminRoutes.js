@@ -70,6 +70,7 @@ router.get("/edit-reservation", (req, res) => {
     });
 });
 
+router.get("/see-broken-computers", AdminController.showBrokenComputers);
 router.get("/see-reservations", AdminController.showReservations);
 router.get("/edit-computer-status", AdminController.showEditComputerStatus);
 router.get("/add-reservation", AdminController.showAddReservation);

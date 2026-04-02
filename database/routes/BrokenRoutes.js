@@ -14,6 +14,9 @@ router.get('/brokens', BrokenController.getAllBrokens);
 //req.query: roomName, building, brokenTimeStart, creationTimeStart, creationTimeEnd
 //res.json: "_id", creation_timestamp, broken_start_timestamp, "[seats : _id (ng seat), seat_name, [room_id : _id (ng room), room_name, building, capacity]]"
 
+//gets all seats from one reservation
+router.get('/:brokenId/seats', BrokenController.getSeats);
+
 router.get('/brokens/filter', BrokenController.getFilteredBrokens);
 
 //POST ROUTES

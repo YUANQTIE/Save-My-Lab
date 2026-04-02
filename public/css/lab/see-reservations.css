@@ -101,6 +101,10 @@ body {
   border-color: #c0392b;
 }
 
+.button-green {
+  border-color: #3bb143;
+}
+
 .add-button {
   width: 48px;
   height: 48px;

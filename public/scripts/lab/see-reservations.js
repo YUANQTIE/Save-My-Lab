@@ -228,6 +228,7 @@ $(document).ready(function () {
             reservationEndHour = undefined;
             reservationStartTimeStamp = undefined;
             reservationEndTimeStamp = undefined;
+            reservationsToBeDisplayed = undefined;
             updateReservationsList(email, creationTimeStart, creationTimeEnd, room, building, reservationStartTimeStamp, reservationEndTimeStamp, seatCount)
         }
         catch (err) {

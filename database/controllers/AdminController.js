@@ -30,6 +30,16 @@ exports.getIdGivenEmail = async (req, res) => {
   }
 };
 
+exports.showBrokenComputers = async(req, res) => {
+  try {
+    const adminData = await Admin.findById(req.session.adminId).lean();
+    res.render('lab/see-broken-computers', { admin: adminData, isAdmin: true });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Error');
+  }
+}
+
 exports.showReservations = async(req, res) => {
   try {
     const adminData = await Admin.findById(req.session.adminId).lean();

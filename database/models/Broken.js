@@ -5,8 +5,8 @@ const BrokenSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Seat"
     }],
-    creation_timestamp: { type: Date, required: true },
     broken_start_timestamp: { type: Date, required: true },
+    reason: { type: String, required: true }
 });
 
 const Broken = mongoose.model("Broken", BrokenSchema);
