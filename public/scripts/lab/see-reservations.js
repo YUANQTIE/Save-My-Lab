@@ -382,7 +382,7 @@ $(document).ready(function () {
                                 <button class = "seatBtn button icon-button text-slate-600 hover:bg-[#34493e]/5 hover:border-[#34493e]/20 hover:text-[#34493e]">
                                     <img src="/images/seat.png" alt="View" class="w-5 h-5">
                                 </button>
-                                <button class = "button icon-button text-slate-600 hover:bg-[#34493e]/5 hover:border-[#34493e]/20 hover:text-[#34493e]">
+                                <button class = "edit button icon-button text-slate-600 hover:bg-[#34493e]/5 hover:border-[#34493e]/20 hover:text-[#34493e]">
                                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
                                 </svg>
@@ -445,7 +445,7 @@ $(document).ready(function () {
                                 <button class = "seatBtn button icon-button text-slate-600 hover:bg-[#34493e]/5 hover:border-[#34493e]/20 hover:text-[#34493e]">
                                     <img src="/images/seat.png" alt="View" class="w-5 h-5">
                                 </button>
-                                <button class = "button icon-button text-slate-600 hover:bg-[#34493e]/5 hover:border-[#34493e]/20 hover:text-[#34493e]">
+                                <button class = "edit button icon-button text-slate-600 hover:bg-[#34493e]/5 hover:border-[#34493e]/20 hover:text-[#34493e]">
                                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
                                 </svg>
@@ -526,7 +526,21 @@ $(document).ready(function () {
         tbody.appendChild(tr);
     }
 
+    $(document).on("click", ".edit", function(e) {
+        e.preventDefault();
 
+        console.log("I WAS CLICKED")
+
+        const row = $(this).closest("tr");
+        const reservationId = row.data("id");
+
+        console.log("resid", reservationId)
+        $.post("/admin/edit-reservation", {
+            resId: reservationId
+        }).done(function () {
+            window.location.href = "/admin/edit-reservation";
+        });
+    });
 
     function convertDate(date) {
         const dateObj = new Date(date);

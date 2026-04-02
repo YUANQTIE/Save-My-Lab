@@ -647,7 +647,7 @@ $(document).ready(async function () {
                 anonymous: isAnonymous
             };
 
-            const res = await fetch(`/reservations/${reservationId}/edit`, {
+            const res = await fetch(`/reservations/${reservationId}/edit-user`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json"

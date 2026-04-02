@@ -500,15 +500,34 @@ exports.editUserReservation = async (req, res) => {
 exports.editAdminReservation = async (req, res) => {
     try {
 
+        const start = new Date(req.body.timeStart + "Z");
+        const end = new Date(req.body.timeEnd + "Z");
+
+        console.log(start, end)
+
+        const conflict = await Reservation.findOne({
+            _id: { $ne: req.session.resId },
+
+            seats: { $in: req.body.seats },
+
+            reservation_start_timestamp: { $lt: end },
+            reservation_end_timestamp: { $gt: start }
+        });
+        if (conflict) {
+            res.status(400).send("One or more seats are already reserved for that time.");
+            return;
+        }
+
         await Reservation.findByIdAndUpdate(
-            req.params.reservationId,
+            req.session.resId,
             {
-                reservation_start_timestamp: new Date(req.body.timeStart),
-                reservation_end_timestamp: new Date(req.body.timeEnd),
-                reservedBy: req.params.adminId,
-                reservedByModel: "Admin",
+                reservation_start_timestamp: start,
+                reservation_end_timestamp: end,
                 creation_timestamp: new Date(Date.now()),
-                seats: req.body.seats
+                reservedBy: req.session.adminId,
+                reservedByModel: "Admin",
+                seats: req.body.seats,
+                anonymous: true
             }
         );
 

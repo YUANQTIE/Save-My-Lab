@@ -50,11 +50,11 @@ router.post('/add-user', ReservationController.addUserReservation);
 
 //req.params: reservationId
 //req.body: timeStart, timeEnd, seats, anonymous
-router.put('/:reservationId/edit', ReservationController.editUserReservation);
+router.put('/:reservationId/edit-user', ReservationController.editUserReservation);
 
 //req.params: reservationId, adminId
 //req.body: timeStart, timeEnd, seats
-router.put('/:adminId/:reservationId/edit', ReservationController.editAdminReservation);
+router.put('/:reservationId/edit-admin', ReservationController.editAdminReservation);
 
 //DELETE ROUTES
 //req.params: reservationId

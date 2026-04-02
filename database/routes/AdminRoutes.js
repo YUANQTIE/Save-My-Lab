@@ -53,6 +53,23 @@ router.get("/landing", (req, res) => {
     res.render('lab/homepage', { id: adminId, isAdmin: true });
 });
 
+router.post("/edit-reservation", (req, res) => {
+    req.session.resId = req.body.resId;
+
+    console.log("Session set to:", req.session.resId);
+
+    res.sendStatus(200);
+});
+
+router.get("/edit-reservation", (req, res) => {
+    const adminId = req.session.adminId;
+
+    res.render("lab/edit-reservation", {
+        id: adminId,
+        isAdmin: true
+    });
+});
+
 router.get("/see-reservations", AdminController.showReservations);
 router.get("/edit-computer-status", AdminController.showEditComputerStatus);
 router.get("/add-reservation", AdminController.showAddReservation);
