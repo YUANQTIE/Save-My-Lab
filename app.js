@@ -18,6 +18,7 @@ const roomRoutes = require('./database/routes/RoomRoutes.js')
 const seatRoutes = require('./database/routes/SeatRoutes.js')
 const userRoutes = require('./database/routes/UserRoutes.js');
 const auxRoutes = require('./database/routes/AuxiliaryRoutes.js');
+const notifsRoutes = require('./database/routes/NotificationRoutes.js');
 
 
 /* We'll use handlebars for this one */
@@ -52,6 +53,7 @@ app.use('/room', roomRoutes)
 app.use('/seat', seatRoutes)
 app.use('/user', userRoutes)
 app.use('/aux', auxRoutes)
+app.use('/notif', notifsRoutes)
 
 app.get('/', (req, res) => {
   if (req.session.userId && !req.session.adminId) {

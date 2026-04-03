@@ -5,7 +5,7 @@
 
 body {
   margin: 0;
-  background: #f2f2f2;
+  background: #F0F4F2;
 }
 
 /* HEADER */
@@ -51,10 +51,10 @@ body {
 /* PAGE */
 
 .page {
-  background: white;
-  margin: 25px;
-  padding: 25px;
-  min-height: 80vh;
+  /* Soft transition from a very light mint to a clean slate gray */
+  background: radial-gradient(circle at center, #f7faf9 0%, #edf2f0 100%);
+  min-height: 100vh;
+  padding: 40px;
 }
 
 h2 {
@@ -67,11 +67,26 @@ h2 {
   gap: 40px;
 }
 
+.label-text {
+  display: block;
+  font-size: 24px;
+  letter-spacing: -0.025em;
+  font-weight: bold;
+  color: #166534;
+  border-bottom: 2px solid rgba(1, 105, 56, 0.1);
+  padding-bottom: 1rem;
+  margin-bottom: 2rem;
+}
+
 /* INTERACTIVE PANEL */
 
 .layout-panel {
-  border: 2px solid black;
-  padding: 15px;
+  background: white;
+  border-radius: 32px;
+  border: 1px solid rgba(0,0,0,0.03);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  transition: all 0.3s ease;
 }
 
 .room-wrapper {
@@ -84,19 +99,18 @@ h2 {
   display: block;
 }
 
-/* SEAT */
+/* SEATS */
 
 .seat {
   position: absolute;      
   width: 5.3%;
   aspect-ratio: 1 / 1;
   cursor: pointer;
-  background-image: url("../../../images/computer.svg");
+  background-image: url("../../images/computer.svg");
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
   opacity: 0.55;                      
-  pointer-events: none;               
 }
 
 .seats-enabled .seat {
@@ -105,19 +119,78 @@ h2 {
 }
 
 .seat.blue {
-  background-image: url("../../../images/computer-blue.svg");
+  background-image: url("../../images/computer-blue.svg");
+  cursor: default;
 }
 
 .seat.red {
-  background-image: url("../../../images/computer-red.svg");
+  background-image: url("../../images/computer-red.svg");
+  cursor: pointer;
 }
 
-/* LEFT INPUT */
+.seat.green {
+  background-image: url("../../images/computer-green.svg");
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.seat.cursor-pointer, 
+.seat.green {
+  pointer-events: auto;
+  opacity: 1;
+}
+.seat.grey {
+  background-image: url("../../../images/computer-gray.svg");
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.seat[data-name] {
+  position: absolute;
+}
+
+.seat:hover::after {
+  content: attr(title); 
+  position: absolute;
+  bottom: 120%; 
+  left: 50%;
+  transform: translateX(-50%);
+  
+  background-color: rgba(0, 0, 0, 0.85);
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  white-space: nowrap; 
+  z-index: 100; 
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  pointer-events: none; 
+}
+
+.seat:hover::before {
+  content: "";
+  position: absolute;
+  bottom: 105%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: rgba(0, 0, 0, 0.85) transparent transparent transparent;
+  z-index: 100;
+}
+
+/* LEFT PANEL */
 
 .controls {
   display: flex;
   flex-direction: column;
   gap: 22px;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px); /* Makes the background underneath look blurry */
+  border-radius: 24px;
+  border: 1px solid white;
+  padding: 30px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.03);
 }
 
 .input-box {
@@ -197,6 +270,7 @@ h2 {
 
 .time-block.invalid select {
   border-color: #ff4d4d;
+  border-radius: 20;
 }
 
 .confirm-button {
@@ -204,7 +278,7 @@ h2 {
   border-radius: 12px;
   border: none;
   font-weight: bold;
-  background: #3b7f13;
+  background: oklch(39.3% 0.095 152.535);
   color: white;
   cursor: pointer;
 }
@@ -235,62 +309,4 @@ footer {
   padding: 10px 30px;
   color: #307c17;
   font-size: 14px;
-}
-
-/* MODAL DISPLAY */
-
-.modal {
-  position: fixed;
-  inset: 0;
-}
-
-.modal-backdrop {
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.2);
-  z-index: 1;
-}
-
-.modal-card {
-  position: relative;
-  z-index: 2;
-  background: white;
-  width: 480px;
-  margin: 15vh auto;
-  border-radius: 12px;
-  border: 2px solid #bdbdbd;
-}
-
-.modal-head {
-  background: #d9d9d9;
-  padding: 12px;
-  display: flex;
-  justify-content: space-between;
-}
-
-.modal-body { 
-  padding: 16px; 
-}
-
-.seat-grid {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.seat-display {
-  border: 2px solid #7f7f7f;
-  padding: 8px 12px;
-  border-radius: 999px;
-}
-
-.confirm-actions{
-  display:flex;
-  justify-content:flex-end;
-  gap:10px;
-  margin-top:14px;
-}
-
-.confirm-text{
-  margin: 0;
 }

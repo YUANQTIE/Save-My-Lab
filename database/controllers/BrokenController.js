@@ -170,15 +170,20 @@ exports.getBrokenDocument = async (req, res) => {
     Returns: seat_names (str in JSON format), room_name (str in JSON format)
 */
 
-exports.addBroken = async (req, res) =>{
+exports.addBroken = async (req, res) => {
   try {
-    await Broken.create({
-      creation_timestamp: new Date(Date.now()),
-      broken_start_timestamp: new Date(req.body.brokenTimeStart),
-      seats: req.body.seats
+    const brokenRecord = await Broken.create({
+      broken_start_timestamp: new Date(req.body.brokenTimeStart + "Z"),
+      seats: req.body.seats,
+      reason: req.body.reason,
+      administered_by: req.session.adminId
     });
 
-    res.send("Broken Computer(s) successfully added");
+    res.json({
+      message: "Broken Computer(s) successfully added",
+      brokenId: brokenRecord._id
+    });
+
   } catch (err) {
     console.error(err);
     res.status(500).send("Error");

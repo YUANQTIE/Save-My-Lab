@@ -73,6 +73,66 @@
   <footer class="bottom-0 w-full text-center text-black p-4 z-10">
     Lab Reservation System by Labron James Group
   </footer>
+
+<div id="successModal" tabindex="-1" class="hidden fixed inset-0 z-[9999] flex items-center justify-center p-4">
+    <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm modal-backdrop"></div>
+    <div class="relative p-4 w-full max-w-md max-h-full">
+      <div class="relative z-10 w-full max-w-md bg-white rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] overflow-hidden border border-gray-100">
+        {{!-- Checkmark --}}
+        <div class="p-4 md:p-5 text-center">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12 mx-auto mb-4 text-red-600">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 0 0 5.636 5.636m12.728 12.728A9 9 0 0 1 5.636 5.636m12.728 12.728L5.636 5.636" />
+          </svg>
+            <h3 class="mb-6 text-body">Notice of Cancellation</h3>
+
+            <!-- Location & Time grid -->
+            <div class="grid grid-cols-2 gap-4 mb-6">
+                <div class="space-y-1">
+                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Location</p>
+                <p class="text-sm font-semibold text-slate-800" id="venue">Gokongwei Building</p>
+                <p class="text-xs text-slate-500" id="room">Room G201</p>
+                </div>
+                <div class="space-y-1 border-l pl-4 border-slate-100">
+                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Reserved On</p>
+                <p class="text-sm font-semibold text-slate-800" id="date">March 25, 2026</p>
+                <p class="text-xs text-slate-500" id="time">14:00 - 15:00</p>
+                </div>
+            </div>
+
+            <!-- Stack Reason and Selected Computers vertically -->
+            <div class="space-y-4 mb-6">
+                <div class="w-full bg-slate-50 rounded-xl p-4 border border-slate-100">
+                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">Reason of Unavailability</p>
+                <div id="reason" class="flex flex-wrap gap-2">
+                    <span class="px-2 py-1 bg-white border border-slate-200 rounded text-xs font-bold text-[#1e3a2a]">G201-31</span>
+                </div>
+                </div>
+                <div class="w-full bg-slate-50 rounded-xl p-4 border border-slate-100">
+                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">Selected Computers</p>
+                <div id="seats" class="flex flex-wrap gap-2">
+                    <span class="px-2 py-1 bg-white border border-slate-200 rounded text-xs font-bold text-[#1e3a2a]">G201-31</span>
+                </div>
+                </div>
+                <div class="w-full bg-slate-50 rounded-xl p-4 border border-slate-100">
+                <p id="unavail" class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3"></p>
+                <div id="conflictSeats" class="flex flex-wrap gap-2">
+                    <span class="px-2 py-1 bg-white border border-slate-200 rounded text-xs font-bold text-[#1e3a2a]">G201-31</span>
+                </div>
+                </div>
+            </div>
+
+            <!-- Confirm button -->
+            <div class="flex items-center space-x-4 justify-center">
+                <button id="successConfirm" type="button"
+                class="bg-[#1e3a2a] hover:bg-[#2d523d] text-white font-bold py-2.5 px-8 rounded-xl transition-all shadow-md hover:shadow-lg active:scale-95">
+                I acknowledge
+                </button>
+            </div>
+            </div>
+      </div>
+    </div>
+  </div>
+
 </body>
 
 </html>

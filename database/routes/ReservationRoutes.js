@@ -49,6 +49,10 @@ router.post('/add-user', ReservationController.addUserReservation);
 //PUT ROUTES
 
 //req.params: reservationId
+
+router.put('/:reservationId/cancel', ReservationController.cancelReservation);
+
+//req.params: reservationId
 //req.body: timeStart, timeEnd, seats, anonymous
 router.put('/:reservationId/edit-user', ReservationController.editUserReservation);
 

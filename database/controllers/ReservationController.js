@@ -93,7 +93,10 @@ exports.getUserReservations = async (req, res) => {
         const reservationTimeEnd = req.query.reservationTimeEnd;
         const seatCount = req.query.seatCount;
 
-        let firstStage = { reservedBy: req.session.userId }; //filters by username
+        let firstStage = { 
+            reservedBy: req.session.userId,
+            isCancelled: { $ne: true }
+        };
 
         if (creationTimeStart && creationTimeEnd) {
             firstStage.creation_timestamp = {
@@ -205,7 +208,9 @@ exports.getFilteredReservations = async (req, res) => {
 
         console.log(reservedBy, creationTimeStart, creationTimeEnd, roomName, building, reservationTimeStart, reservationTimeEnd, seatCount)
 
-        let firstStage = {}; //filters by username
+        let firstStage = {
+            isCancelled: { $ne: true }
+        };
 
         if (creationTimeStart && creationTimeEnd) {
             firstStage.creation_timestamp = {
@@ -397,7 +402,8 @@ exports.addAdminReservation = async (req, res) => {
             reservedBy: req.session.adminId,
             reservedByModel: "Admin",
             seats: req.body.seats,
-            anonymous: true
+            anonymous: true,
+            isCancelled: false
         });
 
         res.send("Reservation added successfully");
@@ -435,7 +441,8 @@ exports.addUserReservation = async (req, res) => {
             reservedBy: req.session.userId,
             reservedByModel: "User",
             seats: req.body.seats,
-            anonymous: req.body.anonymous
+            anonymous: req.body.anonymous,
+            isCancelled: false
         });
 
         res.send("Reservation added successfully");
@@ -480,7 +487,8 @@ exports.editUserReservation = async (req, res) => {
                 reservation_end_timestamp: end,
                 creation_timestamp: new Date(Date.now()),
                 seats: req.body.seats,
-                anonymous: req.body.anonymous
+                anonymous: req.body.anonymous,
+                isCancelled: false
             }
         );
 
@@ -527,11 +535,70 @@ exports.editAdminReservation = async (req, res) => {
                 reservedBy: req.session.adminId,
                 reservedByModel: "Admin",
                 seats: req.body.seats,
-                anonymous: true
+                anonymous: true,
+                isCancelled: false
             }
         );
 
         res.send("Reservation updated successfully");
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error");
+    }
+};
+
+exports.editAdminReservation = async (req, res) => {
+    try {
+
+        const start = new Date(req.body.timeStart + "Z");
+        const end = new Date(req.body.timeEnd + "Z");
+
+        console.log(start, end)
+
+        const conflict = await Reservation.findOne({
+            _id: { $ne: req.session.resId },
+
+            seats: { $in: req.body.seats },
+
+            reservation_start_timestamp: { $lt: end },
+            reservation_end_timestamp: { $gt: start }
+        });
+        if (conflict) {
+            res.status(400).send("One or more seats are already reserved for that time.");
+            return;
+        }
+
+        await Reservation.findByIdAndUpdate(
+            req.session.resId,
+            {
+                reservation_start_timestamp: start,
+                reservation_end_timestamp: end,
+                creation_timestamp: new Date(Date.now()),
+                reservedBy: req.session.adminId,
+                reservedByModel: "Admin",
+                seats: req.body.seats,
+                anonymous: true,
+                isCancelled: false
+            }
+        );
+
+        res.send("Reservation updated successfully");
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error");
+    }
+};
+
+exports.cancelReservation = async (req, res) => {
+    try {
+        await Reservation.findByIdAndUpdate(
+            req.params.reservationId,
+            { isCancelled: true }
+        );
+
+        res.send("Reservation cancelled successfully");
 
     } catch (err) {
         console.error(err);

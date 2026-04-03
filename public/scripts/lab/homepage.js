@@ -6,7 +6,7 @@ $(document).ready(async function () {
     let currentIndex = 0;
 
     async function checkNotifications() {
-        const res = await fetch(`/notif/notifs-user`);
+        const res = await fetch(`/notif/notifs-admin`);
         const notifsJson = await res.json();
 
         console.log(notifsJson);
