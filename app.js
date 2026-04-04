@@ -5,7 +5,7 @@ const exphbs = require('express-handlebars');
 const path = require('path');
 const fileUpload = require('express-fileupload');
 const session = require("express-session");
-const FileStore = require('session-file-store')(session);
+const MongoStore = require('connect-mongo').default;
 
 const app = express(); // Define app FIRST
 const port = process.env.PORT || 3000;
@@ -36,13 +36,17 @@ app.use(fileUpload()) // for fileuploads
 app.use(express.static(path.join(__dirname, ''))); // serve everything in project folder
 
 app.use(session({
-    store: new FileStore({ path: './sessions', reapInterval: 3600 }),
-    secret: 'secret',
+    store: MongoStore.create({
+        mongoUrl: url
+    }),
+    secret: process.env.SESSION_SECRET || 'secret',
+
     resave: false,
     saveUninitialized: false,
+
     cookie: {
         httpOnly: true,
-        maxAge: null  
+        maxAge: null
     }
 }));
 
