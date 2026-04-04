@@ -157,6 +157,7 @@ $(document).ready(function () {
     function assignSeatIds(seatArray) {
         $(".seat").removeClass("gray red blue blue-500 red-500 green cursor-pointer selected").attr("title", "").removeAttr("id").removeAttr("data-name");
         $(".room-wrapper").addClass("seats-enabled");
+        console.log(seatArray)
         if (building === "Gokongwei Building") {
             $("#goks .seat").each(function (index) {
                 const seatInfo = seatArray[index];
@@ -164,8 +165,74 @@ $(document).ready(function () {
                 if (seatInfo) {
                     $(this).attr("id", seatInfo._id);
                     $(this).attr("data-name", seatInfo.seat_name);
-                    if (seatInfo.reservedBy) {
-                        $(this).attr("title", `Seat ${seatInfo.seat_name}; reserved by ${seatInfo.reservedBy}`);
+                    if (seatInfo.reservedBys && seatInfo.reservedBys.length > 0) {
+                        $(this).data("reservedBys", seatInfo.reservedBys);
+                        $(this).data("userIDs", seatInfo.userIds);
+
+                        let seat = $(this);
+                        seat.off("mouseenter mouseleave");
+
+                        seat.on("mouseenter", function () {
+                            const emails = seat.data("reservedBys");
+                            const userIDs = seat.data("userIDs");
+
+                            let emailLinks = emails.map((email, index) => {
+                                const userId = userIDs[index];
+                                return `<a href="/user/view-other-user-profile?id=${userId}" class="seat-email">${email}</a>`;
+                            }).join("<br>");
+
+                            const tooltip = $(`
+                                <div class="seat-tooltip">
+                                    <strong>Seat ${seatInfo.seat_name} - OCCUPIED BY:</strong><br>
+                                    ${emailLinks}
+                                </div>
+                            `);
+
+                            $("body").append(tooltip);
+
+                            tooltip.css({
+                                top: seat.offset().top - tooltip.outerHeight() - 10,
+                                left: seat.offset().left,
+                                position: "absolute",
+                                background: "#000",           
+                                color: "#fff",               
+                                border: "1px solid #444",
+                                padding: "10px 15px",
+                                "border-radius": "12px",     
+                                "box-shadow": "0 4px 12px rgba(0,0,0,0.4)",
+                                "font-family": "Arial, sans-serif",
+                                "font-size": "14px",
+                                "z-index": 1000,
+                                "min-width": "180px"
+                            });
+
+                            tooltip.find("a").css({
+                                color: "#fff",                   
+                                "text-decoration": "none",
+                                "display": "inline-block",
+                                "margin-top": "2px",
+                                padding: "2px 4px",
+                                "border-radius": "4px",
+                                transition: "background 0.2s"
+                            }).hover(
+                                function () { $(this).css("background", "#444"); },
+                                function () { $(this).css("background", "transparent"); }
+                            );
+
+                            seat.data("tooltip", tooltip);
+
+                            tooltip.on("mouseenter", () => tooltip.show());
+                            tooltip.on("mouseleave", () => tooltip.remove());
+                        });
+
+                        seat.on("mouseleave", function () {
+                            setTimeout(() => {
+                                const tooltip = seat.data("tooltip");
+                                if (tooltip && !tooltip.is(":hover")) {
+                                    tooltip.remove();
+                                }
+                            }, 100);
+                        });
                     }
                     else {
                         $(this).attr("title", `Seat ${seatInfo.seat_name}`);
@@ -188,13 +255,78 @@ $(document).ready(function () {
         if (building === "St. La Salle Hall") {
             $("#ls .seat").each(function (index) {
                 const seatInfo = seatArray[index];
-                console.log(seatInfo)
 
                 if (seatInfo) {
                     $(this).attr("id", seatInfo._id);
                     $(this).attr("data-name", seatInfo.seat_name);
-                    if (seatInfo.reservedBy) {
-                        $(this).attr("title", `Seat ${seatInfo.seat_name}; reserved by ${seatInfo.reservedBy}`);
+                    if (seatInfo.reservedBys && seatInfo.reservedBys.length > 0) {
+                        $(this).data("reservedBys", seatInfo.reservedBys);
+                        $(this).data("userIDs", seatInfo.userIds);
+
+                        let seat = $(this);
+                        seat.off("mouseenter mouseleave");
+
+                        seat.on("mouseenter", function () {
+                            const emails = seat.data("reservedBys");
+                            const userIDs = seat.data("userIDs");
+
+                            let emailLinks = emails.map((email, index) => {
+                                const userId = userIDs[index];
+                                return `<a href="/user/view-other-user-profile?id=${userId}" class="seat-email">${email}</a>`;
+                            }).join("<br>");
+
+                            const tooltip = $(`
+                                <div class="seat-tooltip">
+                                    <strong>Seat ${seatInfo.seat_name} - OCCUPIED BY:</strong><br>
+                                    ${emailLinks}
+                                </div>
+                            `);
+
+                            $("body").append(tooltip);
+
+                            tooltip.css({
+                                top: seat.offset().top - tooltip.outerHeight() - 10,
+                                left: seat.offset().left,
+                                position: "absolute",
+                                background: "#000",           
+                                color: "#fff",               
+                                border: "1px solid #444",
+                                padding: "10px 15px",
+                                "border-radius": "12px",     
+                                "box-shadow": "0 4px 12px rgba(0,0,0,0.4)",
+                                "font-family": "Arial, sans-serif",
+                                "font-size": "14px",
+                                "z-index": 1000,
+                                "min-width": "180px"
+                            });
+
+                            tooltip.find("a").css({
+                                color: "#fff",                   
+                                "text-decoration": "none",
+                                "display": "inline-block",
+                                "margin-top": "2px",
+                                padding: "2px 4px",
+                                "border-radius": "4px",
+                                transition: "background 0.2s"
+                            }).hover(
+                                function () { $(this).css("background", "#444"); },
+                                function () { $(this).css("background", "transparent"); }
+                            );
+
+                            seat.data("tooltip", tooltip);
+
+                            tooltip.on("mouseenter", () => tooltip.show());
+                            tooltip.on("mouseleave", () => tooltip.remove());
+                        });
+
+                        seat.on("mouseleave", function () {
+                            setTimeout(() => {
+                                const tooltip = seat.data("tooltip");
+                                if (tooltip && !tooltip.is(":hover")) {
+                                    tooltip.remove();
+                                }
+                            }, 100);
+                        });
                     }
                     else {
                         $(this).attr("title", `Seat ${seatInfo.seat_name}`);
@@ -221,8 +353,74 @@ $(document).ready(function () {
                 if (seatInfo) {
                     $(this).attr("id", seatInfo._id);
                     $(this).attr("data-name", seatInfo.seat_name);
-                    if (seatInfo.reservedBy) {
-                        $(this).attr("title", `Seat ${seatInfo.seat_name}; reserved by ${seatInfo.reservedBy}`);
+                    if (seatInfo.reservedBys && seatInfo.reservedBys.length > 0) {
+                        $(this).data("reservedBys", seatInfo.reservedBys);
+                        $(this).data("userIDs", seatInfo.userIds);
+
+                        let seat = $(this);
+                        seat.off("mouseenter mouseleave");
+
+                        seat.on("mouseenter", function () {
+                            const emails = seat.data("reservedBys");
+                            const userIDs = seat.data("userIDs");
+
+                            let emailLinks = emails.map((email, index) => {
+                                const userId = userIDs[index];
+                                return `<a href="/user/view-other-user-profile?id=${userId}" class="seat-email">${email}</a>`;
+                            }).join("<br>");
+
+                            const tooltip = $(`
+                                <div class="seat-tooltip">
+                                    <strong>Seat ${seatInfo.seat_name} - OCCUPIED BY:</strong><br>
+                                    ${emailLinks}
+                                </div>
+                            `);
+
+                            $("body").append(tooltip);
+
+                            tooltip.css({
+                                top: seat.offset().top - tooltip.outerHeight() - 10,
+                                left: seat.offset().left,
+                                position: "absolute",
+                                background: "#000",           
+                                color: "#fff",               
+                                border: "1px solid #444",
+                                padding: "10px 15px",
+                                "border-radius": "12px",     
+                                "box-shadow": "0 4px 12px rgba(0,0,0,0.4)",
+                                "font-family": "Arial, sans-serif",
+                                "font-size": "14px",
+                                "z-index": 1000,
+                                "min-width": "180px"
+                            });
+
+                            tooltip.find("a").css({
+                                color: "#fff",                   
+                                "text-decoration": "none",
+                                "display": "inline-block",
+                                "margin-top": "2px",
+                                padding: "2px 4px",
+                                "border-radius": "4px",
+                                transition: "background 0.2s"
+                            }).hover(
+                                function () { $(this).css("background", "#444"); },
+                                function () { $(this).css("background", "transparent"); }
+                            );
+
+                            seat.data("tooltip", tooltip);
+
+                            tooltip.on("mouseenter", () => tooltip.show());
+                            tooltip.on("mouseleave", () => tooltip.remove());
+                        });
+
+                        seat.on("mouseleave", function () {
+                            setTimeout(() => {
+                                const tooltip = seat.data("tooltip");
+                                if (tooltip && !tooltip.is(":hover")) {
+                                    tooltip.remove();
+                                }
+                            }, 100);
+                        });
                     }
                     else {
                         $(this).attr("title", `Seat ${seatInfo.seat_name}`);
@@ -249,8 +447,76 @@ $(document).ready(function () {
                 if (seatInfo) {
                     $(this).attr("id", seatInfo._id);
                     $(this).attr("data-name", seatInfo.seat_name);
-                    if (seatInfo.reservedBy) {
-                        $(this).attr("title", `Seat ${seatInfo.seat_name}; reserved by ${seatInfo.reservedBy}`);
+                    $(this).off("mouseenter mouseleave");
+
+                    if (seatInfo.reservedBys && seatInfo.reservedBys.length > 0) {
+                        $(this).data("reservedBys", seatInfo.reservedBys);
+                        $(this).data("userIDs", seatInfo.userIds);
+
+                        let seat = $(this);
+                        seat.off("mouseenter mouseleave");
+
+                        seat.on("mouseenter", function () {
+                            const emails = seat.data("reservedBys");
+                            const userIDs = seat.data("userIDs");
+
+                            let emailLinks = emails.map((email, index) => {
+                                const userId = userIDs[index];
+                                return `<a href="/user/view-other-user-profile?id=${userId}" class="seat-email">${email}</a>`;
+                            }).join("<br>");
+
+                            const tooltip = $(`
+                                <div class="seat-tooltip">
+                                    <strong>Seat ${seatInfo.seat_name} - OCCUPIED BY:</strong><br>
+                                    ${emailLinks}
+                                </div>
+                            `);
+
+                            $("body").append(tooltip);
+
+                            tooltip.css({
+                                top: seat.offset().top - tooltip.outerHeight() - 10,
+                                left: seat.offset().left,
+                                position: "absolute",
+                                background: "#000",           
+                                color: "#fff",               
+                                border: "1px solid #444",
+                                padding: "10px 15px",
+                                "border-radius": "12px",     
+                                "box-shadow": "0 4px 12px rgba(0,0,0,0.4)",
+                                "font-family": "Arial, sans-serif",
+                                "font-size": "14px",
+                                "z-index": 1000,
+                                "min-width": "180px"
+                            });
+
+                            tooltip.find("a").css({
+                                color: "#fff",                   
+                                "text-decoration": "none",
+                                "display": "inline-block",
+                                "margin-top": "2px",
+                                padding: "2px 4px",
+                                "border-radius": "4px",
+                                transition: "background 0.2s"
+                            }).hover(
+                                function () { $(this).css("background", "#444"); },
+                                function () { $(this).css("background", "transparent"); }
+                            );
+
+                            seat.data("tooltip", tooltip);
+
+                            tooltip.on("mouseenter", () => tooltip.show());
+                            tooltip.on("mouseleave", () => tooltip.remove());
+                        });
+
+                        seat.on("mouseleave", function () {
+                            setTimeout(() => {
+                                const tooltip = seat.data("tooltip");
+                                if (tooltip && !tooltip.is(":hover")) {
+                                    tooltip.remove();
+                                }
+                            }, 100);
+                        });
                     }
                     else {
                         $(this).attr("title", `Seat ${seatInfo.seat_name}`);
@@ -269,7 +535,6 @@ $(document).ready(function () {
                 }
             });
         }
-
     }
 
     $("#startHourInput, #startMinuteInput").on("input", async function () {

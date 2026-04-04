@@ -58,7 +58,6 @@ exports.getRoomInBuilding = async (req, res) =>{
 
 exports.getSeatStatus = async (req, res) => {
     try {
-        console.log("NANDITO AKO")
         const timeStart = new Date(req.query.timeStart + "Z");
         const timeEnd = new Date(req.query.timeEnd + "Z");
 
@@ -85,7 +84,7 @@ exports.getSeatStatus = async (req, res) => {
         reservedSeats.forEach(resv => {
             resv.seats.forEach(seatId => {
                 const idStr = seatId.toString();
-                let ownerDisplay = resv.reservedBy?.email || "sheeesh";
+                let ownerDisplay = resv.reservedBy?.username || "sheeesh";
                 if (resv.anonymous === true) {
                     ownerDisplay = "Anonymous";
                 }
@@ -94,6 +93,7 @@ exports.getSeatStatus = async (req, res) => {
                     reservedSeatMap[idStr] = {
                         reservationIds: [],
                         reservedBys: [],
+                        userIds: [],
                         reservationStarts: [],
                         reservationEnds: []
                     };
@@ -101,10 +101,13 @@ exports.getSeatStatus = async (req, res) => {
 
                 reservedSeatMap[idStr].reservationIds.push(resv._id);
                 reservedSeatMap[idStr].reservedBys.push(ownerDisplay);
+                reservedSeatMap[idStr].userIds.push(resv.reservedBy?._id?.toString());
                 reservedSeatMap[idStr].reservationStarts.push(resv.reservation_start_timestamp);
                 reservedSeatMap[idStr].reservationEnds.push(resv.reservation_end_timestamp);
             });
         });
+
+        console.log(reservedSeatMap)
 
         const brokenSeatIds = brokenSeats.flatMap(doc => doc.seats.map(s => s.toString()));
 
@@ -124,6 +127,7 @@ exports.getSeatStatus = async (req, res) => {
                 seatData.reservedBys = reservedSeatMap[id].reservedBys;
                 seatData.reservationStarts = reservedSeatMap[id].reservationStarts;
                 seatData.reservationEnds = reservedSeatMap[id].reservationEnds;
+                seatData.userIds = reservedSeatMap[id].userIds;
             }
 
             return seatData;
@@ -165,10 +169,7 @@ exports.getEditSeatStatus = async (req, res) => {
                 $gte: timeStart
             },
             isCancelled: false
-        }).populate({ path: "reservedBy", select: "email"})
-        .select(
-            "reservedBy reservedByModel seats reservation_start_timestamp reservation_end_timestamp anonymous"
-        );
+        }).populate({ path: "reservedBy", select: "email"}).select("reservedBy reservedByModel seats reservation_start_timestamp reservation_end_timestamp anonymous");
 
         const brokenSeats = await Broken.find({
             broken_start_timestamp: {
@@ -179,31 +180,28 @@ exports.getEditSeatStatus = async (req, res) => {
         const reservedSeatMap = {};
 
         reservedSeats.forEach(resv => {
-
             resv.seats.forEach(seatId => {
-
-                let ownerDisplay = "Unknown";
-
-                if (resv.reservedByModel === "Admin") {
-                    ownerDisplay = "Anonymous";
-                }
-
-                else if (resv.reservedByModel === "User") {
-                    ownerDisplay =
-                        resv.reservedBy?.email || "Unknown";
-                }
-
+                const idStr = seatId.toString();
+                let ownerDisplay = resv.reservedBy?.username || "sheeesh";
                 if (resv.anonymous === true) {
                     ownerDisplay = "Anonymous";
                 }
 
-                reservedSeatMap[seatId.toString()] = {
-                    email: ownerDisplay,
-                    reservationStart:
-                        resv.reservation_start_timestamp,
-                    reservationEnd:
-                        resv.reservation_end_timestamp
-                };
+                if (!reservedSeatMap[idStr]) {
+                    reservedSeatMap[idStr] = {
+                        reservationIds: [],
+                        reservedBys: [],
+                        userIds: [],
+                        reservationStarts: [],
+                        reservationEnds: []
+                    };
+                }
+
+                reservedSeatMap[idStr].reservationIds.push(resv._id);
+                reservedSeatMap[idStr].reservedBys.push(ownerDisplay);
+                reservedSeatMap[idStr].userIds.push(resv.reservedBy?._id?.toString());
+                reservedSeatMap[idStr].reservationStarts.push(resv.reservation_start_timestamp);
+                reservedSeatMap[idStr].reservationEnds.push(resv.reservation_end_timestamp);
 
             });
 
@@ -230,10 +228,12 @@ exports.getEditSeatStatus = async (req, res) => {
                 }
 
                 else if (reservedSeatMap[id]) {
-                    seatData.status = "reserved";
-                    seatData.reservedBy = reservedSeatMap[id].email;
-                    seatData.reservationStart = reservedSeatMap[id].reservationStart;
-                    seatData.reservationEnd = reservedSeatMap[id].reservationEnd;
+                    seatData.status = 'reserved';
+                    seatData.reservationIds = reservedSeatMap[id].reservationIds;
+                    seatData.reservedBys = reservedSeatMap[id].reservedBys;
+                    seatData.reservationStarts = reservedSeatMap[id].reservationStarts;
+                    seatData.reservationEnds = reservedSeatMap[id].reservationEnds;
+                    seatData.userIds = reservedSeatMap[id].userIds;
                 }
 
                 else if ( brokenSeatIds.includes(id)) {
@@ -338,27 +338,27 @@ exports.getEditSeatStatus2 = async (req, res) => {
         reservedSeats.forEach(resv => {
 
             resv.seats.forEach(seatId => {
-
-                let ownerDisplay = "Unknown";
-
-                if (resv.reservedByModel === "Admin") {
-                    ownerDisplay = "Anonymous";
-                }
-
-                else if (resv.reservedByModel === "User") {
-                    ownerDisplay =
-                        resv.reservedBy?.email || "Unknown";
-                }
-
+                const idStr = seatId.toString();
+                let ownerDisplay = resv.reservedBy?.username || "sheeesh";
                 if (resv.anonymous === true) {
                     ownerDisplay = "Anonymous";
                 }
 
-                reservedSeatMap[seatId.toString()] = {
-                    email: ownerDisplay,
-                    reservationStart: resv.reservation_start_timestamp,
-                    reservationEnd: resv.reservation_end_timestamp
-                };
+                if (!reservedSeatMap[idStr]) {
+                    reservedSeatMap[idStr] = {
+                        reservationIds: [],
+                        reservedBys: [],
+                        userIds: [],
+                        reservationStarts: [],
+                        reservationEnds: []
+                    };
+                }
+
+                reservedSeatMap[idStr].reservationIds.push(resv._id);
+                reservedSeatMap[idStr].reservedBys.push(ownerDisplay);
+                reservedSeatMap[idStr].userIds.push(resv.reservedBy?._id?.toString());
+                reservedSeatMap[idStr].reservationStarts.push(resv.reservation_start_timestamp);
+                reservedSeatMap[idStr].reservationEnds.push(resv.reservation_end_timestamp);
             });
 
         });
@@ -379,10 +379,12 @@ exports.getEditSeatStatus2 = async (req, res) => {
             };
 
             if (reservedSeatMap[id]) {
-                seatData.status = "reserved";
-                seatData.reservedBy = reservedSeatMap[id].email;
-                seatData.reservationStart = reservedSeatMap[id].reservationStart;
-                seatData.reservationEnd = reservedSeatMap[id].reservationEnd;
+                seatData.status = 'reserved';
+                seatData.reservationIds = reservedSeatMap[id].reservationIds;
+                seatData.reservedBys = reservedSeatMap[id].reservedBys;
+                seatData.reservationStarts = reservedSeatMap[id].reservationStarts;
+                seatData.reservationEnds = reservedSeatMap[id].reservationEnds;
+                seatData.userIds = reservedSeatMap[id].userIds;
             }
 
             else if (brokenSeatIds.includes(id)) {
