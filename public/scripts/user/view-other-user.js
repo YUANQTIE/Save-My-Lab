@@ -181,7 +181,7 @@ function addRow(reservationId, building, room, date, startTime, endTime) {
 }
 
 async function getReservations() {
-    const response = await fetch(`/reservations/api/list/${userId}`);
+    const response = await fetch(`/reservations/other/list/${userId}`);
     if (!response.ok) {
         console.error("Server error:", response.status);
         return [];
@@ -204,9 +204,7 @@ async function viewRow(e) {
     const reservationId = row.getAttribute('data-id');
     console.log("Viewing Reservation ID:", reservationId);
 
-    const response = await fetch(
-        `/reservations/${reservationId}/seats`
-    )
+    const response = await fetch(`/reservations/${reservationId}/seats`)
 
     const seats = await response.json()
     console.log(seats)

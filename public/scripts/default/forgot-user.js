@@ -49,7 +49,7 @@ $(document).ready(function() {
         try {
 
             if (pw1Input === pw2Input){
-                const res = await fetch(`/user/edit/password?originalId=${editPwId}`, {
+                const res = await fetch(`/user/forgot/password?originalId=${editPwId}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json'

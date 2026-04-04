@@ -71,6 +71,8 @@ router.put("/edit/profile-picture-default", UserController.removeProfilePicture)
 router.put('/edit/username', UserController.editUsername);
 
 //req.body: password
+router.put('/forgot/password', UserController.forgotPassword);
+
 router.put('/edit/password', UserController.editPassword);
 
 //DELETE ROUTES

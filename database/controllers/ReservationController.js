@@ -83,6 +83,83 @@ exports.getAllReservations = async (req, res) => {
     Should require user (optional filters creationTimeStart, creationTimeEnd, optional room, building, reservationTimeStart & reservationTimeEnd)
 */
 
+exports.getOtherUserReservations = async (req, res) => {
+    try {
+        const creationTimeStart = req.query.creationTimeStart;
+        const creationTimeEnd = req.query.creationTimeEnd;
+        const roomName = req.query.roomName;
+        const building = req.query.building;
+        const reservationTimeStart = req.query.reservationTimeStart;
+        const reservationTimeEnd = req.query.reservationTimeEnd;
+        const seatCount = req.query.seatCount;
+
+        let firstStage = { 
+            reservedBy: req.params.userId,
+            isCancelled: { $ne: true }
+        };
+
+        if (creationTimeStart && creationTimeEnd) {
+            firstStage.creation_timestamp = {
+                $gte: new Date(creationTimeStart + "Z"),
+                $lte: new Date(creationTimeEnd + "Z") //filters the creation date/time
+            };
+        }
+
+        if (reservationTimeStart && reservationTimeEnd) {
+            firstStage.reservation_start_timestamp = {
+                $gte: new Date(reservationTimeStart)
+            };
+            firstStage.reservation_end_timestamp = {
+                $lte: new Date(reservationTimeEnd) //filters the reservation date/time
+            };
+        }
+
+        if (seatCount && seatCount !== "undefined") {
+            firstStage.seats = { $size: Number(seatCount) }; //filters the number of seats
+        }
+
+
+        let reservations = await Reservation.find(firstStage) //gets the first stage of filtering
+            .populate({
+                path: 'seats',
+                populate: {
+                    path: 'room_id',
+                    select: 'room_name building'
+                }
+            });
+
+
+        if (roomName) {
+            reservations = reservations.filter(reserve => reserve.seats[0].room_id.room_name === roomName); //filters by the room name
+        }
+
+
+        if (building) {
+            reservations = reservations.filter(reserve => reserve.seats[0].room_id.building === building); //filters by the building
+        }
+
+        const result = reservations.map(reserve => ({ //map the final json
+            reservation_id: reserve._id,
+            creation_timestamp: reserve.creation_timestamp,
+            reservation_start_timestamp: reserve.reservation_start_timestamp,
+            reservation_end_timestamp: reserve.reservation_end_timestamp,
+            checkedIn: reserve.checkedIn,
+            room_name: reserve.seats[0].room_id.room_name,
+            building: reserve.seats[0].room_id.building,
+            seats: reserve.seats.map(seat => seat.seat_name)
+        }));
+
+        console.log("Result: ", result)
+
+        res.json(result);
+
+    }
+    catch (err) {
+        console.error(err.message);
+        res.status(500).send('Error');
+    }
+};
+
 exports.getUserReservations = async (req, res) => {
     try {
         const creationTimeStart = req.query.creationTimeStart;

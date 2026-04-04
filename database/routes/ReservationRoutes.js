@@ -18,6 +18,8 @@ router.get('/specific-reservation', ReservationController.getReservationById);
 //res.json: reservation_id, creation_timestamp, reservation_start_timestamp, reservation_end_timestamp, checkedIn, room_name, building, seats: [seat_name]
 router.get('/api/list', ReservationController.getUserReservations);
 
+router.get('/other/list/:userId', ReservationController.getOtherUserReservations);
+
 //gets all seats from one reservation
 router.get('/:reservationId/seats', ReservationController.getSeats);
 

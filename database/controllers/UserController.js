@@ -369,10 +369,11 @@ exports.editUsername = async (req, res) => {
   Accepts: id (mongoDB id), password (str: from fetch api (JSON))
 */
 
-exports.editPassword = async (req, res) => {
+exports.forgotPassword = async (req, res) => {
   try {
-    console.log("im here")
-    const id = req.session.userId
+    
+    console.log("this oneee")
+    const id = req.query.originalId
     const containsWhitespace = str => /\s/.test(str);
 
     const user = await User.findById(id);
@@ -403,6 +404,39 @@ exports.editPassword = async (req, res) => {
   }
 };
 
+
+exports.editPassword = async (req, res) => {
+  try {
+    const id = req.session.userId
+    const containsWhitespace = str => /\s/.test(str);
+
+    const user = await User.findById(id);
+
+    if (!user){
+      return res.send("No user found");
+    }
+
+    const pw = req.body.password;
+
+    const hashedPassword = await bcrypt.hash(pw, saltCount);
+    if (pw.length < 8) 
+      return res.send("Password must have minimum 8 characters")
+    if (containsWhitespace(pw)) 
+      return res.send("Password must not have whitespaces")
+
+    if (pw === user.password)
+      return res.send("Password must not be the same from previous password.")
+
+    console.log("YES GALING")
+
+    await User.findByIdAndUpdate(id, { password: hashedPassword });
+
+    return res.send("User password updated successfully");
+
+  } catch (err) {
+    res.status(500).send("Error");
+  }
+};
 
 // POST ROUTES
 
