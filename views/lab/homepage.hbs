@@ -16,6 +16,7 @@
           style="background-image:linear-gradient(rgba(20,83,45,0.8), rgba(20,83,45,0.8)),url('https://www.transparenttextures.com/patterns/cubes.png');">
           <section class="flex flex-col items-center gap-6">
 
+            <h2 id="welcome" class="text-8xl font-bold text-white mb-2">Welcome, </h2>
             <!-- TOP: Infinite Carousel -->
             <div class="carousel">
               <div class="group">
@@ -32,39 +33,65 @@
 
             <!-- BOTTOM: Text Content -->
             <div class="w-[70%] text-center">
+              
               <h1 class="text-7xl font-bold text-white mb-4">
                 About Save.My.Lab
               </h1>
               <p class="text-lg text-white text-justify mb-6">
-                Built by Group Labron James, Save.My.Lab is a dedicated platform designed to ease the reservation of
-                DLSU
-                computer laboratories for both students and lab technicians. We know how stressful it can be to find an
-                available PC when deadlines are tight. By bringing a highly visual, interactive booking system to our
-                labs, we
-                ensure students always have a seat waiting for them, while giving technicians the tools they need to
-                manage room
-                capacities efficiently.
+                This CCAPDEV project was made by Group 3 - Labron James, composing of Merry Ann Ong, Yuan Miguel Panlilio, and Nigel Henry So, and Princess Ayesa Tullao. 
+                We know how stressful it can be to find an available PC when deadlines are tight. By bringing a highly visual, interactive booking system to our
+                labs, we ensure students always have a seat waiting for them, while giving technicians the tools they need to
+                manage room capacities efficiently.
               </p>
-              <h2 class="text-lg text-white mb-6">
-                Check available computer labs and reserve your seat quickly. Select a building, choose a time slot, and
-                pick an
-                available computer.
-              </h2>
+
+              <p class="text-lg text-white text-justify mb-6">
+                This project utilizes several NPM libraries, including "bcrypt", "express", "mongoose", "hbs", "dotenv", "express-session", and "session-file-store".
+                The backend is primarily built using JavaScript and leverages the MongoDB framework for database management and data persistence. 
+                Meanwhile, the frontend is developed using Tailwind CSS for styling, combined with JavaScript for dynamic user interface interactions.
+              </p>
+
+              <p class="text-lg text-white text-justify mb-6">
+                Listed below are the features to be expected in this project.
+              </p>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+                <div class="bg-white/10 p-6 rounded-xl shadow-md">
+                  <h3 class="text-xl font-semibold text-white mb-4">
+                    User Features
+                  </h3>
+
+                  <ul class="list-disc list-inside text-white text-justify space-y-2">
+                    <li>Registering an account and logging in.</li>
+                    <li>Adding Reservations.</li>
+                    <li>Editing Your Reservations.</li>
+                    <li>Viewing your own profile and reservations.</li>
+                    <li>Viewing other users' profile and reservations.</li>
+                    <li>Updating your credentials and profile settings.</li>
+                    <li>Being notified of cancelled reservations. - BONUS</li>
+                  </ul>
+                </div>
+
+                <div class="bg-white/10 p-6 rounded-xl shadow-md">
+                  <h3 class="text-xl font-semibold text-white mb-4">
+                    Administrator Features
+                  </h3>
+                  <ul class="list-disc list-inside text-white text-justify space-y-2">
+                    <li>Logging in.</li>
+                    <li>Adding Reservations.</li>
+                    <li>Editing Reservations.</li>
+                    <li>Deleting Reservations.</li>
+                    <li>Viewing all reservations.</li>
+                    <li>Updating password. - BONUS</li>
+                    <li>Updating Computer statuses, irregardless of their reservation status. - BONUS</li>
+                  </ul>
+                </div>
+
+              </div>
             </div>
           </section>
         </main>
-
     </div>
-
-    <!-- Sidebar -->
-    <div class="drawer-side">
-      <label for="my-drawer-1" class="drawer-overlay"></label>
-      <ul class="menu bg-base-200 min-h-full w-80 p-4">
-        <li><a>Sidebar Item 1</a></li>
-        <li><a>Sidebar Item 2</a></li>
-      </ul>
-    </div>
-
   </div>
 
   <!-- External JS -->

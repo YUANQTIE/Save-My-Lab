@@ -13,7 +13,7 @@ router.get('/admins', AdminController.getAllAdmins);
 //gets all the field values in an id collection
 //req.params: "id"
 //res.json: "_id", "email", "date_created", "password"
-router.get('/:id/info', AdminController.getAdminFields);
+router.get('/self', AdminController.getSelfAdmin);
 
 //gets all accounts of registered users (student and admin)
 //res.json: "_id", "email"

@@ -5,6 +5,21 @@ $(document).ready(async function () {
     let notifications = [];
     let currentIndex = 0;
 
+    async function getSelfUser(){
+        const res = await fetch(`/user/self`)
+        const user = await res.json()
+
+        console.log(user)
+
+        const un = user.username
+
+        displayWelcomeMessage(un)
+    }
+
+    function displayWelcomeMessage(username){
+        $("#welcome").text("Welcome, " + username + "!")
+    }
+
     async function checkNotifications() {
         const res = await fetch(`/notif/notifs-user`);
         const notifsJson = await res.json();
@@ -100,5 +115,6 @@ $(document).ready(async function () {
         showNotification();  
     });
 
+    await getSelfUser()
     await checkNotifications();
 });

@@ -89,9 +89,9 @@ exports.getAllAdmins = async (req, res) => {
   Description: Gets the field values of a specific value
   RETURNS ALL Fields*/
 
-exports.getAdminFields = async (req, res) => {
+exports.getSelfAdmin = async (req, res) => {
   try {
-    const admins = await Admin.findById(req.params.id);
+    const admins = await Admin.findById(req.session.adminId);
     res.json(admins);
   } catch (err) {
     console.error(err.message);

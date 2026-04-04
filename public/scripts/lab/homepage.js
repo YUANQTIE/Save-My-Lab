@@ -5,6 +5,21 @@ $(document).ready(async function () {
     let notifications = [];
     let currentIndex = 0;
 
+    async function getSelfAdmin(){
+        const res = await fetch(`/admin/self`)
+        const admin = await res.json()
+
+        console.log(admin)
+
+        const un = admin.number
+
+        displayWelcomeMessage(un)
+    }
+
+    function displayWelcomeMessage(username){
+        $("#welcome").text("Welcome, Admin " + username + "!")
+    }
+
     async function checkNotifications() {
         const res = await fetch(`/notif/notifs-admin`);
         const notifsJson = await res.json();
@@ -100,5 +115,6 @@ $(document).ready(async function () {
         showNotification();  
     });
 
+    await getSelfAdmin()
     await checkNotifications();
 });

@@ -17,6 +17,9 @@ app.set("views", "./views")
 //this is for yung recommended usernames sa search bar
 //req.query: username
 //res.json: _id, email, username, bio, date_created, password, profile_picture, last_login, id_number
+
+router.get('/self', UserController.getSelfUser);
+
 router.get('/searchRecommended', UserController.getRecommendedUsers);
 
 //this is for getting the info of a user sa search bar

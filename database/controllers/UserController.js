@@ -8,6 +8,21 @@ const saltCount = 10;
 
 // GET ROUTES 
 
+exports.getSelfUser = async (req, res) => {
+  try {
+
+    const user = await User.findById(req.session.userId)
+
+    console.log(user)
+
+    res.json(user);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Error');
+  }
+};
+
+
 exports.validatePassword = async (req, res) => {
   try {
     const pwInput = req.query.currPw;
