@@ -58,6 +58,8 @@ exports.getRoomInBuilding = async (req, res) =>{
 
 exports.getSeatStatus = async (req, res) => {
     try {
+
+        console.log(req.query.timeStart + "Z")
         const timeStart = new Date(req.query.timeStart + "Z");
         const timeEnd = new Date(req.query.timeEnd + "Z");
 
@@ -106,8 +108,6 @@ exports.getSeatStatus = async (req, res) => {
                 reservedSeatMap[idStr].reservationEnds.push(resv.reservation_end_timestamp);
             });
         });
-
-        console.log(reservedSeatMap)
 
         const brokenSeatIds = brokenSeats.flatMap(doc => doc.seats.map(s => s.toString()));
 

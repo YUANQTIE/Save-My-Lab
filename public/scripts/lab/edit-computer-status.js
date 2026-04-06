@@ -14,31 +14,7 @@ const successConfirm = document.getElementById("successConfirm")
 const closeSuccessModal = document.getElementById("closeSuccessModal")
 const loading = document.getElementById("loading")
 var building;
-
-function format(hour) {
-
-    if (hour.length > 1){
-        return hour
-    }
-    else{
-        hour = Number(hour);
-        if (hour < 10) {
-            return '0' + hour;
-        } else {
-            return String(hour);
-        }
-    }
-
-}
-
-const currDate = new Date(Date.now()) 
-const stringDate = currDate.toLocaleString()
-var month = format(stringDate.substring(0,1));
-var day = format(stringDate.substring(2,3));
-var year = stringDate.substring(4,8);
-var minute = stringDate.substring(13,15);
-var hour = format(stringDate.substring(10,12));
-const brokenStartTimeStamp = year + "-" + month + "-" + day  + "T" + hour + ":" + minute + ":00.000";
+var brokenStartTimeStamp;
 var EndTimeStamp = "2100-01-01T23:59:00.000";
 var reason;
 var room;
@@ -50,6 +26,68 @@ var isAnonymous = false;
 
 
 $(document).ready(function () {
+
+    function chooseMonth(month){
+
+        var name;
+
+        if (month == "Jan"){
+            name = "01"
+        }
+        else if(month == "Feb"){
+            name = "02"
+        }
+        else if(month == "Mar"){
+            name = "03"
+        }
+        else if(month == "Apr"){
+            console.log("true")
+            name = "04"
+        }
+        else if(month == "May"){
+            name = "05"
+        }
+        else if(month == "Jun"){
+            name = "06"
+        }
+        else if(month == "Jul"){
+            name = "07"
+        }
+        else if(month == "Aug"){
+            name = "08"
+        }
+        else if(month == "Sep"){
+            name = "09"
+        }
+        else if(month == "Oct"){
+            name = "10"
+        }
+        else if(month
+             == "Nov"){
+            name = "11"
+        }
+        else{
+            name = "12"
+        }
+
+        return name
+
+    }
+
+    function formatCurrDate() {
+        const currDate = new Date(Date.now()).toString()
+
+        const monthName = currDate.substring(4,7)
+        month = chooseMonth(monthName)
+        day = currDate.substring(8,10)
+        year = currDate.substring(11,15)
+        hour = currDate.substring(16,18)
+        minute = currDate.substring(19,21)
+
+        brokenStartTimeStamp = year + "-" +  month + "-" + day + "T" + hour + ":" + minute + ":00.000";
+    }
+
+    formatCurrDate()
 
     function showLoader() {
         loading.style.setProperty('display', 'block', 'important');
@@ -121,9 +159,6 @@ $(document).ready(function () {
                 room = $("#roomInput").val()
                 if (EndTimeStamp > brokenStartTimeStamp) {
                     
-                    console.log(stringDate)
-                    console.log(hour, minute)
-                    console.log(brokenStartTimeStamp)
                     const seatStatuses = await fetch(`/room/seat-status?timeStart=${brokenStartTimeStamp}&timeEnd=${EndTimeStamp}&roomName=${room}`);
                     const seatStatusesJson = await seatStatuses.json();
 
