@@ -280,7 +280,17 @@ async function viewUser(e) {
     const searchedUserId = user.getAttribute('data-id')
     search.value = ""
     userDropdownMenu.innerHTML = '';
-    window.location.href = `/user/view-other-user-profile?id=${searchedUserId}`
+    fetch("/user/view-other-user-profile", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            searchedUserId: searchedUserId
+        })
+    }).then(() => {
+        window.location.href = "/user/view-other-user-profile";
+    });
 }
 
 search.addEventListener('input', (e) => {
@@ -306,7 +316,7 @@ search.addEventListener('keydown', async (e) => {
     }
     else if(user.length == 1) {
         const searchedUserId = user[0]._id
-        window.location.href = `/user/view-other-user-profile?id=${searchedUserId}`
+        window.location.href = `/user/view-other-user-profile`
     }
     else {
         return

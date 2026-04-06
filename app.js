@@ -27,6 +27,7 @@ app.engine("hbs", exphbs.engine({ extname: 'hbs', defaultLayout: 'main', partial
 app.set('view engine', 'hbs');
 app.set("views", "./views")
 
+
 app.use(express.json()) // use json
 app.use(express.text()) // use json
 app.use(express.urlencoded({ extended: true })); // files consist of more than strings

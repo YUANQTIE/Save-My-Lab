@@ -100,14 +100,19 @@ exports.isUserIdNumberInDB = async (req, res) => {
 
 exports.showUserSearched = async (req, res) => {
   try {
-    const userData = await User.findById(req.query.id).lean();
-    res.render('user/view-other-user-profile', { user: userData });
+    const searchedUserId = req.session.searchedUserId;
+
+    console.log("ova here", searchedUserId)
+
+    const userData = await User.findById(searchedUserId).lean();
+
+    res.render("user/view-other-user-profile", { user: userData });
+
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Error');
+    res.status(500).send("Error");
   }
-}
-
+};
 // Get and Render Profile of User for Profile Settings
 exports.showProfile = async (req, res) => {
   try {
@@ -179,8 +184,10 @@ exports.getRecommendedUsers = async (req, res) => {
   try {
     const usernameSearched = req.query.username;
 
-    const users = await User.find({
-      username: { $regex: usernameSearched, $options: 'i'}
+    const users = await User.find({ username: {$regex: usernameSearched, $options: "i"},
+        _id: {
+            $ne: req.session.userId
+        }
     });
 
     console.log(users)

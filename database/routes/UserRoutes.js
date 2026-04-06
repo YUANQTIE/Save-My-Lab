@@ -3,6 +3,7 @@ const app = express();
 const path = require("path");
 const router = express.Router();
 const exphbs = require('express-handlebars')
+const User = require('../models/User.js'); 
 
 
 const UserController = require('../controllers/UserController');
@@ -106,14 +107,37 @@ router.get("/view-reservations", (req,res) => {
     res.render('user/view-reservations', { id: userId, isAdmin: false });
 });
 
-router.get("/view-other-user-profile", UserController.showUserSearched);
+
+router.post("/view-other-user-profile", (req, res) => {
+    req.session.searchedUserId = req.body.searchedUserId;
+
+    console.log("Searched Session set to:", req.session.searchedUserId);
+
+    res.redirect("/view-other-user-profile");
+});
+
+router.get("/view-other-user-profile", async (req, res) => {
+    try {
+        const searchedUserId = req.session.searchedUserId;
+
+        console.log("ova here", searchedUserId);
+
+        var userData = await User.findById(searchedUserId).lean();
+
+        userData.id_number = Math.floor(userData.id_number / 100000);
+
+        res.render("user/view-other-user-profile", { 
+            user: userData 
+        });
+
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("Error");
+    }
+});
 
 router.post("/edit-reservation", (req, res) => {
     req.session.resId = req.body.resId;
-
-    console.log("Session set to:", req.session.resId);
-
-    res.sendStatus(200);
 });
 
 router.get("/edit-reservation", (req, res) => {

@@ -5,6 +5,10 @@ const profile_image = document.getElementById("profile_image");
 const noReservations = document.getElementById("noReservations")
 const url = new URLSearchParams(window.location.search);
 const userId = url.get('id');
+
+const userDropdownMenu = document.getElementById("userDropdownMenu")
+
+
 let reservations;
 let listOfReservations = []
 class reservation {
@@ -23,7 +27,7 @@ $(document).ready(async function () {
     $("#profile-settings").on("click", async function (e) {
         e.preventDefault();
         try {
-            window.location.href = `/user/view-other-user-profile?id=${userId}`
+            window.location.href = `/user/view-other-user-profile`
         } catch (err) {
             console.error("Login Error:", err);
             alert("An error occurred. Check the F12 console.");
@@ -33,7 +37,7 @@ $(document).ready(async function () {
     $("#reservations").on("click", async function (e) {
         e.preventDefault();
         try {
-            window.location.href = `/user/account-reserve?id=${userId}`
+            window.location.href = `/user/account-reserve`
         } catch (err) {
             console.error("Login Error:", err);
             alert("An error occurred. Check the F12 console.");
@@ -181,7 +185,7 @@ function addRow(reservationId, building, room, date, startTime, endTime) {
 }
 
 async function getReservations() {
-    const response = await fetch(`/reservations/other/list/${userId}`);
+    const response = await fetch(`/reservations/other/list`);
     if (!response.ok) {
         console.error("Server error:", response.status);
         return [];
@@ -189,7 +193,6 @@ async function getReservations() {
 
     return await response.json();
 }
-
 
 async function viewRow(e) {
     const btn = e.target.closest(".view_button_class");
@@ -249,3 +252,103 @@ function convertDate(date) {
     const formattedDate = `${year}-${month}-${day}`;
     return formattedDate;
 }
+
+async function getUserSearchSuggestions(input) {
+    if (input.trim().length === 0) {
+        userDropdownMenu.innerHTML = '';
+        return;
+    }
+    const response = await fetch(`/user/searchRecommended?username=${input}`);
+    const users = await response.json();
+    userDropdownMenu.innerHTML = '';
+
+    if (users.length === 0) {
+        const li = document.createElement('li');
+        li.className = "px-4 py-2 text-slate-600 text-sm";
+        li.textContent = "No User Found";
+        userDropdownMenu.appendChild(li);
+    }
+
+    for (let i = 0; i < 5 && i < users.length; i++) {
+        let searchedUserId = users[i]._id;
+
+        const li = document.createElement('li');
+        li.setAttribute('data-id', searchedUserId);
+        li.className = "userSuggestion px-4 py-2 text-slate-600 hover:bg-slate-50 text-sm cursor-pointer flex items-center gap-2";
+        const img = document.createElement('img');
+        console.log(users[i].profile_picture);
+        img.src = users[i].profile_picture;
+        img.alt = `${users[i].username}'s profile picture`;
+        img.className = "w-6 h-6 rounded-full object-cover";
+        const usernameSpan = document.createElement('span');
+        usernameSpan.textContent = users[i].username;
+        li.appendChild(img);
+        li.appendChild(usernameSpan);
+        userDropdownMenu.appendChild(li);
+    }
+}
+
+async function viewUser(e) {
+    const btn = e.target.closest(".userSuggestion")
+    if (!btn) return;
+    const user = btn.closest('li')
+    const searchedUserId = user.getAttribute('data-id')
+    search.value = ""
+    userDropdownMenu.innerHTML = '';
+    
+    fetch("/user/view-other-user-profile", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            searchedUserId: searchedUserId
+        })
+    }).then(() => {
+        window.location.href = "/user/view-other-user-profile";
+    });
+}
+
+search.addEventListener('input', (e) => {
+    userDropdownMenu.innerHTML = ''; 
+    getUserSearchSuggestions(e.target.value)
+    console.log("Value changed to: " + e.target.value);
+});
+
+search.addEventListener('keydown', async (e) => {
+  if (e.key === 'Enter') {
+    e.preventDefault(); 
+    const username = e.target.value;
+    console.log(username)
+    userDropdownMenu.innerHTML = ''; 
+    search.value = ""
+    const response = await fetch(`/user/searchRecommended?username=${username}`)
+    const user = await response.json()
+    console.log("User: ", user)
+    if(user.length == 0) {
+        userDropdownMenu.innerHTML = ''; 
+        const li = document.createElement('li')
+        li.className = "px-4 py-2 text-slate-600 text-sm";
+        li.innerHTML = "No User Found"
+        userDropdownMenu.appendChild(li)
+    }
+    else if(user.length == 1) {
+        const searchedUserId = user[0]._id
+        window.location.href = `/user/view-other-user-profile`
+    }
+    else {
+        return
+    }
+  }
+});
+
+window.addEventListener('click', (event) => {
+    userDropdownMenu.innerHTML = '';
+});
+
+search.addEventListener('click', (e) => {
+    userDropdownMenu.innerHTML = ''; 
+    getUserSearchSuggestions(e.target.value)
+})
+
+userDropdownMenu.addEventListener('click', viewUser);

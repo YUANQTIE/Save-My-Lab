@@ -94,9 +94,11 @@ exports.getOtherUserReservations = async (req, res) => {
         const seatCount = req.query.seatCount;
 
         let firstStage = { 
-            reservedBy: req.params.userId,
+            reservedBy: req.session.searchedUserId,
             isCancelled: { $ne: true }
         };
+
+        console.log(req.session.searchedUserId)
 
         if (creationTimeStart && creationTimeEnd) {
             firstStage.creation_timestamp = {
