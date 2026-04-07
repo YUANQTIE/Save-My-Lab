@@ -674,8 +674,21 @@ $(document).ready(async function () {
         else if (building === "Br. Andrew Gonzales Hall") $("#andrew").removeClass("hidden");
 
         $("#roomInput").val(room)
+        weekView();
+        
     }
 
+    function weekView() {
+        let today = new Date();
+        let nextWk = new Date();
+        nextWk.setDate(today.getDate() + 7);
+        today = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
+        nextWk = `${nextWk.getFullYear()}-${(nextWk.getMonth() + 1).toString().padStart(2, '0')}-${nextWk.getDate().toString().padStart(2, '0')}`;
+
+
+        $("#dateInput").attr('min', today);
+        $("#dateInput").attr('max', nextWk);
+    }
     async function getCurrentReservationData(){
         const res = await fetch(`/reservations/specific-reservation`)
         const reservation = await res.json()
@@ -838,6 +851,7 @@ $(document).ready(async function () {
     });
 
     $("#venueInput, #roomInput, #dateInput, #startHourInput, #startMinuteInput, #endHourInput, #endMinuteInput").on("change", async function () {
+        weekView();
         checkTimeInputs();
 
         if ($("#startHourInput").val() && $("#startMinuteInput").val() && $("#endHourInput").val() && $("#endMinuteInput").val() && $("#dateInput").val() && $("#venueInput").val() && $("#roomInput").val()) {
