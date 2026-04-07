@@ -33,7 +33,7 @@ class reservation {
 }
 $(document).ready(async function () {
 
-    $(document).on("click", ".edit_button_class", function(e) {
+    $(document).on("click", ".edit_button_class", function (e) {
         e.preventDefault();
 
         console.log("I AM CLICKED");
@@ -50,12 +50,12 @@ $(document).ready(async function () {
                 resId: reservationId
             })
         })
-        .then(response => response.json())
-        .then(() => {
-            window.location.href = "/user/edit-reservation";
-        });
+            .then(response => response.json())
+            .then(() => {
+                window.location.href = "/user/edit-reservation";
+            });
     });
-    
+
     $("#profile-settings").on("click", async function (e) {
         e.preventDefault();
         try {
@@ -85,7 +85,7 @@ $(document).ready(async function () {
             alert("An error occurred. Check the F12 console.");
         }
     });
-
+    unshowTable()
     reservations = await getReservations();
     console.log(reservations)
     if (Array.isArray(reservations)) {
@@ -94,7 +94,7 @@ $(document).ready(async function () {
 })
 
 async function showReservations(reservations) {
-    if(reservations.length == 0) {
+    if (reservations.length == 0) {
         noReservations.classList.remove("hidden")
     }
     else {
@@ -187,6 +187,16 @@ async function showReservations(reservations) {
         );
 
     }
+    showTable()
+}
+
+function unshowTable() {
+    $("#tbody").addClass("hidden")
+    $("#loadingRow").removeClass("hidden")
+}
+function showTable() {
+    $("#loadingRow").addClass("hidden")
+    $("#tbody").removeClass("hidden")
 }
 
 function convertDate(date) {
@@ -229,7 +239,7 @@ async function addRow(reservationId, building, room, date, startTime, endTime) {
 
     // Set the internal HTML
 
-    if (!cancelled && !happeningNow){
+    if (!cancelled && !happeningNow) {
         tr.innerHTML = `
             <td scope="row" class="border-b border-default px-6 py-4 font-medium text-heading whitespace-nowrap">
                 ${building}
@@ -262,7 +272,7 @@ async function addRow(reservationId, building, room, date, startTime, endTime) {
 
         // Append to the table body
         tbody.appendChild(tr);
-    }    
+    }
 }
 
 async function viewRow(e) {
@@ -375,37 +385,37 @@ async function viewUser(e) {
 }
 
 search.addEventListener('input', (e) => {
-    userDropdownMenu.innerHTML = ''; 
+    userDropdownMenu.innerHTML = '';
     getUserSearchSuggestions(e.target.value)
     console.log("Value changed to: " + e.target.value);
 });
 
 search.addEventListener('keydown', async (e) => {
-  if (e.key === 'Enter') {
-    // Prevent default form submission if necessary
-    e.preventDefault(); 
-    const username = e.target.value;
-    console.log(username)
-    userDropdownMenu.innerHTML = ''; 
-    search.value = ""
-    const response = await fetch(`/user/searchRecommended?username=${username}`)
-    const user = await response.json()
-    console.log("User: ", user)
-    if(user.length == 0) {
-        userDropdownMenu.innerHTML = ''; 
-        const li = document.createElement('li')
-        li.className = "px-4 py-2 text-slate-600 text-sm";
-        li.innerHTML = "No User Found"
-        userDropdownMenu.appendChild(li)
+    if (e.key === 'Enter') {
+        // Prevent default form submission if necessary
+        e.preventDefault();
+        const username = e.target.value;
+        console.log(username)
+        userDropdownMenu.innerHTML = '';
+        search.value = ""
+        const response = await fetch(`/user/searchRecommended?username=${username}`)
+        const user = await response.json()
+        console.log("User: ", user)
+        if (user.length == 0) {
+            userDropdownMenu.innerHTML = '';
+            const li = document.createElement('li')
+            li.className = "px-4 py-2 text-slate-600 text-sm";
+            li.innerHTML = "No User Found"
+            userDropdownMenu.appendChild(li)
+        }
+        else if (user.length == 1) {
+            const searchedUserId = user[0]._id
+            window.location.href = `/user/view-other-user-profile?id=${searchedUserId}`
+        }
+        else {
+            return
+        }
     }
-    else if(user.length == 1) {
-        const searchedUserId = user[0]._id
-        window.location.href = `/user/view-other-user-profile?id=${searchedUserId}`
-    }
-    else {
-        return
-    }
-  }
 });
 
 window.addEventListener('click', (event) => {
@@ -413,7 +423,7 @@ window.addEventListener('click', (event) => {
 });
 
 search.addEventListener('click', (e) => {
-    userDropdownMenu.innerHTML = ''; 
+    userDropdownMenu.innerHTML = '';
     getUserSearchSuggestions(e.target.value)
 })
 

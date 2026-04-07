@@ -17,8 +17,7 @@
       </form>
 
       {{!-- User Dropdown Searches --}}
-      <div
-        class="absolute top-44 left-6 w-[270px] overflow-hidden bg-white rounded-md shadow-lg z-10">
+      <div class="absolute top-44 left-6 w-[270px] overflow-hidden bg-white rounded-md shadow-lg z-10">
         <ul id="userDropdownMenu">
         </ul>
       </div>
@@ -114,6 +113,19 @@
                 </tr>
               </thead>
               <tbody id="tbody">
+                <!-- rows will be added dynamically -->
+              </tbody>
+
+              <tbody id="loadingTbody">
+                <tr id="loadingRow">
+                  <td colspan="9">
+                    <div class="flex flex-col justify-center items-center py-8 gap-2">
+                      <div class="w-8 h-8 border-4 border-gray-300 border-t-gray-500 rounded-full animate-spin">
+                      </div>
+                      <span class="text-gray-500 text-sm font-medium">Loading reservations...</span>
+                    </div>
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
