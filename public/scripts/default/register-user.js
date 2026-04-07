@@ -171,7 +171,7 @@ $(document).ready(function() {
         $("#third").removeClass("hidden");
     });
 
-    const defaultImg = "/images/user.png";
+    const defaultImg = "/images/blank_picture.png";
 
     $("#uploadBtn").on("click", function() {
         $("#profilePicInput").click();
