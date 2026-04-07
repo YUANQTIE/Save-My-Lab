@@ -138,10 +138,16 @@ router.get("/view-other-user-profile", async (req, res) => {
 
 router.post("/edit-reservation", (req, res) => {
     req.session.resId = req.body.resId;
+
+    console.log("Session set to:", req.session.resId);
+
+    res.json({ success: true });
 });
 
 router.get("/edit-reservation", (req, res) => {
     const userId = req.session.userId;
+
+    console.log("GET route reached");
 
     res.render("user/edit-reservation", {
         id: userId,

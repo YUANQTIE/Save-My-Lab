@@ -185,69 +185,148 @@ $(document).ready(async function () {
         tr.className = "odd:bg-neutral-primary even:bg-neutral-secondary-soft border-b border-default";
         let response = await fetch(`/reservations/${reservationId}/checkEditable`)
         let editable = await response.json()
+        let response2 = await fetch(`/reservations/${reservationId}/checkCancelled`)
+        let cancelled = await response2.json()
+        let response3 = await fetch(`/reservations/${reservationId}/checkHappening`)
+        let happeningNow = await response3.json()
 
-        if (editable) {
+        if (cancelled) {
             tr.innerHTML = `
-            <td scope="row" class="border-b border-default px-6 py-4 font-medium text-heading whitespace-nowrap">
-                ${building}
+                <td scope="row" class="border-b border-default px-6 py-4 font-medium text-heading whitespace-nowrap">
+                    ${building}
+                    </td>
+                    <td class="border-b border-default px-4 py-4">
+                    ${room}
+                    </td>
+                    <td class="border-b border-default px-4 py-4">
+                    ${date}
+                    </td>
+                    <td class="border-b border-default px-4 py-4">
+                    ${startTime} - ${endTime}
+                    </td>
+                    <td class="border-b border-default px-4 py-4">
+                    ${resDate}
+                    </td>
+                    <td class="border-b border-default px-4 py-4">
+                    ${resTime}
+                    </td>
+                    <td class="border-b border-default px-4 py-4">
+                        <span class="text-sm text-red-600 font-medium leading-none">Cancelled</span>
+                    </td>
+                <td class="border-b border-default px-4 py-4 space-x-1.5">
+                    <div class="flex justify-center items-center">
+                    <button id="view_button" class = "w-8 h-8 flex items-center justify-center view_button_class text-slate-600 hover:bg-[#34493e]/5 hover:border-[#34493e]/20 hover:text-[#34493e]">
+                        <img src="/images/seat.png" alt="View" class="w-5 h-5">
+                    </button>
+                    </div>
                 </td>
-                <td class="border-b border-default px-4 py-4">
-                ${room}
-                </td>
-                <td class="border-b border-default px-4 py-4">
-                ${date}
-                </td>
-                <td class="border-b border-default px-4 py-4">
-                ${startTime} - ${endTime}
-                </td>
-                <td class="border-b border-default px-4 py-4">
-                ${resDate}
-                </td>
-                <td class="border-b border-default px-4 py-4">
-                ${resTime}
-                </td>
-            <td class="border-b border-default px-4 py-4 space-x-1.5">
-                <div class="flex justify-center items-center">
-                <button id="view_button" class = "w-8 h-8 flex items-center justify-center view_button_class text-slate-600 hover:bg-[#34493e]/5 hover:border-[#34493e]/20 hover:text-[#34493e]">
-                    <img src="/images/seat.png" alt="View" class="w-5 h-5">
-                </button>
-                <button id="edit_button" class = "edit_button_class w-8 h-8 flex items-center justify-center text-slate-600 hover:bg-[#34493e]/5 hover:border-[#34493e]/20 hover:text-[#34493e]">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                    </svg>
-                </button>
-                </div>
-            </td>
-        `;
+            `;
         }
-        else {
-            tr.innerHTML = `
-            <td scope="row" class="border-b border-default px-6 py-4 font-medium text-heading whitespace-nowrap">
-                ${building}
+        else{
+            if (happeningNow){
+                console.log("true")
+                 tr.innerHTML = `
+                <td scope="row" class="border-b border-default px-6 py-4 font-medium text-heading whitespace-nowrap">
+                    ${building}
+                    </td>
+                    <td class="border-b border-default px-4 py-4">
+                    ${room}
+                    </td>
+                    <td class="border-b border-default px-4 py-4">
+                    ${date}
+                    </td>
+                    <td class="border-b border-default px-4 py-4">
+                    ${startTime} - ${endTime}
+                    </td>
+                    <td class="border-b border-default px-4 py-4">
+                    ${resDate}
+                    </td>
+                    <td class="border-b border-default px-4 py-4">
+                    ${resTime}
+                    </td>
+                    <td class="border-b border-default px-4 py-4">
+                        <span class="text-sm text-green-500 font-medium leading-none">Happening Now</span>
+                    </td>
+                <td class="border-b border-default px-4 py-4 space-x-1.5">
+                    <div class="flex justify-center items-center">
+                    <button id="view_button" class = "w-8 h-8 flex items-center justify-center view_button_class text-slate-600 hover:bg-[#34493e]/5 hover:border-[#34493e]/20 hover:text-[#34493e]">
+                        <img src="/images/seat.png" alt="View" class="w-5 h-5">
+                    </button>
+                    </div>
                 </td>
-                <td class="border-b border-default px-4 py-4">
-                ${room}
-                </td>
-                <td class="border-b border-default px-4 py-4">
-                ${date}
-                </td>
-                <td class="border-b border-default px-4 py-4">
-                ${startTime} - ${endTime}
-                </td>
-                <td class="border-b border-default px-4 py-4">
-                ${resDate}
-                </td>
-                <td class="border-b border-default px-4 py-4">
-                ${resTime}
-                </td>
-            <td class="border-b border-default px-4 py-4 space-x-1.5">
-                <div class="flex justify-center items-center">
-                <button id="view_button" class = "w-8 h-8 flex items-center justify-center view_button_class text-slate-600 hover:bg-[#34493e]/5 hover:border-[#34493e]/20 hover:text-[#34493e]">
-                    <img src="/images/seat.png" alt="View" class="w-5 h-5">
-                </button>
-                </div>
-            </td>
-        `;
+            `;
+            }
+            else{
+                if (editable){
+                    tr.innerHTML = `
+                    <td scope="row" class="border-b border-default px-6 py-4 font-medium text-heading whitespace-nowrap">
+                        ${building}
+                        </td>
+                        <td class="border-b border-default px-4 py-4">
+                        ${room}
+                        </td>
+                        <td class="border-b border-default px-4 py-4">
+                        ${date}
+                        </td>
+                        <td class="border-b border-default px-4 py-4">
+                        ${startTime} - ${endTime}
+                        </td>
+                        <td class="border-b border-default px-4 py-4">
+                        ${resDate}
+                        </td>
+                        <td class="border-b border-default px-4 py-4">
+                        ${resTime}
+                        </td>
+                        <td class="border-b border-default px-4 py-4">
+                            <span class="text-sm text-green-500 font-medium leading-none">Scheduled</span>
+                        </td>
+                    <td class="border-b border-default px-4 py-4 space-x-1.5">
+                        <div class="flex justify-center items-center">
+                        <button id="view_button" class = "w-8 h-8 flex items-center justify-center view_button_class text-slate-600 hover:bg-[#34493e]/5 hover:border-[#34493e]/20 hover:text-[#34493e]">
+                            <img src="/images/seat.png" alt="View" class="w-5 h-5">
+                        </button>
+                        <button id="edit_button" class = "edit_button_class w-8 h-8 flex items-center justify-center text-slate-600 hover:bg-[#34493e]/5 hover:border-[#34493e]/20 hover:text-[#34493e]">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                            </svg>
+                        </button>
+                        </div>
+                    </td>
+                `;
+                }
+                else{ //res is done na
+                    tr.innerHTML = `
+                    <td scope="row" class="border-b border-default px-6 py-4 font-medium text-heading whitespace-nowrap">
+                        ${building}
+                        </td>
+                        <td class="border-b border-default px-4 py-4">
+                        ${room}
+                        </td>
+                        <td class="border-b border-default px-4 py-4">
+                        ${date}
+                        </td>
+                        <td class="border-b border-default px-4 py-4">
+                        ${startTime} - ${endTime}
+                        </td>
+                        <td class="border-b border-default px-4 py-4">
+                        ${resDate}
+                        </td>
+                        <td class="border-b border-default px-4 py-4">
+                        ${resTime}
+                        </td>
+                        <td class="border-b border-default px-4 py-4">
+                            <span class="text-sm font-medium leading-none">Finished</span>
+                        </td>
+                    <td class="border-b border-default px-4 py-4 space-x-1.5">
+                        <div class="flex justify-center items-center">
+                        <button id="view_button" class = "w-8 h-8 flex items-center justify-center view_button_class text-slate-600 hover:bg-[#34493e]/5 hover:border-[#34493e]/20 hover:text-[#34493e]">
+                            <img src="/images/seat.png" alt="View" class="w-5 h-5">
+                        </button>
+                        </div>
+                    </td>
+                `;
+                }
+            }
         }
 
 
@@ -268,15 +347,25 @@ $(document).ready(async function () {
     $(document).on("click", ".edit_button_class", function(e) {
         e.preventDefault();
 
+        console.log("I AM CLICKED");
+
         const row = $(this).closest("tr");
         const reservationId = row.data("id");
-        $.post("/user/edit-reservation", {
-            resId: reservationId
-        }).done(function () {
+
+        fetch("/user/edit-reservation", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                resId: reservationId
+            })
+        })
+        .then(response => response.json())
+        .then(() => {
             window.location.href = "/user/edit-reservation";
         });
     });
-
     async function viewRow(e) {
         const btn = e.target.closest(".view_button_class");
         if (!btn) return;

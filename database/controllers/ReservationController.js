@@ -174,7 +174,6 @@ exports.getUserReservations = async (req, res) => {
 
         let firstStage = { 
             reservedBy: req.session.userId,
-            isCancelled: { $ne: true }
         };
 
         if (creationTimeStart && creationTimeEnd) {
@@ -287,23 +286,19 @@ exports.getFilteredReservations = async (req, res) => {
 
         console.log(reservedBy, creationTimeStart, creationTimeEnd, roomName, building, reservationTimeStart, reservationTimeEnd, seatCount)
 
-        let firstStage = {
-            isCancelled: { $ne: true }
-        };
+        let firstStage = {};
 
-        if (creationTimeStart && creationTimeEnd) {
-            firstStage.creation_timestamp = {
-                $gte: new Date(creationTimeStart + "Z"),
-                $lte: new Date(creationTimeEnd + "Z") //filters the creation date/time
-            };
-        }
+        const startDate = new Date(reservationTimeStart + "Z")
+        const endDate =  new Date(reservationTimeEnd + "Z")
+
+        console.log(startDate, endDate)
 
         if (reservationTimeStart && reservationTimeEnd) {
             firstStage.reservation_start_timestamp = {
-                $gte: new Date(reservationTimeStart)
+                $gte: startDate
             };
             firstStage.reservation_end_timestamp = {
-                $lte: new Date(reservationTimeEnd) //filters the reservation date/time
+                $lte: endDate //filters the reservation date/time
             };
         }
 
@@ -350,6 +345,7 @@ exports.getFilteredReservations = async (req, res) => {
             };
         });
 
+        console.log(result)
         res.json(result);
 
     }
@@ -430,8 +426,6 @@ exports.isReservationEditable = async (req, res) => {
             timeZone: 'UTC'
         }).format(reservationEnd);
 
-        console.log("End time: ", endTime)
-
         if (endDate < currentDate) {
             return res.json(false)
         }
@@ -444,6 +438,42 @@ exports.isReservationEditable = async (req, res) => {
         else {
             return res.json(false);
         }
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error");
+    }
+};
+
+exports.isReservationCancelled = async (req, res) => {
+    try {
+        const reservation = await Reservation.findById(req.params.reservationId);
+
+        if (reservation.isCancelled === true) {
+            return res.json(true);
+        }
+
+        return res.json(false)
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error");
+    }
+};
+
+exports.isReservationHappeningNow = async (req, res) => {
+    try {
+        const reservation = await Reservation.findById(req.params.reservationId);
+
+        if (!reservation) {
+            return res.status(404).json({ message: "Reservation not found" });
+        }
+
+        const now = new Date();
+
+        const happeningNow = reservation.reservation_start_timestamp <= now && now <= reservation.reservation_end_timestamp;
+
+        return res.json(happeningNow);
 
     } catch (err) {
         console.error(err);

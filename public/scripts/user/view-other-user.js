@@ -125,25 +125,39 @@ async function showReservations(reservations) {
     });
     listOfReservations.sort((a, b) => a.startDate.getTime() - b.startDate.getTime());
     console.log(listOfReservations)
-    for (const res of listOfReservations) {
-        const formattedStartDate = new Intl.DateTimeFormat('en-US', {
-            month: 'long',
-            day: '2-digit',
-            year: 'numeric',
-            timeZone: 'UTC'
-        }).format(res.startDate);
-        await addRow(
-            res.id,
-            res.building,
-            res.roomName,
-            formattedStartDate,
-            res.startTime,
-            res.endTime,
-            res.creationDate,
-            res.creationTime
-        );
 
+    if (listOfReservations.length > 0){
+        for (const res of listOfReservations) {
+            const formattedStartDate = new Intl.DateTimeFormat('en-US', {
+                month: 'long',
+                day: '2-digit',
+                year: 'numeric',
+                timeZone: 'UTC'
+            }).format(res.startDate);
+            await addRow(
+                res.id,
+                res.building,
+                res.roomName,
+                formattedStartDate,
+                res.startTime,
+                res.endTime,
+                res.creationDate,
+                res.creationTime
+            );
+        }
     }
+    else{
+        addDefaultRow()
+    }
+    
+}
+
+function addDefaultRow() {
+    const tr = document.createElement("tr");
+
+    tr.innerHTML = `<td colspan="6"class="px-6 py-10 text-center text-slate-500 font-medium">This user has no reservations.</td>`;
+
+    tbody.appendChild(tr);
 }
 
 function addRow(reservationId, building, room, date, startTime, endTime) {

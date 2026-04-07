@@ -396,6 +396,9 @@ $(document).ready(async function () {
         getDate(reservationStartTimeStamp)
         getStartHourAndMinute(reservationStartTimeStamp)
         getEndHourAndMinute(reservationEndTimeStamp)
+
+        console.log(reservationStartTimeStamp)
+        console.log(reservationEndTimeStamp)
     }
 
     async function loadPanelInputs(){
@@ -445,7 +448,6 @@ $(document).ready(async function () {
             currSeatNames = currSeatNames.filter(name => name !== seatName);
         }
 
-        console.log(currSeatNames)
 
         $("#confirmBtn").prop("disabled", currSeats.length === 0);
     });
@@ -579,7 +581,6 @@ $(document).ready(async function () {
                         .filter(seat => seat.status === "selected")
                         .map(seat => seat.seat_name);
 
-                    console.log(seatIds, seatNames)
                     setCurrSeatsToSelecteds(seatIds, seatNames)
                 }
 
@@ -601,15 +602,12 @@ $(document).ready(async function () {
             $(".seat").addClass("gray").removeClass("cursor-pointer green red blue");
         }
 
-        console.log(currSeatNames)
     });
 
     $("#confirmBtn").on("click", function (e) {
         e.preventDefault();
 
         var seatsString = currSeatNames.join(', ');
-
-        console.log(newBuilding, newRoom, newReservationDate, seatsString)
 
         $('#resVenue').text($("#venueInput").val());
         $('#resRoom').text($("#roomInput").val());

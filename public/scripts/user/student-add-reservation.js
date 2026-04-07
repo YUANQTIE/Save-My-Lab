@@ -176,10 +176,10 @@ $(document).ready(function () {
                             const emails = seat.data("reservedBys");
                             const userIDs = seat.data("userIDs");
 
+                            
                             let emailLinks = emails.map((email, index) => {
-                                const userId = userIDs[index];
-                                return `<a href="/user/view-other-user-profile?id=${userId}" class="seat-email">${email}</a>`;
-                            }).join("<br>");
+                                const searchedUserId = userIDs[index];
+                                return `<a href="#" class="seat-email" data-userid="${searchedUserId}">${email}</a>`;}).join("<br>");
 
                             const tooltip = $(`
                                 <div class="seat-tooltip">
@@ -271,9 +271,8 @@ $(document).ready(function () {
                             const userIDs = seat.data("userIDs");
 
                             let emailLinks = emails.map((email, index) => {
-                                const userId = userIDs[index];
-                                return `<a href="/user/view-other-user-profile?id=${userId}" class="seat-email">${email}</a>`;
-                            }).join("<br>");
+                                const searchedUserId = userIDs[index];
+                                return `<a href="#" class="seat-email" data-userid="${searchedUserId}">${email}</a>`;}).join("<br>");
 
                             const tooltip = $(`
                                 <div class="seat-tooltip">
@@ -364,10 +363,10 @@ $(document).ready(function () {
                             const emails = seat.data("reservedBys");
                             const userIDs = seat.data("userIDs");
 
+                            
                             let emailLinks = emails.map((email, index) => {
-                                const userId = userIDs[index];
-                                return `<a href="/user/view-other-user-profile?id=${userId}" class="seat-email">${email}</a>`;
-                            }).join("<br>");
+                                const searchedUserId = userIDs[index];
+                                return `<a href="#" class="seat-email" data-userid="${searchedUserId}">${email}</a>`;}).join("<br>");
 
                             const tooltip = $(`
                                 <div class="seat-tooltip">
@@ -461,9 +460,8 @@ $(document).ready(function () {
                             const userIDs = seat.data("userIDs");
 
                             let emailLinks = emails.map((email, index) => {
-                                const userId = userIDs[index];
-                                return `<a href="/user/view-other-user-profile?id=${userId}" class="seat-email">${email}</a>`;
-                            }).join("<br>");
+                                const searchedUserId = userIDs[index];
+                                return `<a href="#" class="seat-email" data-userid="${searchedUserId}">${email}</a>`;}).join("<br>");
 
                             const tooltip = $(`
                                 <div class="seat-tooltip">
@@ -536,6 +534,24 @@ $(document).ready(function () {
             });
         }
     }
+
+    $(document).on("click", ".seat-email", function (e) {
+        e.preventDefault();
+
+        const searchedUserId = $(this).data("userid");
+
+        fetch("/user/view-other-user-profile", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                searchedUserId: searchedUserId
+            })
+        }).then(() => {
+            window.location.href = "/user/view-other-user-profile";
+        });
+    });
 
     $("#startHourInput, #startMinuteInput").on("input", async function () {
         endHourInput.innerHTML = `<option value="" disabled selected>--</option>`

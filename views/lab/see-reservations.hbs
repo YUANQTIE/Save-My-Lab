@@ -22,10 +22,9 @@
                 <option value="">Input Room</option>
             </select>
 
-            <input id="reservationDateInput" type="date" class="input input-bordered input-xs w-full column-filter">
+            <input id="emailInput" type="text" placeholder="Search by email" class="input input-bordered input-xs w-full column-filter">
 
-            <input id="emailInput" type="text" placeholder="Search by email"
-                class="input input-bordered input-xs w-full column-filter">
+            <input id="reservationDateInput" type="date" class="input input-bordered input-xs w-full column-filter">
 
             <div class="flex items-center gap-1">
                 <span class="text-[10px] font-bold uppercase text-slate-400">Start</span>
@@ -38,14 +37,14 @@
                         <option value="10">10</option>
                         <option value="11">11</option>
                         <option value="12">12</option>
-                        <option value="13">1</option>
-                        <option value="14">2</option>
-                        <option value="15">3</option>
-                        <option value="16">4</option>
-                        <option value="17">5</option>
-                        <option value="18">6</option>
-                        <option value="19">7</option>
-                        <option value="20">8</option>
+                        <option value="13">13</option>
+                        <option value="14">14</option>
+                        <option value="15">15</option>
+                        <option value="16">16</option>
+                        <option value="17">17</option>
+                        <option value="18">18</option>
+                        <option value="19">19</option>
+                        <option value="20">20</option>
                     </select>
                     <span class="text-slate-400 font-bold">:</span>
                     <select id="startMin" class="select select-bordered select-xs flex-1 time-filter">
@@ -67,15 +66,15 @@
                         <option value="10">10</option>
                         <option value="11">11</option>
                         <option value="12">12</option>
-                        <option value="13">1</option>
-                        <option value="14">2</option>
-                        <option value="15">3</option>
-                        <option value="16">4</option>
-                        <option value="17">5</option>
-                        <option value="18">6</option>
-                        <option value="19">7</option>
-                        <option value="20">8</option>
-                        <option value="21">9</option>
+                        <option value="13">13</option>
+                        <option value="14">14</option>
+                        <option value="15">15</option>
+                        <option value="16">16</option>
+                        <option value="17">17</option>
+                        <option value="18">18</option>
+                        <option value="19">19</option>
+                        <option value="20">20</option>
+                        <option value="21">21</option>
                     </select>
                     <span class="text-slate-400 font-bold">:</span>
                     <select id="endMin" class="select select-bordered select-xs flex-1 time-filter">
@@ -101,41 +100,46 @@
                     <th class="py-3 text-slate-800 px-4 text-sm text-center">Reserved By</th>
                     <th class="py-3 text-slate-800 px-4 text-sm text-center">Reserved On</th>
                     <th class="py-3 text-slate-800 px-4 text-sm text-center">Reserved At</th>
+                    <th class="py-3 text-slate-800 px-4 text-sm text-center">Status</th>
                     <th class="py-3 text-slate-800 px-4 text-sm text-center">Actions</th>
                 </tr>
             </thead>
 
-            <tbody id="tbody" class="text-slate-700">
+            <tbody id="tbody" class="text-slate-700 hidden">
+                <!-- rows will be added dynamically -->
+            </tbody>
 
+            <tbody id="loadingTbody">
+                <tr id="loadingRow">
+                    <td colspan="9">
+                        <div class="flex flex-col justify-center items-center py-8 gap-2">
+                            <div class="w-8 h-8 border-4 border-gray-300 border-t-gray-500 rounded-full animate-spin"></div>
+                            <span class="text-gray-500 text-sm font-medium">Loading reservations...</span>
+                        </div>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>
 </div>
 
-{{!-- Modal for View Seats --}}
 <div id="view_modal" class="fixed inset-0 z-[9999] flex items-center justify-center p-4 hidden">
     <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm modal-backdrop"></div>
 
-    <div class="relative z-10 w-full max-w-sm bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-100">
+    <div class="relative z-10 w-full max-w-xl bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-100">
         <div class="bg-[#1e3a2a] px-6 py-4 flex justify-between items-center">
             <h3 class="font-bold text-white tracking-wide">Reserved Seats</h3>
             <button type="button" id="hide_view_modal"
                 class="text-white/70 hover:text-white transition-transform active:scale-90">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </button>
         </div>
 
         <div class="p-8">
-            <div id="view_modal_body" class="flex flex-wrap gap-3 justify-center">
-            </div>
-
-            <div class="mt-8 flex justify-center">
-                <button id="confirm_okay" type="button"
-                    class="w-full bg-[#1e3a2a] hover:bg-[#2d523d] text-white font-bold py-3 px-6 rounded-xl transition-all shadow-md active:translate-y-0.5">
-                    Got it
-                </button>
+            <div id="view_modal_body" class="grid grid-cols-3 gap-x-8 gap-y-6 justify-items-center max-h-[60vh] overflow-y-auto pr-2">
             </div>
         </div>
     </div>

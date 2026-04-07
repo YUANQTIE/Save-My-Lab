@@ -38,6 +38,10 @@ router.get('/:reservationId/checkDeletable', ReservationController.isReservation
 //res.json: true/false
 router.get('/:reservationId/checkEditable', ReservationController.isReservationEditable);
 
+router.get('/:reservationId/checkCancelled', ReservationController.isReservationCancelled);
+
+router.get('/:reservationId/checkHappening', ReservationController.isReservationHappeningNow);
+
 //POST ROUTES
 
 //req.params: adminId
