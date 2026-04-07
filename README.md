@@ -33,6 +33,7 @@ cd Save-My-Lab
 npm install bcrypt express mongoose hbs dotenv express-session connect-mongo
 ```
 <p align="center">3. Configure Environment Variables</p>
+<p align="center">*Adjust [USERNAME] and [PASSWORD] using your own MongoDB Atlas credentials in the working cluster</p>
 
 ```bash
 MONGODB_URI="mongodb://[USERNAME]:[PASSWORD]@ac-7tknf2d-shard-00-00.cllro3o.mongodb.net:27017,ac-7tknf2d-shard-00-01.cllro3o.mongodb.net:27017,ac-7tknf2d-shard-00-02.cllro3o.mongodb.net:27017/Save-My-Lab?ssl=true&replicaSet=atlas-7l0y2d-shard-0&authSource=admin&appName=SaveMyLab"
