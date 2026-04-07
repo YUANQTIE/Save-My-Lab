@@ -657,7 +657,7 @@ $(document).ready(function () {
     $(document).on("click", ".seat-email", function (e) {
         e.preventDefault();
 
-        const searchedUserId = $(this).data("userid");
+        const searchedUserId = $(this).data("userId");
 
         fetch("/user/view-other-user-profile", {
             method: "POST",
