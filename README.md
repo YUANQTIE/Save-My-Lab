@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/d7521aa7-18ce-47c8-9155-d8b5d7cb5180" alt="Save-My-Lab Logo" width="200"/>
+  <img src="https://github.com/user-attachments/assets/d7521aa7-18ce-47c8-9155-d8b5d7cb5180" alt="Save-My-Lab Logo" width="400" height="200"/>
 </p>
 
 <h1 align="center">Save-My-Lab</h1>
