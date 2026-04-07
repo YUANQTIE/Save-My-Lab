@@ -32,7 +32,6 @@ $(document).ready(function() {
         }
 
         try {
-            console.log("what the fuck")
             const res1 = await fetch("/user/verify", {
                 method: "POST",
                 headers: {

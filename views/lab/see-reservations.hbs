@@ -1,4 +1,7 @@
-<html lang="en" data-theme="light"></html>
+<html lang="en" data-theme="light">
+
+</html>
+
 <head>
     <link rel="stylesheet" href="/css/default/homepage2.css">
     <link rel="stylesheet" href="/css/lab/see-reservations.css">
@@ -9,8 +12,8 @@
     <p class="text-xl font-bold text-slate-800 mb-6">All Reservations</p>
 
     <div class="bg-slate-50 p-4 rounded-xl mb-6 border border-slate-100 shadow-sm">
-        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3 items-center">
-            <select id="buildingInput" class="select select-bordered select-xs w-full column-filter">
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-12 items-center">
+            <select id="buildingInput" class=" ml-4 select select-bordered select-xs w-full column-filter">
                 <option value="">Input Building</option>
                 <option value="Gokongwei Building">Gokongwei Building</option>
                 <option value="St. La Salle Hall">St. La Salle Hall</option>
@@ -22,7 +25,8 @@
                 <option value="">Input Room</option>
             </select>
 
-            <input id="emailInput" type="text" placeholder="Search by email" class="input input-bordered input-xs w-full column-filter">
+            <input id="emailInput" type="text" placeholder="Search by email"
+                class="input input-bordered input-xs w-full column-filter">
 
             <input id="reservationDateInput" type="date" class="input input-bordered input-xs w-full column-filter">
 
@@ -90,7 +94,8 @@
     </div>
 
     <div class="overflow-x-auto w-full px-4">
-        <table id="reservationTable" class="w-full bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+        <table id="reservationTable"
+            class="w-full bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
             <thead class="bg-slate-50 border-b border-slate-100 text-center">
                 <tr class="text-center">
                     <th class="py-3 text-slate-800 px-4 text-sm text-center">Building</th>
@@ -113,13 +118,17 @@
                 <tr id="loadingRow">
                     <td colspan="9">
                         <div class="flex flex-col justify-center items-center py-8 gap-2">
-                            <div class="w-8 h-8 border-4 border-gray-300 border-t-gray-500 rounded-full animate-spin"></div>
+                            <div class="w-8 h-8 border-4 border-gray-300 border-t-gray-500 rounded-full animate-spin">
+                            </div>
                             <span class="text-gray-500 text-sm font-medium">Loading reservations...</span>
                         </div>
                     </td>
                 </tr>
             </tbody>
         </table>
+    </div>
+    <div id="noReservations" class="hidden mt-5 flex text-gray-500 font-bold items-center justify-center">
+        No Reservations Found
     </div>
 </div>
 
@@ -132,14 +141,14 @@
             <button type="button" id="hide_view_modal"
                 class="text-white/70 hover:text-white transition-transform active:scale-90">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M6 18L18 6M6 6l12 12" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </button>
         </div>
 
         <div class="p-8">
-            <div id="view_modal_body" class="grid grid-cols-3 gap-x-8 gap-y-6 justify-items-center max-h-[60vh] overflow-y-auto pr-2">
+            <div id="view_modal_body"
+                class="grid grid-cols-3 gap-x-8 gap-y-6 justify-items-center max-h-[60vh] overflow-y-auto pr-2">
             </div>
         </div>
     </div>

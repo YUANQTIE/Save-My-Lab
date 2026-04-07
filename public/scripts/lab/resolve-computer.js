@@ -255,7 +255,7 @@ $(document).ready(async function () {
 
     $("#resolveOkay").on("click", async function () {
         const $btn = $(this);
-        $("#confirmText").text("Processing...");
+        $("#resolveText").text("Processing...");
         showLoader2()
 
         try {

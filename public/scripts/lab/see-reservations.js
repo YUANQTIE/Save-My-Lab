@@ -13,6 +13,7 @@ var creationTimeStart = undefined;
 var creationTimeEnd = undefined;
 var reservationsToBeDisplayed;
 const tbody = document.getElementById("tbody")
+const noReservations = document.getElementById("noReservations")
 let listOfReservations = []
 class reservation {
     constructor(id, building, roomName, startDate, startTime, endTime, reservedBy, creationDate, creationTime) {
@@ -164,8 +165,8 @@ $(document).ready(function () {
             }
 
             const seats = await response.json();
-            const sortedSeats = seats.seats.sort(); 
-            
+            const sortedSeats = seats.seats.sort();
+
             view_modal.classList.remove("hidden");
 
             if (Array.isArray(sortedSeats)) {
@@ -272,6 +273,15 @@ $(document).ready(function () {
         tbody.innerHTML = "";
         let listOfReservations = []
 
+        if (reservations.length == 0) {
+            noReservations.classList.remove("hidden")
+            tbody.classList.add("hidden")
+        }
+        else {
+            noReservations.classList.add("hidden")
+            tbody.classList.remove("hidden")
+        }
+
         reservations.forEach(res => {
             const rawStart = res.reservation_start_timestamp.replace('Z', '').replace(' ', 'T');
             const startDate = new Date(rawStart + "Z");
@@ -345,16 +355,16 @@ $(document).ready(function () {
             );
 
         }
-        
+
         sortTableByStatus(tbody)
         showTable()
     }
 
-    function unshowTable(){
+    function unshowTable() {
         $("#tbody").addClass("hidden")
         $("#loadingRow").removeClass("hidden")
     }
-    function showTable(){
+    function showTable() {
         $("#loadingRow").addClass("hidden")
         $("#tbody").removeClass("hidden")
     }
@@ -374,9 +384,9 @@ $(document).ready(function () {
         ]);
 
         let statusText = "";
-        
 
-        if (cancelled){
+
+        if (cancelled) {
             tr.innerHTML = `<td class="py-3 text-slate-800 pl-[19px] text-sm text-center">${building}</td>
                         <td class="py-3 text-slate-800 px-4 text-sm text-center">${room}</td>
                         <td class="py-3 text-slate-800 px-4 text-sm text-center">${date}</td>
@@ -394,11 +404,11 @@ $(document).ready(function () {
                                 </button>
                             </div>
                         </td>`;
-                statusText = "Cancelled";
+            statusText = "Cancelled";
         }
-        else{
+        else {
 
-            if (happeningNow){
+            if (happeningNow) {
                 tr.innerHTML = `<td class="py-3 text-slate-800 pl-[19px] text-sm text-center">${building}</td>
                             <td class="py-3 text-slate-800 px-4 text-sm text-center">${room}</td>
                             <td class="py-3 text-slate-800 px-4 text-sm text-center">${date}</td>
@@ -416,13 +426,13 @@ $(document).ready(function () {
                                     </button>
                                 </div>
                             </td>`;
-                
+
                 statusText = "Ongoing";
             }
-            else{
-                if (editable){
-                    if (deletable){
-                            tr.innerHTML = `<td class="py-3 text-slate-800 pl-[19px] text-sm text-center">${building}</td>
+            else {
+                if (editable) {
+                    if (deletable) {
+                        tr.innerHTML = `<td class="py-3 text-slate-800 pl-[19px] text-sm text-center">${building}</td>
                                 <td class="py-3 text-slate-800 px-4 text-sm text-center">${room}</td>
                                 <td class="py-3 text-slate-800 px-4 text-sm text-center">${date}</td>
                                 <td class="py-3 text-slate-800 px-4 text-sm text-center">${startTime} - ${endTime}</td>
@@ -486,8 +496,8 @@ $(document).ready(function () {
                             if (dialog) dialog.showModal();
                         });
                     }
-                   
-                    else{
+
+                    else {
                         tr.innerHTML = `<td class="py-3 text-slate-800 pl-[19px] text-sm text-center">${building}</td>
                                     <td class="py-3 text-slate-800 px-4 text-sm text-center">${room}</td>
                                     <td class="py-3 text-slate-800 px-4 text-sm text-center">${date}</td>
@@ -510,11 +520,11 @@ $(document).ready(function () {
 
                                             </button>
                                         </div>
-                                    </td>`;   
+                                    </td>`;
                     }
                     statusText = "Scheduled";
                 }
-                else{
+                else {
                     tr.innerHTML = `<td class="py-3 text-slate-800 pl-[19px] text-sm text-center">${building}</td>
                                     <td class="py-3 text-slate-800 px-4 text-sm text-center">${room}</td>
                                     <td class="py-3 text-slate-800 px-4 text-sm text-center">${date}</td>
@@ -531,7 +541,7 @@ $(document).ready(function () {
                                                 <img src="/images/seat.png" alt="View" class="w-5 h-5">
                                             </button>
                                         </div>
-                                    </td>`;   
+                                    </td>`;
                     statusText = "Finished";
                 }
             }
@@ -551,7 +561,7 @@ $(document).ready(function () {
         rows.forEach(row => tbody.appendChild(row));
     }
 
-    $(document).on("click", ".edit", function(e) {
+    $(document).on("click", ".edit", function (e) {
         e.preventDefault();
 
         const row = $(this).closest("tr");
@@ -564,19 +574,6 @@ $(document).ready(function () {
             window.location.href = "/admin/edit-reservation";
         });
     });
-
-    function convertDate(date) {
-        const dateObj = new Date(date);
-
-        // Extract parts
-        const year = dateObj.getFullYear();
-        const month = String(dateObj.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
-        const day = String(dateObj.getDate()).padStart(2, '0');
-
-        const formattedDate = `${year}-${month}-${day}`;
-        return formattedDate;
-    }
-
 
     async function updateReservationsList(email, creationTimeStart, creationDate, room, building, reservationStartTimeStamp, reservationEndTimeStamp, seatCount) {
         try {

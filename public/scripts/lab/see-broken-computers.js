@@ -7,6 +7,7 @@ var minute;
 var timestamp;
 var brokensToBeDisplayed;
 const tbody = document.getElementById("tbody")
+const noMaintainedComputers = document.getElementById("noMaintainedComputers")
 class broken {
     constructor(id, building, roomName, startDate, startTime, reason) {
         this.id = id,
@@ -24,6 +25,14 @@ $(document).ready(function () {
     async function showBrokens(brokens) {
         tbody.innerHTML = "";
 
+        if (brokens.length == 0) {
+            noMaintainedComputers.classList.remove("hidden")
+            tbody.classList.add("hidden")
+        }
+        else {
+            noMaintainedComputers.classList.add("hidden")
+            tbody.classList.remove("hidden")
+        }
         const listOfBrokens = brokens.map(res => ({
             brokenId: res.broken_id,
             building: res.building,
