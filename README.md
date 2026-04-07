@@ -1,12 +1,18 @@
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/d7521aa7-18ce-47c8-9155-d8b5d7cb5180" alt="Save-My-Lab Logo" width="400" height="200"/>
-</p>
+
+
 
 <h1 align="center">Save-My-Lab</h1>
 
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/d7521aa7-18ce-47c8-9155-d8b5d7cb5180" alt="Save-My-Lab Logo" width="800" height="500"/>
+</p>
+
+
+<p align="center">This CCAPDEV project was made by Group 3 - Labron James, composing of Merry Ann Ong, Yuan Miguel Panlilio, and Nigel Henry So, and Princess Ayesa Tullao. We know how stressful it can be to find an available PC when deadlines are tight. By bringing a highly visual, interactive booking system to our labs, we ensure students always have a seat waiting for them, while giving technicians the tools they need to manage room capacities efficiently.</p>
+
 ---
 
-<p align="center">INSTALLATION</p>
+<h1 align="center">INSTALLATION</h1>
 
 <p align="center">1. Clone the Repository</p>
 
