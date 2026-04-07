@@ -176,10 +176,17 @@ $(document).ready(function () {
                             const emails = seat.data("reservedBys");
                             const userIDs = seat.data("userIDs");
 
-                            
+
                             let emailLinks = emails.map((email, index) => {
-                                const searchedUserId = userIDs[index];
-                                return `<a href="#" class="seat-email" data-userid="${searchedUserId}">${email}</a>`;}).join("<br>");
+                                const userId = userIDs[index];
+                                if (email == "Anonymous"){
+                                    return `<span class="seat-email">${email}</span>`;
+                                }
+                                else{
+                                    return `<a href="/user/view-other-user-profile?id=${userId}" class="seat-email">${email}</a>`;
+                                }
+                                
+                            }).join("<br>");
 
                             const tooltip = $(`
                                 <div class="seat-tooltip">
@@ -189,6 +196,24 @@ $(document).ready(function () {
                             `);
 
                             $("body").append(tooltip);
+
+                            tooltip.find(".view-profile-link").on("click", function (e) {
+                                e.preventDefault();
+
+                                const searchedUserId = $(this).data("user-id");
+
+                                fetch("/user/view-other-user-profile", {
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json"
+                                    },
+                                    body: JSON.stringify({
+                                        searchedUserId: searchedUserId
+                                    })
+                                }).then(() => {
+                                    window.location.href = "/user/view-other-user-profile";
+                                });
+                            });
 
                             tooltip.css({
                                 top: seat.offset().top - tooltip.outerHeight() - 10,
@@ -271,8 +296,15 @@ $(document).ready(function () {
                             const userIDs = seat.data("userIDs");
 
                             let emailLinks = emails.map((email, index) => {
-                                const searchedUserId = userIDs[index];
-                                return `<a href="#" class="seat-email" data-userid="${searchedUserId}">${email}</a>`;}).join("<br>");
+                                const userId = userIDs[index];
+                                if (email == "Anonymous"){
+                                    return `<span class="seat-email">${email}</span>`;
+                                }
+                                else{
+                                    return `<a href="/user/view-other-user-profile?id=${userId}" class="seat-email">${email}</a>`;
+                                }
+                                
+                            }).join("<br>");
 
                             const tooltip = $(`
                                 <div class="seat-tooltip">
@@ -282,6 +314,24 @@ $(document).ready(function () {
                             `);
 
                             $("body").append(tooltip);
+
+                            tooltip.find(".view-profile-link").on("click", function (e) {
+                                e.preventDefault();
+
+                                const searchedUserId = $(this).data("user-id");
+
+                                fetch("/user/view-other-user-profile", {
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json"
+                                    },
+                                    body: JSON.stringify({
+                                        searchedUserId: searchedUserId
+                                    })
+                                }).then(() => {
+                                    window.location.href = "/user/view-other-user-profile";
+                                });
+                            });
 
                             tooltip.css({
                                 top: seat.offset().top - tooltip.outerHeight() - 10,
@@ -365,8 +415,20 @@ $(document).ready(function () {
 
                             
                             let emailLinks = emails.map((email, index) => {
-                                const searchedUserId = userIDs[index];
-                                return `<a href="#" class="seat-email" data-userid="${searchedUserId}">${email}</a>`;}).join("<br>");
+                                const userId = userIDs[index];
+                                if (email == "Anonymous") {
+                                    return `<span class="seat-email">${email}</span>`;
+                                }
+                                else {
+                                    return `
+                                        <a href="#" 
+                                        class="seat-email view-profile-link" 
+                                        data-user-id="${userId}">
+                                        ${email}
+                                        </a>
+                                    `;
+                                }
+                            }).join("<br>");
 
                             const tooltip = $(`
                                 <div class="seat-tooltip">
@@ -376,6 +438,24 @@ $(document).ready(function () {
                             `);
 
                             $("body").append(tooltip);
+
+                            tooltip.find(".view-profile-link").on("click", function (e) {
+                                e.preventDefault();
+
+                                const searchedUserId = $(this).data("user-id");
+
+                                fetch("/user/view-other-user-profile", {
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json"
+                                    },
+                                    body: JSON.stringify({
+                                        searchedUserId: searchedUserId
+                                    })
+                                }).then(() => {
+                                    window.location.href = "/user/view-other-user-profile";
+                                });
+                            });
 
                             tooltip.css({
                                 top: seat.offset().top - tooltip.outerHeight() - 10,
@@ -460,8 +540,15 @@ $(document).ready(function () {
                             const userIDs = seat.data("userIDs");
 
                             let emailLinks = emails.map((email, index) => {
-                                const searchedUserId = userIDs[index];
-                                return `<a href="#" class="seat-email" data-userid="${searchedUserId}">${email}</a>`;}).join("<br>");
+                                const userId = userIDs[index];
+                                if (email == "Anonymous"){
+                                    return `<span class="seat-email">${email}</span>`;
+                                }
+                                else{
+                                    return `<a href="/user/view-other-user-profile?id=${userId}" class="seat-email">${email}</a>`;
+                                }
+                                
+                            }).join("<br>");
 
                             const tooltip = $(`
                                 <div class="seat-tooltip">
@@ -471,6 +558,24 @@ $(document).ready(function () {
                             `);
 
                             $("body").append(tooltip);
+
+                            tooltip.find(".view-profile-link").on("click", function (e) {
+                                e.preventDefault();
+
+                                const searchedUserId = $(this).data("user-id");
+
+                                fetch("/user/view-other-user-profile", {
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json"
+                                    },
+                                    body: JSON.stringify({
+                                        searchedUserId: searchedUserId
+                                    })
+                                }).then(() => {
+                                    window.location.href = "/user/view-other-user-profile";
+                                });
+                            });
 
                             tooltip.css({
                                 top: seat.offset().top - tooltip.outerHeight() - 10,
