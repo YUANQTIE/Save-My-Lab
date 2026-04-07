@@ -14,31 +14,6 @@ $(document).ready(function() {
         }
     });
 
-    $("#emailBtn").on("click", async function(e) {
-        e.preventDefault();
-
-        const emailInput = $("#emailInput").val().trim();
-
-        try {
-            const response = await fetch(`/admin/forgot?email=${emailInput}`);
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                $("#errMes").text(errorData.message);
-                $("#emailInput").addClass("border-red-500");
-                return;
-            }
-
-            const data = await response.json(); 
-            editPwId = data._id;
-
-            $("#pw1Div, #pw2Div, #newPwBtn").removeClass("hidden");
-            $("#emailBtn").addClass("hidden");
-
-        } catch (err) {
-            console.error("Fetch Error:", err);
-        }
-    });
 
     $("#newPwBtn").on("click", async function(e) {
         e.preventDefault();
@@ -49,7 +24,8 @@ $(document).ready(function() {
         try {
 
             if (pw1Input === pw2Input){
-                const res = await fetch(`/admin/edit/password?originalId=${editPwId}`, {
+                console.log("sam smith")
+                const res = await fetch(`/admin/edit/password`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json'

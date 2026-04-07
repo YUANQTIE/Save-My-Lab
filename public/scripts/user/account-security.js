@@ -72,15 +72,17 @@ $(document).ready(function () {
 
     $("#confirmDelete").on("click", async function () {
         try {
-            const res = await fetch(`/user/delete`, {
+            const res1 = await fetch(`/user/delete`, {
                 method: "DELETE"
             });
 
-            if (res.ok) {
-                alert("Account deleted successfully");
+            const res2 = await fetch("/user/logout");
 
+            if (res2.ok) {
                 window.location.href = "/";
-            } else {
+            }
+
+            else {
                 alert("Failed to delete account");
             }
 
@@ -112,12 +114,13 @@ function saveChanges() {
     cur_password_border.classList.replace("outline-red-300", border_color);
     new_password_border.classList.replace("outline-red-300", border_color);
     confirm_password_border.classList.replace("outline-red-300", border_color);
+    const containsWhitespace = str => /\s/.test(str);
 
     let valid = true;
     if (cur_password_input.value == "") {
         valid = false;
         cur_password_border.classList.replace(border_color, "outline-red-300");
-        error_header.innerHTML = "ERROR!"
+        error_header.innerHTML = ""
         error_text.innerHTML = "Please fill out all input fields."
         error.classList = error_classList;
         error_button.classList.remove("hidden");
@@ -136,7 +139,7 @@ function saveChanges() {
     if (new_password_input.value == "") {
         valid = false;
         new_password_border.classList.replace(border_color, "outline-red-300");
-        error_header.innerHTML = "ERROR!"
+        error_header.innerHTML = ""
         error_text.innerHTML = "Please fill out all input fields."
         error.classList = error_classList;
         error_button.classList.remove("hidden");
@@ -155,7 +158,7 @@ function saveChanges() {
     if (confirm_password_input.value == "") {
         valid = false;
         confirm_password_border.classList.replace(border_color, "outline-red-300");
-        error_header.innerHTML = "ERROR!"
+        error_header.innerHTML = ""
         error_text.innerHTML = "Please fill out all input fields."
         error.classList = error_classList;
         error_button.classList.remove("hidden");
@@ -176,7 +179,7 @@ function saveChanges() {
         if (!passwordFound) {
             valid = false;
             cur_password_border.classList.replace(border_color, "outline-red-300");
-            error_header.innerHTML = "ERROR!"
+            error_header.innerHTML = ""
             error_text.innerHTML = "Wrong Password";
             error.classList = wrong_password_classList;
             error_button.classList.remove("hidden");
@@ -194,7 +197,7 @@ function saveChanges() {
         // Check if new and confirm password are the same
         if (new_password_input.value != confirm_password_input.value) {
             valid = false;
-            error_header.innerHTML = "ERROR!"
+            error_header.innerHTML = ""
             new_password_border.classList.replace(border_color, "outline-red-300");
             confirm_password_border.classList.replace(border_color, "outline-red-300");
             error_text.innerHTML = "New Password and Confirm Password should match.";
@@ -215,6 +218,44 @@ function saveChanges() {
                 error.classList.add("hidden");
             });
         }
+    }
+
+    if (containsWhitespace(new_password_input.value)){
+        valid = false;
+        confirm_password_border.classList.replace(border_color, "outline-red-300");
+        error_header.innerHTML = ""
+        error_text.innerHTML = "Password must not have whitespaces."
+        error.classList = error_classList;
+        error_button.classList.remove("hidden");
+        error.classList.remove("hidden");
+        error.classList.replace(error_password_match_size, error_input_border_size);
+
+        confirm_password_input.addEventListener("click", (event) => {
+            confirm_password_border.classList.replace("outline-red-300", border_color);
+        });
+
+        error_button.addEventListener("click", (event) => {
+            error.classList.add("hidden");
+        });
+    }
+
+    if (new_password_input.value.length < 8){
+        valid = false;
+        confirm_password_border.classList.replace(border_color, "outline-red-300");
+        error_header.innerHTML = ""
+        error_text.innerHTML = "Password must have at least 8 characters."
+        error.classList = error_classList;
+        error_button.classList.remove("hidden");
+        error.classList.remove("hidden");
+        error.classList.replace(error_password_match_size, error_input_border_size);
+
+        confirm_password_input.addEventListener("click", (event) => {
+            confirm_password_border.classList.replace("outline-red-300", border_color);
+        });
+
+        error_button.addEventListener("click", (event) => {
+            error.classList.add("hidden");
+        });
     }
 
     if (valid == true) {

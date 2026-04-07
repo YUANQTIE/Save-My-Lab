@@ -90,6 +90,8 @@ $(document).ready(function() {
 
         const isIdNumberInvalid = await isIdNumberInvalidCheck.json()
 
+        const validId3Digits = ["118", "119", "120", "121", "122", "123", "124", "125"]
+
 
         if (containsWhitespace(email) || !email.toLowerCase().endsWith("@dlsu.edu.ph")) {
             $("#errMes1").text("Please input a valid DLSU email");
@@ -106,6 +108,14 @@ $(document).ready(function() {
         if (isNaN(id_number) || id_number.toString().length !== 8 || id_number.toString()[0] !== '1') {
             $("#errMes1").text("Please input a valid 8-digit number that starts with 1");
             $("#idNumberInput").addClass("border-red-500");
+
+            return
+        }
+
+        if (!validId3Digits.includes(id_number.toString().substring(0,3))) {
+            $("#errMes1").text("Only ID Numbers 118 to 125 may register for a user account.");
+            $("#idNumberInput").addClass("border-red-500");
+
             return
         }
 
@@ -187,7 +197,7 @@ $(document).ready(function() {
         $(this).addClass("hidden");
     });
 
-    $("#usernameInput").on("input", function() {
+    $("#usernameInput").on("input", async function() {
         const charCount = $(this).val().length;
         $("#unCharCount").text(`${charCount}/20`);
 

@@ -89,7 +89,7 @@ async function updateProfilePicture(image) {
     console.log(result)
 }
 
-function saveChanges() {
+async function saveChanges() {
     username_border.classList.replace("outline-red-300", username_border_color);
 
     let valid = true;
@@ -97,6 +97,29 @@ function saveChanges() {
         valid = false;
         username_border.classList.replace(username_border_color, "outline-red-300");
         error_text.innerHTML = "Username cannot be empty.";
+        error.classList = error_classList;
+        error_button.classList.remove("hidden");
+        error.classList.remove("hidden");
+        error_header.innerHTML = "Error!"
+
+        username_input.addEventListener("click", (event) => {
+            username_border.classList.replace("outline-red-300", username_border_color);
+        });
+
+        error_button.addEventListener("click", (event) => {
+            error.classList.add("hidden");
+        });
+    }
+
+    const isUsernameInvalidCheck = await fetch(`/user/usernameCheck?username=${username_input.value}`);
+    const isUsernameInvalid = await isUsernameInvalidCheck.json()
+
+    console.log(isUsernameInvalid)
+
+    if (isUsernameInvalid){
+        valid = false;
+        username_border.classList.replace(username_border_color, "outline-red-300");
+        error_text.innerHTML = "Username already taken.";
         error.classList = error_classList;
         error_button.classList.remove("hidden");
         error.classList.remove("hidden");

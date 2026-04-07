@@ -42,7 +42,7 @@ router.post('/verify', AdminController.isAdminValid);
 //PUT ROUTE
 
 //req.body: password
-router.put('/edit/password/:id', AdminController.editPassword);
+router.put('/edit/password', AdminController.editPassword);
 
 router.get("/landing", (req, res) => {
     if (!req.session.adminId) {
@@ -51,6 +51,12 @@ router.get("/landing", (req, res) => {
     
     const adminId = req.session.adminId;
     res.render('lab/homepage', { id: adminId, isAdmin: true });
+});
+
+router.get("/forgot-admin", (req, res) => {
+
+    const adminId = req.session.adminId;
+    res.render('lab/forgot-admin', { id: adminId, isAdmin: true });
 });
 
 router.post("/edit-reservation", (req, res) => {

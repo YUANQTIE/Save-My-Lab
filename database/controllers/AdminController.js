@@ -217,10 +217,13 @@ exports.addAdmin = async (req, res) => {
 
 exports.editPassword = async (req, res) => {
   try {
-    const id = req.query.originalId
+    console.log("got here")
     const containsWhitespace = str => /\s/.test(str);
 
-    const admin = await Admin.findById(id);
+    console.log(req.session.adminId)
+    const admin = await Admin.findById(req.session.adminId);
+
+    console.log(admin)
 
     if (!admin){
       return res.send("No admin found");
@@ -228,18 +231,20 @@ exports.editPassword = async (req, res) => {
 
     const pw = req.body.password;
 
-    const hashedPassword = await bcrypt.hash(pw, saltCount);
-    // if (pw.length < 8) {
-    //   return res.send("Password must have minimum 8 characters")
-    // }
-    // if (containsWhitespace(pw)) {
-    //   return res.send("Password must not have whitespaces")
-    // }
-    // if (pw === user.password) {
-    //   return res.send("Password must not be the same from previous password.")
-    // }
+    console.log("NANDUITO AKOFDSKOF")
 
-    await Admin.findByIdAndUpdate(id, { password: hashedPassword });
+    console.log(pw)
+
+    const hashedPassword = await bcrypt.hash(pw, saltCount);
+    if (pw.length < 8) {
+      return res.send("Password must have minimum 8 characters")
+    }
+    if (containsWhitespace(pw)) {
+      return res.send("Password must not have whitespaces")
+    }
+
+    console.log("unmabot ako dito")
+    await Admin.findByIdAndUpdate(req.session.adminId, { password: hashedPassword });
 
     return res.send("Admin password updated successfully");
 
