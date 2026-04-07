@@ -141,13 +141,12 @@ $(document).ready(async function () {
                             
                             let emailLinks = emails.map((email, index) => {
                                 const userId = userIDs[index];
-                                if (email == "sheeesh"){
+                                if (email == "Anonymous") {
                                     return `<span class="seat-email">${email}</span>`;
                                 }
-                                else{
-                                    return `<a href="/user/view-other-user-profile?id=${userId}" class="seat-email">${email}</a>`;
+                                else {
+                                    return `<a href="#" class="seat-email view-profile-link" data-user-id="${userId}">${email}</a> `;
                                 }
-                                
                             }).join("<br>");
 
                             const tooltip = $(`
@@ -158,6 +157,24 @@ $(document).ready(async function () {
                             `);
 
                             $("body").append(tooltip);
+
+                            tooltip.find(".view-profile-link").on("click", function (e) {
+                                e.preventDefault();
+
+                                const searchedUserId = $(this).data("user-id");
+
+                                fetch("/user/view-other-user-profile", {
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json"
+                                    },
+                                    body: JSON.stringify({
+                                        searchedUserId: searchedUserId
+                                    })
+                                }).then(() => {
+                                    window.location.href = "/user/view-other-user-profile";
+                                });
+                            });
 
                             tooltip.css({
                                 top: seat.offset().top - tooltip.outerHeight() - 10,
@@ -244,13 +261,12 @@ $(document).ready(async function () {
 
                             let emailLinks = emails.map((email, index) => {
                                 const userId = userIDs[index];
-                                if (email == "sheeesh"){
+                                if (email == "Anonymous") {
                                     return `<span class="seat-email">${email}</span>`;
                                 }
-                                else{
-                                    return `<a href="/user/view-other-user-profile?id=${userId}" class="seat-email">${email}</a>`;
+                                else {
+                                    return `<a href="#" class="seat-email view-profile-link" data-user-id="${userId}">${email}</a> `;
                                 }
-                                
                             }).join("<br>");
 
                             const tooltip = $(`
@@ -261,6 +277,24 @@ $(document).ready(async function () {
                             `);
 
                             $("body").append(tooltip);
+
+                            tooltip.find(".view-profile-link").on("click", function (e) {
+                                e.preventDefault();
+
+                                const searchedUserId = $(this).data("user-id");
+
+                                fetch("/user/view-other-user-profile", {
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json"
+                                    },
+                                    body: JSON.stringify({
+                                        searchedUserId: searchedUserId
+                                    })
+                                }).then(() => {
+                                    window.location.href = "/user/view-other-user-profile";
+                                });
+                            });
 
                             tooltip.css({
                                 top: seat.offset().top - tooltip.outerHeight() - 10,
@@ -348,13 +382,12 @@ $(document).ready(async function () {
                             
                             let emailLinks = emails.map((email, index) => {
                                 const userId = userIDs[index];
-                                if (email == "sheeesh"){
+                                if (email == "Anonymous") {
                                     return `<span class="seat-email">${email}</span>`;
                                 }
-                                else{
-                                    return `<a href="/user/view-other-user-profile?id=${userId}" class="seat-email">${email}</a>`;
+                                else {
+                                    return `<a href="#" class="seat-email view-profile-link" data-user-id="${userId}">${email}</a> `;
                                 }
-                                
                             }).join("<br>");
 
                             const tooltip = $(`
@@ -365,6 +398,24 @@ $(document).ready(async function () {
                             `);
 
                             $("body").append(tooltip);
+
+                            tooltip.find(".view-profile-link").on("click", function (e) {
+                                e.preventDefault();
+
+                                const searchedUserId = $(this).data("user-id");
+
+                                fetch("/user/view-other-user-profile", {
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json"
+                                    },
+                                    body: JSON.stringify({
+                                        searchedUserId: searchedUserId
+                                    })
+                                }).then(() => {
+                                    window.location.href = "/user/view-other-user-profile";
+                                });
+                            });
 
                             tooltip.css({
                                 top: seat.offset().top - tooltip.outerHeight() - 10,
@@ -453,13 +504,12 @@ $(document).ready(async function () {
 
                             let emailLinks = emails.map((email, index) => {
                                 const userId = userIDs[index];
-                                if (email == "sheeesh"){
+                                if (email == "Anonymous") {
                                     return `<span class="seat-email">${email}</span>`;
                                 }
-                                else{
-                                    return `<a href="/user/view-other-user-profile?id=${userId}" class="seat-email">${email}</a>`;
+                                else {
+                                    return `<a href="#" class="seat-email view-profile-link" data-user-id="${userId}">${email}</a> `;
                                 }
-                                
                             }).join("<br>");
 
                             const tooltip = $(`
@@ -470,6 +520,24 @@ $(document).ready(async function () {
                             `);
 
                             $("body").append(tooltip);
+
+                            tooltip.find(".view-profile-link").on("click", function (e) {
+                                e.preventDefault();
+
+                                const searchedUserId = $(this).data("user-id");
+
+                                fetch("/user/view-other-user-profile", {
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json"
+                                    },
+                                    body: JSON.stringify({
+                                        searchedUserId: searchedUserId
+                                    })
+                                }).then(() => {
+                                    window.location.href = "/user/view-other-user-profile";
+                                });
+                            });
 
                             tooltip.css({
                                 top: seat.offset().top - tooltip.outerHeight() - 10,
@@ -536,6 +604,24 @@ $(document).ready(async function () {
             });
         }
     }
+
+    $(document).on("click", ".seat-email", function (e) {
+        e.preventDefault();
+
+        const searchedUserId = $(this).data("userId");
+
+        fetch("/user/view-other-user-profile", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                searchedUserId: searchedUserId
+            })
+        }).then(() => {
+            window.location.href = "/user/view-other-user-profile";
+        });
+    });
     
     function getDate(s){
         reservationDate = s.substring(0, 10);

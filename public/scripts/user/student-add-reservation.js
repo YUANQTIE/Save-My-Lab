@@ -197,7 +197,7 @@ $(document).ready(function () {
                                     return `<span class="seat-email">${email}</span>`;
                                 }
                                 else {
-                                    return `<a href="/user/view-other-user-profile?id=${userId}" class="seat-email">${email}</a>`;
+                                    return `<a href="#" class="seat-email view-profile-link" data-user-id="${userId}">${email}</a> `;
                                 }
 
                             }).join("<br>");
@@ -315,7 +315,7 @@ $(document).ready(function () {
                                     return `<span class="seat-email">${email}</span>`;
                                 }
                                 else {
-                                    return `<a href="/user/view-other-user-profile?id=${userId}" class="seat-email">${email}</a>`;
+                                    return `<a href="#" class="seat-email view-profile-link" data-user-id="${userId}">${email}</a> `;
                                 }
 
                             }).join("<br>");
@@ -434,13 +434,7 @@ $(document).ready(function () {
                                     return `<span class="seat-email">${email}</span>`;
                                 }
                                 else {
-                                    return `
-                                        <a href="#" 
-                                        class="seat-email view-profile-link" 
-                                        data-user-id="${userId}">
-                                        ${email}
-                                        </a>
-                                    `;
+                                    return `<a href="#" class="seat-email view-profile-link" data-user-id="${userId}">${email}</a> `;
                                 }
                             }).join("<br>");
 

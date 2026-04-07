@@ -9,6 +9,7 @@ const MongoStore = require('connect-mongo').default;
 
 const app = express(); // Define app FIRST
 const port = process.env.PORT || 3000;
+
 const url = process.env.MONGODB_URI;
 
 const adminRoutes = require('./database/routes/AdminRoutes');
@@ -26,7 +27,6 @@ var hbs = require('hbs')
 app.engine("hbs", exphbs.engine({ extname: 'hbs', defaultLayout: 'main', partialsDir: __dirname + '/views/partials' }))
 app.set('view engine', 'hbs');
 app.set("views", "./views")
-
 
 app.use(express.json()) // use json
 app.use(express.text()) // use json
