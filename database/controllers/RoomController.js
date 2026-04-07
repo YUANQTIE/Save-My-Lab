@@ -86,7 +86,7 @@ exports.getSeatStatus = async (req, res) => {
         reservedSeats.forEach(resv => {
             resv.seats.forEach(seatId => {
                 const idStr = seatId.toString();
-                let ownerDisplay = resv.reservedBy?.username || "sheeesh";
+                let ownerDisplay = resv.reservedBy?.username || "Anonymous";
                 if (resv.anonymous === true) {
                     ownerDisplay = "Anonymous";
                 }
@@ -182,7 +182,7 @@ exports.getEditSeatStatus = async (req, res) => {
         reservedSeats.forEach(resv => {
             resv.seats.forEach(seatId => {
                 const idStr = seatId.toString();
-                let ownerDisplay = resv.reservedBy?.username || "sheeesh";
+                let ownerDisplay = resv.reservedBy?.username || "Anonymous";
                 if (resv.anonymous === true) {
                     ownerDisplay = "Anonymous";
                 }
@@ -339,7 +339,7 @@ exports.getEditSeatStatus2 = async (req, res) => {
 
             resv.seats.forEach(seatId => {
                 const idStr = seatId.toString();
-                let ownerDisplay = resv.reservedBy?.username || "sheeesh";
+                let ownerDisplay = resv.reservedBy?.username || "Anonymous";
                 if (resv.anonymous === true) {
                     ownerDisplay = "Anonymous";
                 }
