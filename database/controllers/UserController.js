@@ -332,17 +332,11 @@ exports.editProfilePicture = async (req, res) => {
     }
 
     const file = req.files.profile_picture;
-
-    const fileName = `${req.session.userId}.jpg`;
-    const uploadDir = path.join(__dirname, '..', '..', 'public', 'profile_pictures');
-    console.log("FULL SYSTEM PATH:", uploadDir);
-    const savePath = path.join(uploadDir, fileName);
-    console.log(file)
-    await file.mv(savePath);
-
+    const base64Image = `data:${file.mimetype};base64,${file.data.toString('base64')}`;
     await User.findByIdAndUpdate(req.session.userId, {
-      profile_picture: `/profile_pictures/${fileName}`
+      profile_picture: base64Image
     });
+
     return res.status(200).json({ message: "Profile picture updated successfully" });
   } catch (err) {
     console.error(err);
@@ -483,12 +477,7 @@ exports.addUser = async (req, res) => {
 
     if (req.files && req.files.profile_picture) {
       const file = req.files.profile_picture;
-      const fileName = `${user._id}.jpg`;
-      const savePath = `./public/images/${fileName}`;
-
-      await file.mv(savePath);
-
-      user.profile_picture = `/profile_pictures/${fileName}`;
+      user.profile_picture = `data:${file.mimetype};base64,${file.data.toString('base64')}`;
       await user.save();
     }
 
