@@ -488,7 +488,7 @@ exports.addUser = async (req, res) => {
 
       await file.mv(savePath);
 
-      user.profile_picture = `/images/${fileName}`;
+      user.profile_picture = `/profile_pictures/${fileName}`;
       await user.save();
     }
 

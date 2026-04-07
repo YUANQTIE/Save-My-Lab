@@ -97,7 +97,7 @@ $(document).ready(async function () {
             newReservationEndHour = $("#endHourInput").val().trim();
             newReservationEndMinute = $("#endMinuteInput").val().trim();
 
-            $(".seat").removeClass("gray")
+            $(".seat").removeClass("grey")
 
             newReservationStartTimeStamp = $("#dateInput").val() + "T" + $("#startHourInput").val() + ":" + $("#startMinuteInput").val() + ":00.000";
             newReservationEndTimeStamp = $("#dateInput").val() + "T" +  $("#endHourInput").val() + ":" + $("#endMinuteInput").val() + ":00.000";
@@ -105,7 +105,7 @@ $(document).ready(async function () {
     }
 
     function assignSeatIds(seatArray) {
-        $(".seat").removeClass("gray red blue blue-500 red-500 green cursor-pointer selected").attr("title", "").removeAttr("id").removeAttr("data-name");
+        $(".seat").removeClass("grey red blue blue-500 red-500 green cursor-pointer selected").attr("title", "").removeAttr("id").removeAttr("data-name");
         $(".room-wrapper").addClass("seats-enabled");
         console.log(seatArray)
         if (building === "Gokongwei Building") {
@@ -749,7 +749,7 @@ $(document).ready(async function () {
 
             $(".seat")
                 .removeClass("red blue green cursor-pointer selected")
-                .addClass("gray")
+                .addClass("grey")
                 .removeAttr("id")
                 .removeAttr("data-name")
                 .attr("title", "");
@@ -788,7 +788,7 @@ $(document).ready(async function () {
     });
 
     $("#roomInput").on("change", async function (e) {
-        $(".seat").removeClass("green selected").addClass("gray");
+        $(".seat").removeClass("green selected").addClass("grey");
         weekView();
         try {
             newRoom = $(this).val().trim();
@@ -887,11 +887,11 @@ $(document).ready(async function () {
             
             else {
                 $("#endHourInput, #endMinuteInput").addClass("border-red-600").val("");
-                $(".seat").addClass("gray").removeClass("cursor-pointer green red blue");
+                $(".seat").addClass("grey").removeClass("cursor-pointer green red blue");
             }
         } 
         else {
-            $(".seat").addClass("gray").removeClass("cursor-pointer green red blue");
+            $(".seat").addClass("grey").removeClass("cursor-pointer green red blue");
         }
 
     });
