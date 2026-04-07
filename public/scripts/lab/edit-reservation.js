@@ -38,7 +38,7 @@ var currSeatNames;
 var isAnonymous = false;
 
 $(document).ready(async function () {
-
+    weekView()
     function setCurrSeatsToDefault(){
         currSeats = selectedSeats
         currSeatNames = selectedSeatNames
@@ -50,15 +50,26 @@ $(document).ready(async function () {
     }
 
     function weekView() {
-        let today = new Date();
-        let nextWk = new Date();
+        today = new Date();
+        nextWk = new Date();
         nextWk.setDate(today.getDate() + 7);
         today = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
         nextWk = `${nextWk.getFullYear()}-${(nextWk.getMonth() + 1).toString().padStart(2, '0')}-${nextWk.getDate().toString().padStart(2, '0')}`;
 
-
-        $("#dateInput").attr('min', today);
-        $("#dateInput").attr('max', nextWk);
+        flatpickr("#dateInput", {
+            minDate: today,
+            maxDate: nextWk,
+            disable: [
+                function (date) {
+                    // Return true to disable
+                    return (date.getDay() === 0); // 0 = Sunday, 6 = Saturday
+                }
+            ],
+            locale: {
+                firstDayOfWeek: 1 // Start week on Monday
+            },
+            dateFormat: "Y-m-d",
+        });
     }
 
     function setInitialTimeStamps(){

@@ -10,6 +10,8 @@ const startMinuteInput = document.getElementById("startMinuteInput")
 const endHourInput = document.getElementById("endHourInput")
 const endMinuteInput = document.getElementById("endMinuteInput")
 const loading = document.getElementById("loading")
+var today;
+var nextWk;
 var building;
 var room;
 var reservationDate;
@@ -40,16 +42,28 @@ $(document).ready(function () {
     }
 
     function weekView() {
-        let today = new Date();
-        let nextWk = new Date();
+        today = new Date();
+        nextWk = new Date();
         nextWk.setDate(today.getDate() + 7);
         today = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
         nextWk = `${nextWk.getFullYear()}-${(nextWk.getMonth() + 1).toString().padStart(2, '0')}-${nextWk.getDate().toString().padStart(2, '0')}`;
 
-
-        $("#dateInput").attr('min', today);
-        $("#dateInput").attr('max', nextWk);
+        flatpickr("#dateInput", {
+            minDate: today,
+            maxDate: nextWk,
+            disable: [
+                function (date) {
+                    // Return true to disable
+                    return (date.getDay() === 0); // 0 = Sunday, 6 = Saturday
+                }
+            ],
+            locale: {
+                firstDayOfWeek: 1 // Start week on Monday
+            },
+            dateFormat: "Y-m-d",
+        });
     }
+
 
     $(".seat").addClass("grey")
 
@@ -179,13 +193,13 @@ $(document).ready(function () {
 
                             let emailLinks = emails.map((email, index) => {
                                 const userId = userIDs[index];
-                                if (email == "Anonymous"){
+                                if (email == "Anonymous") {
                                     return `<span class="seat-email">${email}</span>`;
                                 }
-                                else{
+                                else {
                                     return `<a href="/user/view-other-user-profile?id=${userId}" class="seat-email">${email}</a>`;
                                 }
-                                
+
                             }).join("<br>");
 
                             const tooltip = $(`
@@ -219,11 +233,11 @@ $(document).ready(function () {
                                 top: seat.offset().top - tooltip.outerHeight() - 10,
                                 left: seat.offset().left,
                                 position: "absolute",
-                                background: "#000",           
-                                color: "#fff",               
+                                background: "#000",
+                                color: "#fff",
                                 border: "1px solid #444",
                                 padding: "10px 15px",
-                                "border-radius": "12px",     
+                                "border-radius": "12px",
                                 "box-shadow": "0 4px 12px rgba(0,0,0,0.4)",
                                 "font-family": "Arial, sans-serif",
                                 "font-size": "14px",
@@ -232,7 +246,7 @@ $(document).ready(function () {
                             });
 
                             tooltip.find("a").css({
-                                color: "#fff",                   
+                                color: "#fff",
                                 "text-decoration": "none",
                                 "display": "inline-block",
                                 "margin-top": "2px",
@@ -297,13 +311,13 @@ $(document).ready(function () {
 
                             let emailLinks = emails.map((email, index) => {
                                 const userId = userIDs[index];
-                                if (email == "Anonymous"){
+                                if (email == "Anonymous") {
                                     return `<span class="seat-email">${email}</span>`;
                                 }
-                                else{
+                                else {
                                     return `<a href="/user/view-other-user-profile?id=${userId}" class="seat-email">${email}</a>`;
                                 }
-                                
+
                             }).join("<br>");
 
                             const tooltip = $(`
@@ -337,11 +351,11 @@ $(document).ready(function () {
                                 top: seat.offset().top - tooltip.outerHeight() - 10,
                                 left: seat.offset().left,
                                 position: "absolute",
-                                background: "#000",           
-                                color: "#fff",               
+                                background: "#000",
+                                color: "#fff",
                                 border: "1px solid #444",
                                 padding: "10px 15px",
-                                "border-radius": "12px",     
+                                "border-radius": "12px",
                                 "box-shadow": "0 4px 12px rgba(0,0,0,0.4)",
                                 "font-family": "Arial, sans-serif",
                                 "font-size": "14px",
@@ -350,7 +364,7 @@ $(document).ready(function () {
                             });
 
                             tooltip.find("a").css({
-                                color: "#fff",                   
+                                color: "#fff",
                                 "text-decoration": "none",
                                 "display": "inline-block",
                                 "margin-top": "2px",
@@ -413,7 +427,7 @@ $(document).ready(function () {
                             const emails = seat.data("reservedBys");
                             const userIDs = seat.data("userIDs");
 
-                            
+
                             let emailLinks = emails.map((email, index) => {
                                 const userId = userIDs[index];
                                 if (email == "Anonymous") {
@@ -461,11 +475,11 @@ $(document).ready(function () {
                                 top: seat.offset().top - tooltip.outerHeight() - 10,
                                 left: seat.offset().left,
                                 position: "absolute",
-                                background: "#000",           
-                                color: "#fff",               
+                                background: "#000",
+                                color: "#fff",
                                 border: "1px solid #444",
                                 padding: "10px 15px",
-                                "border-radius": "12px",     
+                                "border-radius": "12px",
                                 "box-shadow": "0 4px 12px rgba(0,0,0,0.4)",
                                 "font-family": "Arial, sans-serif",
                                 "font-size": "14px",
@@ -474,7 +488,7 @@ $(document).ready(function () {
                             });
 
                             tooltip.find("a").css({
-                                color: "#fff",                   
+                                color: "#fff",
                                 "text-decoration": "none",
                                 "display": "inline-block",
                                 "margin-top": "2px",
@@ -541,13 +555,13 @@ $(document).ready(function () {
 
                             let emailLinks = emails.map((email, index) => {
                                 const userId = userIDs[index];
-                                if (email == "Anonymous"){
+                                if (email == "Anonymous") {
                                     return `<span class="seat-email">${email}</span>`;
                                 }
-                                else{
+                                else {
                                     return `<a href="/user/view-other-user-profile?id=${userId}" class="seat-email">${email}</a>`;
                                 }
-                                
+
                             }).join("<br>");
 
                             const tooltip = $(`
@@ -581,11 +595,11 @@ $(document).ready(function () {
                                 top: seat.offset().top - tooltip.outerHeight() - 10,
                                 left: seat.offset().left,
                                 position: "absolute",
-                                background: "#000",           
-                                color: "#fff",               
+                                background: "#000",
+                                color: "#fff",
                                 border: "1px solid #444",
                                 padding: "10px 15px",
-                                "border-radius": "12px",     
+                                "border-radius": "12px",
                                 "box-shadow": "0 4px 12px rgba(0,0,0,0.4)",
                                 "font-family": "Arial, sans-serif",
                                 "font-size": "14px",
@@ -594,7 +608,7 @@ $(document).ready(function () {
                             });
 
                             tooltip.find("a").css({
-                                color: "#fff",                   
+                                color: "#fff",
                                 "text-decoration": "none",
                                 "display": "inline-block",
                                 "margin-top": "2px",
@@ -795,7 +809,7 @@ $(document).ready(function () {
             $btn.prop("disabled", false).text("OK");
         }
     });
-    
+
     closeSuccessModal.addEventListener('click', function (event) {
         successModal.classList.add("hidden")
     });

@@ -1,5 +1,8 @@
 <head>
   <link rel="stylesheet" href="/css/user/add-reservation.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 </head>
 
 <div class="page">
@@ -56,7 +59,7 @@
         <!-- 4th Row -->
         <div class="seat" style="top:7%; left:73.3%;"></div>
         <div class="seat" style="top:7%; left:79.77%;"></div>
-        
+
       </div>
 
       <!-- LS CIRCLES-->
@@ -88,7 +91,7 @@
         <div class="seat" style="top:52.3%; left:69.88%;"></div>
         <div class="seat" style="top:52.3%; left:76.33%;"></div>
         <div class="seat" style="top:52.3%; left:82.78%;"></div>
-        
+
         <!-- 3rd Row -->
         <div class="seat" style="top:67.7%; left:15.24%;"></div>
         <div class="seat" style="top:67.7%; left:21.69%;"></div>
@@ -229,7 +232,7 @@
         <div class="seat" style="top:18.9%; left:73.63%;"></div>
         <div class="seat" style="top:18.9%; left:80.11%;"></div>
         <div class="seat" style="top:18.9%; left:86.55%;"></div>
-        
+
       </div>
     </div>
 
@@ -255,7 +258,7 @@
 
       <!-- Date Input -->
       <div id="date" class="input-box hidden" id="dateBox">
-        <input id="dateInput" type="date" min="" max="">
+        <input id="dateInput" type="date" placeholder="Input Date...">
       </div>
 
       <!-- Time Input -->
@@ -338,8 +341,8 @@
 
           <button id="confirmOkay" type="button"
             class="flex items-center bg-[#1e3a2a] hover:bg-[#2d523d] text-white font-bold py-2.5 px-8 rounded-xl transition-all shadow-md hover:shadow-lg active:scale-95">
-            <svg aria-hidden="true" id="loading" class="hidden w-5 h-5 mr-2 animate-spin text-white/20 fill-white" viewBox="0 0 100 101"
-              fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg aria-hidden="true" id="loading" class="hidden w-5 h-5 mr-2 animate-spin text-white/20 fill-white"
+              viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
                 d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
                 fill="currentColor" />
