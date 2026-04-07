@@ -8,8 +8,6 @@
 
 <p align="center">This CCAPDEV project was made by Group 3 - Labron James, composing of Merry Ann Ong, Yuan Miguel Panlilio, and Nigel Henry So, and Princess Ayesa Tullao. We know how stressful it can be to find an available PC when deadlines are tight. By bringing a highly visual, interactive booking system to our labs, we ensure students always have a seat waiting for them, while giving technicians the tools they need to manage room capacities efficiently.</p>
 
-<img width="1899" height="992" alt="image"  />
-
 <table>
   <tr>
     <td><img src="https://github.com/user-attachments/assets/cfcd5a4f-ba20-41f1-a2dc-11472a5251c5" width="400" height="300"/></td>
