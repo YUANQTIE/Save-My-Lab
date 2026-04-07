@@ -129,7 +129,7 @@ $(document).ready(async function () {
                             
                             let emailLinks = emails.map((email, index) => {
                                 const userId = userIDs[index];
-                                if (email == "Anonymous"){
+                                if (email == "sheeesh"){
                                     return `<span class="seat-email">${email}</span>`;
                                 }
                                 else{
@@ -232,7 +232,7 @@ $(document).ready(async function () {
 
                             let emailLinks = emails.map((email, index) => {
                                 const userId = userIDs[index];
-                                if (email == "Anonymous"){
+                                if (email == "sheeesh"){
                                     return `<span class="seat-email">${email}</span>`;
                                 }
                                 else{
@@ -336,7 +336,7 @@ $(document).ready(async function () {
                             
                             let emailLinks = emails.map((email, index) => {
                                 const userId = userIDs[index];
-                                if (email == "Anonymous"){
+                                if (email == "sheeesh"){
                                     return `<span class="seat-email">${email}</span>`;
                                 }
                                 else{
@@ -441,7 +441,7 @@ $(document).ready(async function () {
 
                             let emailLinks = emails.map((email, index) => {
                                 const userId = userIDs[index];
-                                if (email == "Anonymous"){
+                                if (email == "sheeesh"){
                                     return `<span class="seat-email">${email}</span>`;
                                 }
                                 else{
