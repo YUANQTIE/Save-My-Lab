@@ -273,15 +273,6 @@ $(document).ready(function () {
         tbody.innerHTML = "";
         let listOfReservations = []
 
-        if (reservations.length == 0) {
-            noReservations.classList.remove("hidden")
-            tbody.classList.add("hidden")
-        }
-        else {
-            noReservations.classList.add("hidden")
-            tbody.classList.remove("hidden")
-        }
-
         reservations.forEach(res => {
             const rawStart = res.reservation_start_timestamp.replace('Z', '').replace(' ', 'T');
             const startDate = new Date(rawStart + "Z");
@@ -356,8 +347,17 @@ $(document).ready(function () {
 
         }
 
+
         sortTableByStatus(tbody)
         showTable()
+        if (reservations.length == 0) {
+            noReservations.classList.remove("hidden")
+            tbody.classList.add("hidden")
+        }
+        else {
+            noReservations.classList.add("hidden")
+            tbody.classList.remove("hidden")
+        }
     }
 
     function unshowTable() {
