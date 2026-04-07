@@ -1,5 +1,3 @@
-<img width="1899" height="992" alt="image" src="https://github.com/user-attachments/assets/8c979ee5-b568-4e2a-ab7c-dd47cc7a6878" />
-
 <h1 align="center">Save-My-Lab</h1>
 
 <p align="center">
@@ -10,7 +8,7 @@
 
 <table>
   <tr>
-    <td><img src="https://github.com/user-attachments/assets/cfcd5a4f-ba20-41f1-a2dc-11472a5251c5" width="400" height="300"/></td>
+    <td><img src="https://github.com/user-attachments/assets/8c979ee5-b568-4e2a-ab7c-dd47cc7a6878" width="400" height="300"/></td>
     <td><img src="https://github.com/user-attachments/assets/0fb8cc3f-1917-4b31-b9d6-58a1de6b8ae4" width="400" height="300"/></td>
   </tr>
   <tr>
