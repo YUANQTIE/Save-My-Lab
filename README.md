@@ -1,6 +1,8 @@
-![Uploading image.png…]()
-# Save-My-Lab
-A website that simulates a seat reservation system in DLSU computer laboratories.
+![pic](https://github.com/user-attachments/assets/d7521aa7-18ce-47c8-9155-d8b5d7cb5180)
+
+<p align="center">
+  # Save-My-Lab
+</p>
 
 ## 1. Clone the Repository
 
