@@ -122,6 +122,21 @@ $(document).ready(async function () {
             );
 
         }
+
+        sortTableByStatus(tbody)
+        showTable()
+    }
+
+    function sortTableByStatus(tbody) {
+        const rows = Array.from(tbody.querySelectorAll("tr"));
+
+        const order = { "Happening Now": 0, "Scheduled": 1, "Cancelled": 2, "Finished": 3 };
+
+        rows.sort((a, b) => order[a.dataset.status] - order[b.dataset.status]);
+
+        console.log("HELLOOO")
+
+        rows.forEach(row => tbody.appendChild(row));
     }
 
     function convertDate(date) {
@@ -178,17 +193,28 @@ $(document).ready(async function () {
 
     table.addEventListener("click", viewRow);
 
+    function unshowTable(){
+        $("#tbody").addClass("hidden")
+        $("#loadingRow").removeClass("hidden")
+    }
+    function showTable(){
+        $("#tbody").removeClass("hidden")
+        $("#loadingRow").addClass("hidden")
+    }
+
     async function addRow(reservationId, building, room, date, startTime, endTime, resDate, resTime) {
-        // Create the row element
         const tr = document.createElement('tr');
         tr.setAttribute('data-id', reservationId);
         tr.className = "odd:bg-neutral-primary even:bg-neutral-secondary-soft border-b border-default";
-        let response = await fetch(`/reservations/${reservationId}/checkEditable`)
-        let editable = await response.json()
-        let response2 = await fetch(`/reservations/${reservationId}/checkCancelled`)
-        let cancelled = await response2.json()
-        let response3 = await fetch(`/reservations/${reservationId}/checkHappening`)
-        let happeningNow = await response3.json()
+
+        const [editable, happeningNow, cancelled] = await Promise.all([
+            fetch(`/reservations/${reservationId}/checkEditable`).then(res => res.json()),
+            fetch(`/reservations/${reservationId}/checkHappening`).then(res => res.json()),
+            fetch(`/reservations/${reservationId}/checkCancelled`).then(res => res.json())
+        ]);
+
+
+        let statusText = "";
 
         if (cancelled) {
             tr.innerHTML = `
@@ -221,6 +247,7 @@ $(document).ready(async function () {
                     </div>
                 </td>
             `;
+            statusText = "Cancelled";
         }
         else{
             if (happeningNow){
@@ -245,7 +272,7 @@ $(document).ready(async function () {
                     ${resTime}
                     </td>
                     <td class="border-b border-default px-4 py-4">
-                        <span class="text-sm text-green-500 font-medium leading-none">Happening Now</span>
+                        <span class="text-sm text-blue-500 font-medium leading-none">Happening Now</span>
                     </td>
                 <td class="border-b border-default px-4 py-4 space-x-1.5">
                     <div class="flex justify-center items-center">
@@ -255,6 +282,7 @@ $(document).ready(async function () {
                     </div>
                 </td>
             `;
+            statusText = "Happening Now";
             }
             else{
                 if (editable){
@@ -293,6 +321,7 @@ $(document).ready(async function () {
                         </div>
                     </td>
                 `;
+                statusText = "Scheduled";
                 }
                 else{ //res is done na
                     tr.innerHTML = `
@@ -325,12 +354,11 @@ $(document).ready(async function () {
                         </div>
                     </td>
                 `;
+                statusText = "Finished";
                 }
             }
         }
-
-
-        // Append to the table body
+        tr.dataset.status = statusText;
         tbody.appendChild(tr);
     }
 

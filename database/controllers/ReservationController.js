@@ -469,10 +469,14 @@ exports.isReservationHappeningNow = async (req, res) => {
             return res.status(404).json({ message: "Reservation not found" });
         }
 
-        const now = new Date();
+        const now = new Date(Date.now() + "Z");
+
+        
 
         const happeningNow = reservation.reservation_start_timestamp <= now && now <= reservation.reservation_end_timestamp;
-
+        
+        console.log(now)
+        console.log(happeningNow)
         return res.json(happeningNow);
 
     } catch (err) {

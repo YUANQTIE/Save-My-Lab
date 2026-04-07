@@ -72,7 +72,18 @@
                                 <th class="px-4 py-4 font-bold text-slate-600">Action</th>
                             </tr>
                         </thead>
-                        <tbody id="tbody">
+                        <tbody id="tbody" class="hidden">
+                        </tbody>
+
+                        <tbody id="loadingTbody">
+                            <tr id="loadingRow">
+                                <td colspan="9">
+                                    <div class="flex flex-col justify-center items-center py-8 gap-2">
+                                        <div class="w-8 h-8 border-4 border-gray-300 border-t-gray-500 rounded-full animate-spin"></div>
+                                        <span class="text-gray-500 text-sm font-medium">Loading reservations...</span>
+                                    </div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
