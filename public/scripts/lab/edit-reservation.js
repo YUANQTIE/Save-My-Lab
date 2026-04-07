@@ -546,13 +546,13 @@ $(document).ready(async function () {
         endMinuteInput.innerHTML = `<option value="" disabled selected>--</option>`
     });
 
-    $("#venueInput, #roomInput, #dateInput").on("input", async function () {
-        startHourInput.innerHTML = `<option value="" disabled selected>--</option>`
-        startMinuteInput.innerHTML = `<option value="" disabled selected>--</option>`
-        displayStartTimeInputs()
-        endHourInput.innerHTML = `<option value="" disabled selected>--</option>`
-        endMinuteInput.innerHTML = `<option value="" disabled selected>--</option>`
-    });
+    // $("#venueInput, #roomInput, #dateInput").on("input", async function () {
+    //     startHourInput.innerHTML = `<option value="" disabled selected>--</option>`
+    //     startMinuteInput.innerHTML = `<option value="" disabled selected>--</option>`
+    //     displayStartTimeInputs()
+    //     endHourInput.innerHTML = `<option value="" disabled selected>--</option>`
+    //     endMinuteInput.innerHTML = `<option value="" disabled selected>--</option>`
+    // });
 
     $("#venueInput, #roomInput, #dateInput, #startHourInput, #startMinuteInput, #endHourInput, #endMinuteInput").on("change", async function () {
         checkTimeInputs();

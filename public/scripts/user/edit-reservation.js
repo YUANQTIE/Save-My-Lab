@@ -689,18 +689,6 @@ $(document).ready(async function () {
         weekView();
         
     }
-
-    function weekView() {
-        let today = new Date();
-        let nextWk = new Date();
-        nextWk.setDate(today.getDate() + 7);
-        today = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
-        nextWk = `${nextWk.getFullYear()}-${(nextWk.getMonth() + 1).toString().padStart(2, '0')}-${nextWk.getDate().toString().padStart(2, '0')}`;
-
-
-        $("#dateInput").attr('min', today);
-        $("#dateInput").attr('max', nextWk);
-    }
     async function getCurrentReservationData(){
         const res = await fetch(`/reservations/specific-reservation`)
         const reservation = await res.json()
@@ -854,13 +842,13 @@ $(document).ready(async function () {
         endMinuteInput.innerHTML = `<option value="" disabled selected>--</option>`
     });
 
-    $("#venueInput, #roomInput, #dateInput").on("input", async function () {
-        startHourInput.innerHTML = `<option value="" disabled selected>--</option>`
-        startMinuteInput.innerHTML = `<option value="" disabled selected>--</option>`
-        displayStartTimeInputs()
-        endHourInput.innerHTML = `<option value="" disabled selected>--</option>`
-        endMinuteInput.innerHTML = `<option value="" disabled selected>--</option>`
-    });
+    // $("#venueInput, #roomInput, #dateInput").on("input", async function () {
+    //     startHourInput.innerHTML = `<option value="" disabled selected>--</option>`
+    //     startMinuteInput.innerHTML = `<option value="" disabled selected>--</option>`
+    //     displayStartTimeInputs()
+    //     endHourInput.innerHTML = `<option value="" disabled selected>--</option>`
+    //     endMinuteInput.innerHTML = `<option value="" disabled selected>--</option>`
+    // });
 
     $("#venueInput, #roomInput, #dateInput, #startHourInput, #startMinuteInput, #endHourInput, #endMinuteInput").on("change", async function () {
         weekView();
