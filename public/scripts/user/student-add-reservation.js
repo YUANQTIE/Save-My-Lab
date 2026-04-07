@@ -51,14 +51,14 @@ $(document).ready(function () {
         $("#dateInput").attr('max', nextWk);
     }
 
-    $(".seat").addClass("gray")
+    $(".seat").addClass("grey")
 
     $("#venueInput").on("change", async function (e) {
         try {
 
             $(".seat")
                 .removeClass("red blue green cursor-pointer selected")
-                .addClass("gray")
+                .addClass("grey")
                 .removeAttr("id")
                 .removeAttr("data-name")
                 .attr("title", "");
@@ -90,7 +90,7 @@ $(document).ready(function () {
             else if (building === "Br. Andrew Gonzales Hall") $("#andrew").removeClass("hidden");
 
             $("#room").removeClass("hidden");
-            $(".seat").addClass("gray").removeClass("cursor-pointer green red blue");
+            $(".seat").addClass("grey").removeClass("cursor-pointer green red blue");
             $("#confirmBtn").prop("disabled", true);
 
         } catch (err) {
@@ -99,7 +99,7 @@ $(document).ready(function () {
     });
 
     $("#roomInput").on("change", async function (e) {
-        $(".seat").removeClass("green selected").addClass("gray");
+        $(".seat").removeClass("green selected").addClass("grey");
         weekView();
         try {
             room = $(this).val().trim();
@@ -107,7 +107,7 @@ $(document).ready(function () {
             seat_names = [];
 
             $("#confirmBtn").prop("disabled", true);
-            $(".seat").addClass("gray").removeClass("cursor-pointer green red blue");
+            $(".seat").addClass("grey").removeClass("cursor-pointer green red blue");
             $("#date").removeClass("hidden");
         } catch (err) {
             console.error("Error:", err);
@@ -121,7 +121,7 @@ $(document).ready(function () {
             seats = [];
             seat_names = [];
             $("#time").removeClass("hidden");
-            $(".seat").addClass("gray").removeClass("cursor-pointer green red blue");
+            $(".seat").addClass("grey").removeClass("cursor-pointer green red blue");
             $("#confirmBtn").prop("disabled", true);
 
         } catch (err) {
@@ -147,7 +147,7 @@ $(document).ready(function () {
             seats = [];
             seat_names = [];
 
-            $(".seat").removeClass("gray")
+            $(".seat").removeClass("grey")
 
             reservationStartTimeStamp = reservationDate + "T" + reservationStartHour + ":" + reservationStartMinute + ":00.000";
             reservationEndTimeStamp = reservationDate + "T" + reservationEndHour + ":" + reservationEndMinute + ":00.000";
@@ -155,7 +155,7 @@ $(document).ready(function () {
     }
 
     function assignSeatIds(seatArray) {
-        $(".seat").removeClass("gray red blue blue-500 red-500 green cursor-pointer selected").attr("title", "").removeAttr("id").removeAttr("data-name");
+        $(".seat").removeClass("grey red blue blue-500 red-500 green cursor-pointer selected").attr("title", "").removeAttr("id").removeAttr("data-name");
         $(".room-wrapper").addClass("seats-enabled");
         console.log(seatArray)
         if (building === "Gokongwei Building") {
@@ -689,11 +689,11 @@ $(document).ready(function () {
                 $("#confirmBtn").prop("disabled", seats.length === 0);
             } else {
                 $("#endHourInput, #endMinuteInput").addClass("border-red-600").val("");
-                $(".seat").addClass("gray").removeClass("cursor-pointer green red blue");
+                $(".seat").addClass("grey").removeClass("cursor-pointer green red blue");
                 $("#confirmBtn").prop("disabled", true);
             }
         } else {
-            $(".seat").addClass("gray").removeClass("cursor-pointer green red blue");
+            $(".seat").addClass("grey").removeClass("cursor-pointer green red blue");
             $("#confirmBtn").prop("disabled", true);
         }
     });

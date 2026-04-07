@@ -51,7 +51,6 @@ body {
 /* PAGE */
 
 .page {
-  /* Soft transition from a very light mint to a clean slate gray */
   background: radial-gradient(circle at center, #f7faf9 0%, #edf2f0 100%);
   min-height: 100vh;
   padding: 40px;

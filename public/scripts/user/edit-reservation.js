@@ -719,10 +719,10 @@ $(document).ready(async function () {
                 $("#endHourInput, #endMinuteInput").removeClass("border-red-600");
             } else {
                 $("#endHourInput, #endMinuteInput").addClass("border-red-600").val("");
-                $(".seat").addClass("gray").removeClass("cursor-pointer green red blue");
+                $(".seat").addClass("grey").removeClass("cursor-pointer green red blue");
             }
         } else {
-            $(".seat").addClass("gray").removeClass("cursor-pointer green red blue");
+            $(".seat").addClass("grey").removeClass("cursor-pointer green red blue");
         }
     }
 
