@@ -331,11 +331,23 @@ exports.editProfilePicture = async (req, res) => {
       return res.status(400).send("No file was uploaded. Check your field name.");
     }
 
-    const file = req.files.profile_picture;
-    const base64Image = `data:${file.mimetype};base64,${file.data.toString('base64')}`;
-    await User.findByIdAndUpdate(req.session.userId, {
-      profile_picture: base64Image
-    });
+    if (req.files && req.files.profile_picture) {
+      const file = req.files.profile_picture;
+
+      const MAX_SIZE = 16 * 1024 * 1024; 
+
+      if (file.size > MAX_SIZE) {
+        return res.status(400).send("File size exceeds 16 MB limit.");
+      }
+
+      const base64Image = `data:${file.mimetype};base64,${file.data.toString('base64')}`;
+      await User.findByIdAndUpdate(req.session.userId, {
+        profile_picture: base64Image
+      });
+
+      await user.save();
+    }
+    
 
     return res.status(200).json({ message: "Profile picture updated successfully" });
   } catch (err) {
