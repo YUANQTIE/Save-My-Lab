@@ -471,13 +471,22 @@ exports.addUser = async (req, res) => {
       username,
       bio,
       date_created: new Date(),
-      password : hashedPassword,
+      password: hashedPassword,
       id_number
     });
 
     if (req.files && req.files.profile_picture) {
       const file = req.files.profile_picture;
-      user.profile_picture = `data:${file.mimetype};base64,${file.data.toString('base64')}`;
+
+      const MAX_SIZE = 16 * 1024 * 1024; 
+
+      if (file.size > MAX_SIZE) {
+        return res.status(400).send("File size exceeds 16 MB limit.");
+      }
+
+      user.profile_picture =
+        `data:${file.mimetype};base64,${file.data.toString('base64')}`;
+
       await user.save();
     }
 
@@ -487,6 +496,7 @@ exports.addUser = async (req, res) => {
     if (err.code === 11000) {
       return res.status(400).send("Username or Email already exists.");
     }
+
     console.error(err);
     res.status(500).send("Error saving user");
   }
