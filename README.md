@@ -1,10 +1,7 @@
-
-
-
 <h1 align="center">Save-My-Lab</h1>
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/d7521aa7-18ce-47c8-9155-d8b5d7cb5180" alt="Save-My-Lab Logo" width="800" height="500"/>
+  <img src="https://github.com/user-attachments/assets/ee9796f8-81ae-46d4-8af2-bd1f398dbbab" alt="Save-My-Lab Logo" width="800" height="500"/>
 </p>
 
 
